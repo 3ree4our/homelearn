@@ -16,7 +16,7 @@ let provePasswordState2 = false;
 
 
 emailEle.addEventListener('keydown', (e) => {
-  e.preventDefault();
+  //e.preventDefault();
 });
 
 passwordEle.addEventListener('keyup', () => {

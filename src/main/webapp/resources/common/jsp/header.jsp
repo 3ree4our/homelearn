@@ -22,7 +22,7 @@
           </ul>
         </li>
         <li class="has-menu-child">
-          <a href="javascript:void(0);" style="font-weight: bold">강좌목록</a>
+          <a href="/coursesList.do" style="font-weight: bold">강좌목록</a>
           <ul class="sub-menu">
             <li><a href="courses">Courses</a></li>
             <li><a href="course-details">Course Details</a></li>
@@ -35,8 +35,7 @@
             <li><a href="blog-details.html">Blog Details</a></li>
           </ul>
         </li>
-
-        <li><a href="contact.html" style="font-weight: bold">관라자 페이지</a></li>
+        <li><a href="/admin/dash-board" style="font-weight: bold">관라자 페이지</a></li>
         <li><a class="navbar--login" href='/members/login' style="font-weight: bold">로그인</a>
         </li>
       </ul>

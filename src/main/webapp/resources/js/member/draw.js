@@ -20,7 +20,28 @@ export const drawLectureList = (pagingData) => {
   } else {
     html += `<div>수강중인 강의가 없습니다.</div>`
   }
-  document.querySelector('#course-list').innerHTML = html;
+  document.querySelector('#courseList').innerHTML = html;
+}
+
+
+export const drawPaymentHistory = (pagingData) => {
+  let html = '';
+  if (pagingData.totalElements) {
+    for (let element of pagingData.elements) {
+      html += `<div className="col-12 mb-4">`;
+      html += `<div className="card">`;
+      html += `<div className="card-body">`
+      html += `<span>수강명</span>`;
+      html += `<span>결제 금액</span>`;
+      html += `<span>결제 일자</span>`;
+      html += `<span>환불 상태</span>`
+      html += `</div></div></div>`;
+    }
+    drawPagination(pagingData);
+  } else {
+    html += `<div>결제내역이 없습니다.</div>`
+  }
+  document.querySelector('#paymentsList').innerHTML = html;
 }
 
 export const drawPagination = (pagingData) => {

@@ -1,6 +1,6 @@
 import {SERVER_API, getBasicData} from "../common/request.js";
 import {getCoursesByMemberId, getPaymentsByMemberId} from "../member/member-api-request.js"
-import {drawLectureList} from "./draw.js";
+import {drawLectureList, drawPagination, drawPaymentHistory} from "./draw.js";
 
 await getBasicData();
 
@@ -59,6 +59,7 @@ courseRegisterListBtnEle.addEventListener('click', async () => {
   navbarList.innerHTML = listResult;
 
   drawLectureList(pagingData);
+  drawPagination(pagingData)
 })
 courseRegisterListBtnEle.click();
 
@@ -73,7 +74,8 @@ paymentListBtnELe.addEventListener('click', async () => {
 
   navbarList.innerHTML = result;
 
-  //drawLectureList(pagingData);
+  drawPaymentHistory(pagingData);
+  drawPagination(pagingData)
 })
 
 paymentHistoryListBtnELe.addEventListener('click', async () => {

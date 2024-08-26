@@ -2,7 +2,9 @@ package org.threefour.homelearn.course.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
+import io.jsonwebtoken.Claims;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,9 @@ import org.threefour.homelearn.course.domain.Course;
 import org.threefour.homelearn.course.domain.CourseVO;
 import org.threefour.homelearn.course.domain.Pager;
 import org.threefour.homelearn.course.service.CourseService;
+import org.threefour.homelearn.member.jwt.JWTUtil;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class CourseController {
@@ -25,6 +30,9 @@ public class CourseController {
   private CourseService courseService;
   @Autowired
   private ChapterService chapterService;
+
+  @Autowired
+  private JWTUtil jwtUtil;
 
   @GetMapping("/courseForm.do")
   public String courseForm() {
@@ -45,20 +53,20 @@ public class CourseController {
     List<String> chapterNames1 = chapterService.getChapterName(courseid);
 
     List<Chapter> getChapter = new ArrayList<Chapter>();
-   // List<String> chapterNames2 = new ArrayList<String>();
+    // List<String> chapterNames2 = new ArrayList<String>();
     int chapterSize = chapter.size() / 4;
     //int chapterNamesSize = chapterNames1.size() / 4;
 
     for (int i = 0; i < chapterSize; i++) {
       chapter.get(i).setChapter_name(chapterNames1.get(i));
       getChapter.add(chapter.get(i));
-    //  getChapter.add(chapterService.getChapter(chapter.get(i)));
+      //  getChapter.add(chapterService.getChapter(chapter.get(i)));
       // 추후 예정 chapterName = chapterService.getChapterName(chapter.get(i));
     }
     //for (int i = 0; i < chapterNamesSize; i++) {
-     // chapterNames2.add(chapterNames1.get(i));
-     // getChapter.add(chapterService.getChapter(chapter.get(i)));
-   //   // 추후 예정 chapterName = chapterService.getChapterName(chapter.get(i));
+    // chapterNames2.add(chapterNames1.get(i));
+    // getChapter.add(chapterService.getChapter(chapter.get(i)));
+    //   // 추후 예정 chapterName = chapterService.getChapterName(chapter.get(i));
     //}
     //	chapterService.getChapterName(chapter);
     Course course = null;
@@ -69,18 +77,17 @@ public class CourseController {
     //System.out.println("getChapter: "+ getChapter.get(0).getName());
     view.setViewName("course-details");
     view.addObject("course", course);
-   // view.addObject("chapterName", chapterNames2);
+    // view.addObject("chapterName", chapterNames2);
     view.addObject("chapter", getChapter);
 
     return view;
   }
 
   @GetMapping("/coursesList.do")
-  public ModelAndView coursesList(Pager pager) {
+  public ModelAndView coursesList(Pager pager, HttpServletRequest request) {
     ModelAndView view = new ModelAndView();
 
     if (pager.getPageNum() == 0) {
-
 
       int total = courseService.total();
       int totalPage = courseService.totalPage(3);
