@@ -7,10 +7,11 @@ import java.util.function.Function;
 import io.jsonwebtoken.Claims;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.threefour.homelearn.chapter.domain.Chapter;
@@ -19,7 +20,10 @@ import org.threefour.homelearn.course.domain.Course;
 import org.threefour.homelearn.course.domain.CourseVO;
 import org.threefour.homelearn.course.domain.Pager;
 import org.threefour.homelearn.course.service.CourseService;
+import org.threefour.homelearn.enrollment.domain.EnrolledCourse;
+import org.threefour.homelearn.member.dto.CustomUserDetails;
 import org.threefour.homelearn.member.jwt.JWTUtil;
+import org.threefour.homelearn.member.service.MemberService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,13 +34,12 @@ public class CourseController {
   private CourseService courseService;
   @Autowired
   private ChapterService chapterService;
-
   @Autowired
-  private JWTUtil jwtUtil;
+  private MemberService memberService;
 
   @GetMapping("/courseForm.do")
   public String courseForm() {
-    return "signup";
+    return "courseRegister";
   }
 
   @GetMapping("/courseDetail.do")
@@ -194,5 +197,18 @@ public class CourseController {
     view.setViewName("courses");
     view.addObject("pager", pager);
     return view;
+  }
+
+  @ResponseBody
+  @GetMapping("/courses/{courseid}")
+  public ResponseEntity<Void> checkEnrolledByCourseId(@PathVariable("courseid") Long courseId) {
+    System.out.println("호출!!");
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    CustomUserDetails customUser = (CustomUserDetails) authentication.getPrincipal();
+    Long memberId = customUser.getId();
+
+    EnrolledCourse enrolledCourse = memberService.getEnrolledCourseByMemberIdAndCourseId(memberId, courseId);
+    if (enrolledCourse != null) return ResponseEntity.ok().build();
+    else return ResponseEntity.badRequest().build();
   }
 }

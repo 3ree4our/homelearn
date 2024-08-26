@@ -25,8 +25,6 @@
         <property name="hideUserNotFoundExceptions" value="false"/>
     </bean>
 
-    <security:debug/>
-
     <security:http pattern="/admin/dash-board">
         <security:intercept-url pattern="/admin/dash-board" access="hasRole('ADMIN')"/>
         <security:http-basic/>

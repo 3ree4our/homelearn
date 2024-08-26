@@ -2,25 +2,32 @@ import {getBasicData, SERVER_API} from "./request.js";
 
 await getBasicData();
 
-const data = JSON.parse(localStorage.getItem('member'));
-const courseAEle = document.querySelector('.navbar--course')
+const data = localStorage.getItem('member');
 const cartAEle = document.querySelector('.navbar--cart')
 const loginAEle = document.querySelector(".navbar--login")
-const ap = document.querySelector('a[href="/admin/dash-board"]')
 
-if (data === null || data.roles[0].role !== 'ROLE_ADMIN') {
-  ap.style.display = 'none';
-} else {
-  ap.style.display = 'none';
-}
 if (data) {
-  loginAEle.innerText = data.nickname;
-  loginAEle.setAttribute('href', `${SERVER_API}/members/mypage/${data.id}`);
+  const jsonData = JSON.parse(data);
+  for (let item of jsonData.roles) {
+    if (item.role === 'ROLE_ADMIN') {
+      const ulEle = document.querySelector('.navbar-nav');
+      const liEle = document.createElement('li');
+      const aEle = document.createElement('a');
+      aEle.setAttribute('href', '/admin/dash-board');
+      aEle.innerText = "어드민";
+      liEle.appendChild(aEle);
+      ulEle.appendChild(liEle);
+
+    }
+  }
+
+  loginAEle.innerText = jsonData.nickname;
+  loginAEle.setAttribute('href', `${SERVER_API}/members/mypage/${jsonData.id}`);
 
   cartAEle.addEventListener('click', (e) => {
     e.preventDefault();
     http://localhost:8080/cart.do?studentId=3
-        location.href = `${SERVER_API}/cart.do?studentId=${data.id}`
+        location.href = `${SERVER_API}/cart.do?studentId=${jsonData.id}`
   })
 } else {
   cartAEle.style.display = 'none';

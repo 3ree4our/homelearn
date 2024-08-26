@@ -31,8 +31,25 @@ button[type='submit'] {
 }
 
 /*chapter-register-list start*/
+.card {
+    padding: 15px;
+}
+
 #course-list div {
     padding: 10px !important;
+}
+
+.card-body {
+    padding: 10px !important;
+}
+
+.card-body div {
+    display: flex;
+    justify-content: center;
+}
+
+.card-body div a {
+    width: 100%;
 }
 
 .card-title {
@@ -48,7 +65,3 @@ button[type='submit'] {
 }
 
 /*chapter-register-list end*/
-
-/*payment-list start*/
-
-/*payment-list end*/
