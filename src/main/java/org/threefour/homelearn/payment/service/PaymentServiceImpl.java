@@ -2,7 +2,10 @@ package org.threefour.homelearn.payment.service;
 
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.threefour.homelearn.payment.domain.Payment;
 import org.threefour.homelearn.payment.domain.PaymentRequest;
 import org.threefour.homelearn.payment.mapper.PaymentMapper;
@@ -12,9 +15,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
+import java.util.List;
+
+import static org.springframework.transaction.annotation.Isolation.READ_COMMITTED;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
 
   private static final String API_KEY = "1015112638425627";
@@ -25,29 +32,26 @@ public class PaymentServiceImpl implements PaymentService {
 
 
 
-/*  @Autowired
+  @Autowired
   public PaymentServiceImpl(PaymentMapper paymentMapper){ //OrderMapper orderMapper,
     this.paymentMapper = paymentMapper;
-  }*/
+  }
 
 
   @Override
+  @Transactional(isolation = READ_COMMITTED)
   public Payment verifyPayment(PaymentRequest paymentRequest) throws Exception {
     String accessToken = getAccessToken();
     JSONObject payment = getPaymentDetails(paymentRequest.getImp_uid(), accessToken);
     System.out.println("accessToken: " + accessToken + ", payment: " + payment);
 
-    ////실제 주문 금액 조회
-    //Order order = orderMapper.selectOrderById(paymentRequest.getMerchant_uid());
-    //if(order == null){
-    //  throw new RuntimeException("Order not found");
-    //}
 
     // 가격 비교 (주문 데이터를 실제로 조회해야 함)
-    int orderAmount = 300; //order.getAmount();
-    int paymentAmount = payment.getInt("amount");
+    int order_amount = paymentRequest.getOrder_amount();
+    System.out.println("@@@order_amount: " + order_amount);
+    int paid_amount = payment.getInt("amount");
 
-    if (orderAmount == paymentAmount) {
+    if (order_amount == paid_amount) {
 
 
       switch (payment.getString("status")) {
@@ -64,16 +68,17 @@ public class PaymentServiceImpl implements PaymentService {
           Payment paymentRecord = new Payment();
           paymentRecord.setImp_uid(paymentRequest.getImp_uid());
           paymentRecord.setMerchant_uid(paymentRequest.getMerchant_uid());
-          paymentRecord.setPaid_amount(paymentAmount);
-          //paymentRecord.setRefunded_amount(payment.getInt("cancel_amount"));
-          //paymentRecord.setCreated_at(payment.getDate("paid_at"));
+          paymentRecord.setOrderer_id(0);
+          paymentRecord.setPaid_amount(paid_amount);
+          paymentRecord.setRefunded_amount(0);
+          paymentRecord.setRemained_amount(0);
           //paymentRecord.setStatus(payment.getString("status"));
 
           System.out.println(paymentRecord + "@");
 
           return paymentRecord;
-        // Save the payment record to the database
 
+        // Save the payment record to the database
         //savePayment(paymentRecord); //이거 만들어줘야함
 
         default:
@@ -92,8 +97,14 @@ public class PaymentServiceImpl implements PaymentService {
   public void cancelPayment(PaymentRequest paymentRequest) throws Exception {
     //맨처음 결제 금액 결제히스토리에서 가져오기
     String accessToken = getAccessToken();
+    //JSONObject payment = getPaymentDetails(paymentRequest.getImp_uid(), accessToken);
     // 포트원 API를 호출하여 결제를 취소합니다
-    cancelPaymentOnPortOne(paymentRequest.getImp_uid(), paymentRequest.getAmount(), accessToken);
+    cancelPaymentOnPortOne(paymentRequest.getImp_uid(), paymentRequest.getCancel_amount(), accessToken);
+
+    //결제 단건 조회
+    JSONObject payment = getPaymentDetails(paymentRequest.getImp_uid(), accessToken);
+    int paid_amount = payment.getInt("amount"); //실결제 금액
+    int totalCancel_amount = payment.getInt("cancel_amount"); //누적 환불 금액
 
     // 주문 상태를 취소로 업데이트
     //orderMapper.updateOrderStatus(paymentRequest.getMerchant_uid(), "canceled");
@@ -102,15 +113,18 @@ public class PaymentServiceImpl implements PaymentService {
     Payment paymentRecord = new Payment();
     //ID는 자동 생성 될 거고
     //주문자 ID
+    paymentRecord.setOrderer_id(0);
     paymentRecord.setImp_uid(paymentRequest.getImp_uid());
-    //paymentRecord.setMerchant_uid(paymentRequest.getMerchant_uid());
-    paymentRecord.setPaid_amount(3000); //맨처음 결제 금액 //결제 히스토리.getPaid_amount() //특정 결제일 때
-    paymentRecord.setRefunded_amount(paymentRequest.getAmount());
+    paymentRecord.setMerchant_uid(paymentRequest.getMerchant_uid());
+    paymentRecord.setPaid_amount(paid_amount); //맨처음 결제 금액 //결제 히스토리.getPaid_amount() //특정 결제일 때
+    paymentRecord.setRefunded_amount(paymentRequest.getCancel_amount());
+    paymentRecord.setRemained_amount(totalCancel_amount);
+
 
     //paymentRecord.setCreated_at(payment.getDate("paid_at"));
     //paymentRecord.setStatus(payment.getString("status"));
 
-    //System.out.println(paymentRecord+"boo");
+
     savePayment(paymentRecord);
 
   }
@@ -119,12 +133,6 @@ public class PaymentServiceImpl implements PaymentService {
   public void savePayment(Payment payment) {
     paymentMapper.insertPayment(payment);
   }
-
-  @Override
-  public Payment getPaymentByImpUid(String imp_uid) {
-    return paymentMapper.selectPaymentByImpUid(imp_uid);
-  }
-
 
   private String getAccessToken() throws Exception {
     URL url = new URL("https://api.iamport.kr/users/getToken");
@@ -185,6 +193,7 @@ public class PaymentServiceImpl implements PaymentService {
   private void cancelPaymentOnPortOne(String imp_uid, int cancel_amount, String accessToken) throws Exception {
     URL url = new URL("https://api.iamport.kr/payments/cancel");
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
     connection.setRequestMethod("POST");
     connection.setRequestProperty("Content-Type", "application/json");
     connection.setRequestProperty("Authorization", accessToken);
@@ -198,6 +207,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     try (OutputStream os = connection.getOutputStream()) {
       os.write(requestBody.toString().getBytes());
+      os.flush();
     }
 
     // Response handling
@@ -214,4 +224,25 @@ public class PaymentServiceImpl implements PaymentService {
       throw new RuntimeException("Error canceling payment: " + jsonResponse.getString("message"));
     }
   }
+
+  //@Override
+  //public List<Payment> getPaymentsByOrderer_id(long orderer_id){
+  //  return paymentMapper.selectPaymentByOrderer_id(orderer_id);
+  //}
+
+  @Override
+  public List<Payment> getPaymentByImpUid(String imp_uid) {
+    return paymentMapper.selectPaymentByImpUid(imp_uid);
+  }
+
+  @Override
+  public List<Payment> getPaymentsByOrderer_id(long orderer_id, int offset, int limit) {
+    return paymentMapper.selectPaymentsByOrderer_id(orderer_id, offset, limit);
+  }
+
+  @Override
+  public int getTotalPaymentsByOrderer_id(long orderer_id) {
+    return paymentMapper.countPaymentsByOrderer_id(orderer_id);
+  }
 }
+
