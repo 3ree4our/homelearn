@@ -1,6 +1,6 @@
-<%@ page import="org.threefour.homelearn.course.domain.Pager" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="org.threefour.homelearn.course.domain.Pager" %>
 
 <html lang="en">
@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
 
-  <script defer src="${pageContext.request.contextPath}/resources/js/courses/courses.js"></script>
+  <script defer type="module" src="${pageContext.request.contextPath}/resources/js/courses/courses.js"></script>
   <title>Elearning - Tutor, Education HTML Template</title>
 </head>
 <body class="courses-page">
@@ -36,7 +36,7 @@
   <div class="container text-center">
     <h2>Courses</h2>
     <div class="breadcrumb">
-      <a href="/">Home</a>
+      <a href="home.html">Home</a>
       <span>/ Courses</span>
     </div>
   </div>
@@ -52,7 +52,7 @@
         <input type="text" name="name" placeholder="강좌명을 입력하세요.">
         <input type="hidden" name="pageNum" value="1">
         <input type="hidden" name="pageSize" value="3">
-        <div class="d-flex w-100">
+        <div class="w-100 d-flex">
           <button type="submit">검색하기</button>
         </div>
       </form>
@@ -70,7 +70,7 @@
   </div>
 </section>
 <!-- Main form end -->
-<%--
+
 <!-- Courses section start -->
 <c:if test="${empty pager.list}">
   <div align="center">
@@ -121,8 +121,15 @@
   <div class="pagination" align="center">
     <a href="coursesList.do?pageNum=<%=p.getPageNum()-1%>&pageSize=<%=p.getPageSize() %>&blockSize=<%=p.getBlockSize() %>">prev</a>
     <%
+
+
+      //int i=1;
+
       for (int i = p.getPageNum(); i <= 3; i++) {
+
     %>
+
+
     <a class="current-page"
        href="coursesList.do?pageNum=<%=p.getPageNum()+1%>&pageSize=<%=p.getPageSize() %>&blockSize=<%=p.getBlockSize() %>"><%=i %>
     </a>
@@ -136,7 +143,7 @@
       <option name="city" value="9">9</option>
     </select>
   </div>
-  </div>--%>
+  </div>
 
 </section>
 
@@ -144,7 +151,44 @@
 <!-- Courses section end -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script language="javascript">
+  /* $( document ).ready(function() {
+       if (!location.hash) {
+          for(let i=0;i<3;i++){
+              location.hash = '#reload';
 
+              location.href = "coursesList.do";
+          }
+
+
+          }
+      });*/
+  function f(select) {
+    var el = document.getElementById("psId").value;
+    let pageNum = <%=p.getPageNum()%>
+        console.log('pageNum: ' + pageNum);
+    let pageSize = <%=p.getPageSize()%>
+        let
+    blockSize = <%=p.getBlockSize()%>
+        let
+    startPage = <%=p.getStartPage()%>
+        let
+    endPage = <%=p.getEndPage()%>
+
+        location.href = "coursesList.do?pageNum=" + pageNum + "&pageSize=" + el + "&blockSize="
+            + blockSize + "&startPage=" + startPage + "&endPage=" + endPage;
+  }
+
+  //  function ff(select){
+  //     var keyword = document.getElementById("keyword").value;
+  //    var search = document.getElementById("search").value;
+  //
+  //    location.href="search.do.json?keyword="+keyword+"&search="+search;
+  // }
+  function fff(select) {
+    var cate = document.getElementById("cate").value;
+
+    location.href = "searchCate.do?cate=" + cate;
+  }
 </script>
 <!-- Footer strat -->
 <c:import url="${pageContext.request.contextPath}/resources/common/jsp/footer.jsp"/>

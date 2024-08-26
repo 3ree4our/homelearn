@@ -14,9 +14,7 @@
       <ul class="navbar-nav">
         <li><a class="navbar--course" href="/coursesList.do" style="font-weight: bold">강의</a></li>
         <li><a class="navbar--cart" href="javascript:void(0)" style="font-weight: bold">장바구니</a></li>
-        <li><a class="navbar--login" href='/members/login' style="font-weight: bold">로그인</a>
-        <li><a href="/admin/dash-board" style="font-weight: bold">관라자 페이지</a></li>
-        </li>
+        <li><a class="navbar--login" href='/members/login' style="font-weight: bold">로그인</a></li>
       </ul>
     </nav>
   </div>

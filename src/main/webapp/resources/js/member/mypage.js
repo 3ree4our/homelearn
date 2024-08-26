@@ -4,38 +4,71 @@ import {drawchapterList, drawPagination, drawPaymentHistory} from "./draw.js";
 
 await getBasicData();
 
-const data = JSON.parse(localStorage.getItem('member'));
+const data = localStorage.getItem('member');
 const accessToken = localStorage.getItem('access_token');
 
 const h2Ele = document.querySelector('.page-feature h2');
-const spanNicknameEle = document.querySelector('.tagline');
 const logoutBtnEle = document.querySelector('#logoutBtn');
 const inputFileEle = document.querySelector('input[type="file"]');
 const courseRegisterListAEle = document.querySelector('#mypageNav a:first-child');
 const paymentListAELe = document.querySelector('#mypageNav a:nth-child(2)');
 const paymentHistoryListAELe = document.querySelector('#mypageNav a:last-child');
 
+const outUlDiv = document.querySelector('div.col-md-4.col-sm-6:first-child > div ul')
+
 if (data === null || accessToken === null) location.href = `${SERVER_API}/members/login`
 
 if (data) {
+  const jsonData = JSON.parse(data);
   const emailInputEle = document.querySelector('#email');
   const createdAtInputEle = document.querySelector('#createdAt');
   const nicknameInputEle = document.querySelector('#nickname');
   const passwordInputEle = document.querySelector('#password');
   const imgEle = document.querySelector('img#profileImage');
-  const filePath = data?.attachFile?.filePath;
-  const saveName = data?.attachFile?.saveName;
+  const filePath = jsonData?.attachFile?.filePath;
+  const saveName = jsonData?.attachFile?.saveName;
+  const logoutAEle = outUlDiv.firstElementChild.firstElementChild;
+  const outAEle = outUlDiv.lastElementChild.lastElementChild;
 
-  h2Ele.innerHTML = data.nickname;
-  spanNicknameEle.innerHTML = `${data.nickname}님 마이페이지`
+  logoutBtnEle.style.display = 'none';
 
-  emailInputEle.value = `${data.email}`
-  createdAtInputEle.value = `${data.createdAt}`.split(" ")[0] || undefined
-  nicknameInputEle.value = `${data.nickname}`
-  passwordInputEle.value = `${data.password}`
+  logoutAEle.innerText = '로그아웃';
+  outAEle.innerText = '회원탈퇴'
+  h2Ele.innerHTML = jsonData.nickname;
+
+  emailInputEle.value = `${jsonData.email}`
+  createdAtInputEle.value = `${jsonData.createdAt}`.split(" ")[0] || undefined
+  nicknameInputEle.value = `${jsonData.nickname}`
+  passwordInputEle.value = `${jsonData.password}`
+
+  logoutAEle.addEventListener('click', (e) => {
+    e.preventDefault();
+    logoutBtnEle.click();
+  })
+
+  outAEle.addEventListener('click', (e) => {
+    e.preventDefault();
+    const userConfirmed = confirm("계속하시겠습니까?");
+    if (userConfirmed) {
+      fetch(`${SERVER_API}/members/${jsonData.id}`, {
+        method: 'delete'
+      })
+          .then(result => {
+            if (result.status === 200) {
+              localStorage.removeItem('member')
+              localStorage.removeItem('access_token')
+              alert('이용해 주셔서 감사합니다.')
+              location.href = '/';
+            }
+          })
+    } else {
+      alert("계속 이용해주셔서 감사합니다.")
+    }
+
+  })
 
   if (filePath && saveName) {
-    fetch(`${SERVER_API}/files/${data.id}`, {
+    fetch(`${SERVER_API}/files/${jsonData.id}`, {
       method: 'POST',
       body  : JSON.stringify({
         filePath,
@@ -90,7 +123,6 @@ paymentHistoryListAELe.addEventListener('click', async (e) => {
 logoutBtnEle.addEventListener('click', () => {
   fetch(`${SERVER_API}/members/logout`)
       .then(res => {
-        console.log(res)
         if (res.status === 200) {
           localStorage.removeItem('access_token')
           localStorage.removeItem('member')

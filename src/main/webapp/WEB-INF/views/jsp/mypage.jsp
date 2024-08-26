@@ -47,7 +47,6 @@
       <div class="col-lg-7 col-md-9 m-auto text-center">
         <button id="logoutBtn">로그아웃</button>
         <div class="sec-heading">
-          <span class="tagline"></span>
           <div id="profileImageWrapper" class="sec-title">
             <img id="profileImage" src="${pageContext.request.contextPath}/resources/images/member/금발카리나.jpg"
                  alt="프로필 이미지">

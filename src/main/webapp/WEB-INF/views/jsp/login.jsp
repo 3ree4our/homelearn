@@ -53,9 +53,6 @@
 
 <!-- Login / Registration start -->
 <section class="banner login-registration">
-  <div class="vector-img">
-    <img src="${pageContext.request.contextPath}/resources/images/vector.png" alt="">
-  </div>
   <div class="container">
     <div class="row">
       <div class="col-md-6">

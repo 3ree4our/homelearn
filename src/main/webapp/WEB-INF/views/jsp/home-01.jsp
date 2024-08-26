@@ -24,7 +24,7 @@
 
 
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home/home.css">
-  <script type="module"
+  <script defer type="module"
           src="${pageContext.request.contextPath}/resources/js/common/request.js"></script>
 
   <title>Elearning - Tutor, Education HTML Template</title>
@@ -120,13 +120,12 @@
       </span>
     <div class="row">
       <c:forEach items="${course}" var="course">
-
         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
           <img src="${pageContext.request.contextPath}/resources/images/${course.ffname}"
                alt=""/>
           <strong class="ribbon">${course.price}</strong>
           <div class="course-content">
-            <h3><a href="course-details.html">${course.name}</a></h3>
+            <h3><a href="courseDetail.do?course_id=${course.id}">${course.name}</a></h3>
             <p>Lorem
             </p>
             <div class="enroll">
