@@ -83,8 +83,6 @@ paymentListAELe.addEventListener('click', async (e) => {
 })
 
 paymentHistoryListAELe.addEventListener('click', async (e) => {
-  //http://localhost:8080/cart.do?studentId=3
-  alert("으아")
   e.preventDefault();
   location.href = `${SERVER_API}/cart.do?studentId=${data.id}`
 })
