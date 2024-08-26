@@ -13,15 +13,19 @@
     <select id="selectPaymentByImpUid" parameterType="String" resultType="Payment">
         SELECT * FROM PAYMENT_HISTORY WHERE imp_uid = #{imp_uid}
     </select>
-    <select id="selectPaymentByOrderer_id" parameterType="long" resultType="org.threefour.homelearn.payment.domain.Payment">
-        SELECT * FROM PAYMENT_HISTORY WHERE orderer_id =#{orderer_id}
-    </select>
-
-
-    <!--    <select id="selectPaymentByOrdererId" parameterType="String" resultType="Payment">-->
-<!--        SELECT * FROM payments WHERE orderer_id = #{orderer_id}-->
+<!--    <select id="selectPaymentByOrderer_id" parameterType="long" resultType="org.threefour.homelearn.payment.domain.Payment">-->
+<!--        SELECT * FROM PAYMENT_HISTORY WHERE orderer_id = #{orderer_id}-->
 <!--    </select>-->
 
+    <!--    확인-->
+    <select id="selectPaymentsByOrderer_id" parameterType="map" resultType="org.threefour.homelearn.payment.domain.Payment">
+        SELECT * FROM PAYMENT_HISTORY
+        WHERE orderer_id = #{orderer_id}
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
 
+    <select id="countPaymentsByOrderer_id" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM PAYMENT_HISTORY WHERE orderer_id = #{orderer_id}
+    </select>
 
 </mapper>
