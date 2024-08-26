@@ -19,27 +19,28 @@ import static org.threefour.homelearn.cart.RequestConstant.*;
 @Controller
 @RequiredArgsConstructor
 public class OrderController {
-    private final OrderService orderService;
+  private final OrderService orderService;
 
-    @GetMapping("/order.do")
-    public ModelAndView getOrder(String impUid) {
-        GetOrderResponse getOrderResponse = orderService.get(impUid);
+  @GetMapping("/order.do")
+  public ModelAndView getOrder(String impUid) {
+    GetOrderResponse getOrderResponse = orderService.get(impUid);
 
-        return new ModelAndView(ORDER_VIEW_NAME, ORDER_PARAMETER_NAME, getOrderResponse);
-    }
+    return new ModelAndView(ORDER_VIEW_NAME, ORDER_PARAMETER_NAME, getOrderResponse);
+  }
 
-    @PostMapping("/submit-order.do")
-    public ResponseEntity<Void> createOrder(@RequestBody PaidOrderRequest paidOrderRequest) {
-        orderService.createOrder(paidOrderRequest);
+  @PostMapping("/submit-order.do")
+  public ResponseEntity<Void> createOrder(@RequestBody PaidOrderRequest paidOrderRequest) {
+    orderService.createOrder(paidOrderRequest);
 
-        return ResponseEntity.status(NO_CONTENT).build();
-    }
+    return ResponseEntity.status(NO_CONTENT).build();
+  }
 
-    @PostMapping("/cancel-order.do")
-    public ResponseEntity<Void> createOrder(@RequestBody PaidOrderRequest paidOrderRequest, HttpSession session) {
-        orderService.createOrder(paidOrderRequest);
-        session.setAttribute(COURSE_ORDER_PARAMETER_NAME, paidOrderRequest.getCourseOrderRequests());
+  @PostMapping("/cancel-order.do")
+  public ResponseEntity<Void> createOrder(@RequestBody PaidOrderRequest paidOrderRequest, HttpSession session) {
+    orderService.createOrder(paidOrderRequest);
+    // todo 수정 요망
+    session.setAttribute("임시로", paidOrderRequest.getCourseOrderRequests());
 
-        return ResponseEntity.status(NO_CONTENT).build();
-    }
+    return ResponseEntity.status(NO_CONTENT).build();
+  }
 }

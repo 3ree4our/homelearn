@@ -45,7 +45,8 @@
       <a href="?orderer_id=${param.orderer_id}&page=${currentPage - 1}&size=${param.size}">&laquo; Previous</a>
     </c:if>
     <c:forEach var="i" begin="0" end="${totalPages - 1}">
-      <a href="?orderer_id=${param.orderer_id}&page=${i}&size=${param.size}" class="<c:if test="${i == currentPage}">active</c:if>">${i + 1}</a>
+      <a href="?orderer_id=${param.orderer_id}&page=${i}&size=${param.size}"
+         class="<c:if test="${i == currentPage}">active</c:if>">${i + 1}</a>
     </c:forEach>
     <c:if test="${currentPage < totalPages - 1}">
       <a href="?orderer_id=${param.orderer_id}&page=${currentPage + 1}&size=${param.size}">Next &raquo;</a>
@@ -130,7 +131,6 @@
 <script src="js/jquery-ui.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxYLtelXg0PGjeTiFDtlN7nrH_47buDWo"></script>
 <script src="js/scripts.js"></script>
 </body>
 </html>
