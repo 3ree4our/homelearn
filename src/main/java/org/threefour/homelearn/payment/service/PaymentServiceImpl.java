@@ -131,6 +131,7 @@ public class PaymentServiceImpl implements PaymentService {
 
   @Override
   public void savePayment(Payment payment) {
+    System.out.println(payment.getOrderer_id() + "als;fjsdaklf");
     paymentMapper.insertPayment(payment);
   }
 

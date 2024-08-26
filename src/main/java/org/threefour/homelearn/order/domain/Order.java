@@ -27,4 +27,24 @@ public class Order {
                 .merchantUid(paidOrderRequest.getMerchantUid())
                 .build();
     }
+
+    String getImpUid() {
+        return impUid;
+    }
+
+    Long getOrdererId() {
+        return ordererId;
+    }
+
+    String getMerchantUid() {
+        return merchantUid;
+    }
+
+    Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    Timestamp getModifiedAt() {
+        return modifiedAt;
+    }
 }

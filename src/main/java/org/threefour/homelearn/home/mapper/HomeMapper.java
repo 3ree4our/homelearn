@@ -6,6 +6,6 @@ import org.threefour.homelearn.home.domain.HomeSearchVO;
 
 public interface HomeMapper {
 
-  public List<Course> getCourseBySearch(HomeSearchVO homeSearchVO);
-  public List<String> getCourseNameBySearch(HomeSearchVO homeSearchVO);
+    public List<Course> getCourseBySearch(HomeSearchVO homeSearchVO);
+    public List<String> getCourseNameBySearch(HomeSearchVO homeSearchVO);
 }
