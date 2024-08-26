@@ -55,10 +55,6 @@
             <label>Password</label>
             <input type="password" name="password" placeholder="Password" required>
           </div>
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input">
-            <label class="form-check-label">Remember Password</label>
-          </div>
           <button id="loginBtn" class="btn btn-filled btn-round"><span class="bh"></span>
             <span>Login</span></button>
           <p class="notice">비밀번호를 잊으셨나요? <a id="findPassword" href="#" onclick="showModal()">비밀번호 찾기</a></p>
@@ -102,13 +98,6 @@
 <c:import url="${pageContext.request.contextPath}/resources/common/jsp/footer.jsp"/>
 
 <!-- Footer end -->
-
-<!-- JS -->
-<script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-ui.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/scripts.js"></script>
 
 <script type="module" defer
         src="${pageContext.request.contextPath}/resources/js/member/login.js"></script>

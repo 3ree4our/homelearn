@@ -4,4 +4,6 @@ import org.threefour.homelearn.order.domain.Order;
 
 public interface OrderMapper {
     void save(Order order);
+
+    Order findByImpUid(String impUid);
 }

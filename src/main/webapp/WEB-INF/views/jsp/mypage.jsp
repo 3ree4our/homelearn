@@ -63,10 +63,10 @@
 
     <%--navbar start--%>
     <div class="row d-flex justify-content-center" id="navbar">
-      <div class="align-content-center">
-        <button type="button" class="btn btn-primary">수강목록 보기</button>
-        <button type="button" class="btn btn-primary">결제내역 보기</button>
-        <button type="button" class="btn btn-primary">장바구니 보기(아직 구현 x)</button>
+      <div class="align-content-center" id="mypageNav">
+        <a href="#">수강목록 보기</a>
+        <a href="#">결제내역 보기</a>
+        <a href="#">장바구니 보기</a>
       </div>
     </div>
     <%--navbar end--%>
@@ -117,11 +117,11 @@
 <!-- Footer strat -->
 <c:import url="${pageContext.request.contextPath}/resources/common/jsp/footer.jsp"/>
 
-  <div class="foo-btm">
-    <div class="container">
-      <p class="copyright">Copyright © 2019 <a href="#">themeies.com</a>. All rights reserved.</p>
-    </div>
+<div class="foo-btm">
+  <div class="container">
+    <p class="copyright">Copyright © 2019 <a href="#">themeies.com</a>. All rights reserved.</p>
   </div>
+</div>
 
 </footer>
 <!-- Footer end -->
@@ -131,7 +131,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-ui.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxYLtelXg0PGjeTiFDtlN7nrH_47buDWo"></script>
 <script src="${pageContext.request.contextPath}/resources/js/scripts.js"></script>
 </body>
 </html>

@@ -1,9 +1,11 @@
 package org.threefour.homelearn.payment.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
+import java.sql.Timestamp;
+import java.util.Date;
+
+import java.sql.Timestamp;
 
 
 @Getter
@@ -12,12 +14,13 @@ import lombok.ToString;
 @ToString
 public class Payment {
 
+  private long id;
+  private long orderer_id;
   private String imp_uid;
-  private String merchant_uid;
-  private String member_id;
-  private String order_id;
+  private String merchant_uid; //
   private int paid_amount;
   private int refunded_amount;
-  //private Date created_at;
-  //private  String status;
+  private int remained_amount;
+  private Timestamp created_at;
+  private String errorMessage;
 }

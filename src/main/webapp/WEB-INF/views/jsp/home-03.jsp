@@ -289,42 +289,42 @@
           <ul>
             <li>
               <a href="#">
-                <img src="images/lectures/1.jpg" alt="">
+                <img src="images/chapters/1.jpg" alt="">
                 <h5>David Kymen</h5>
                 <span class="skills">English, Communication, Social</span>
-                <span class="lectures">5 lectures</span>
+                <span class="chapters">5 chapters</span>
               </a>
             </li>
             <li>
               <a href="#">
-                <img src="images/lectures/2.jpg" alt="">
+                <img src="images/chapters/2.jpg" alt="">
                 <h5>Jessi Green</h5>
                 <span class="skills">Communication, Social, Marketing</span>
-                <span class="lectures">5 lectures</span>
+                <span class="chapters">5 chapters</span>
               </a>
             </li>
             <li>
               <a href="#">
-                <img src="images/lectures/3.jpg" alt="">
+                <img src="images/chapters/3.jpg" alt="">
                 <h5>Adam wood</h5>
                 <span class="skills">Spanish, sociology</span>
-                <span class="lectures">5 lectures</span>
+                <span class="chapters">5 chapters</span>
               </a>
             </li>
             <li>
               <a href="#">
-                <img src="images/lectures/4.jpg" alt="">
+                <img src="images/chapters/4.jpg" alt="">
                 <h5>Cristofer Bin</h5>
                 <span class="skills">javascript, networking, english</span>
-                <span class="lectures">5 lectures</span>
+                <span class="chapters">5 chapters</span>
               </a>
             </li>
             <li>
               <a href="#">
-                <img src="images/lectures/1.jpg" alt="">
+                <img src="images/chapters/1.jpg" alt="">
                 <h5>Lia Hook</h5>
                 <span class="skills">Physics, Biology, Social</span>
-                <span class="lectures">5 lectures</span>
+                <span class="chapters">5 chapters</span>
               </a>
             </li>
           </ul>
@@ -570,7 +570,6 @@
 <script src="js/jquery-ui.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxYLtelXg0PGjeTiFDtlN7nrH_47buDWo"></script>
 <script src="js/scripts.js"></script>
 </body>
 </html>

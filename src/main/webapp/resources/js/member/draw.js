@@ -1,7 +1,7 @@
 import {SERVER_API} from "../common/request.js";
 import {getCoursesByMemberId} from "../member/member-api-request.js"
 
-export const drawLectureList = (pagingData) => {
+export const drawchapterList = (pagingData) => {
   let html = '';
   if (pagingData.totalElements) {
     for (let element of pagingData.elements) {
@@ -73,15 +73,15 @@ export const drawPagination = (pagingData) => {
       if (paginationNum === 'NEXT') {
         const previouseNum = e.target.parentElement.previousElementSibling.firstElementChild.innerText
         const courseData = await getCoursesByMemberId(Number(previouseNum) + 1);
-        drawLectureList(courseData);
+        drawchapterList(courseData);
       } else if (paginationNum === 'PREVIOUS') {
         const previouseNum = e.target.parentElement.nextElementSibling.firstElementChild.innerText
         const courseData = await getCoursesByMemberId(Number(previouseNum) - 1);
-        drawLectureList(courseData);
+        drawchapterList(courseData);
       } else {
         const courseData = await getCoursesByMemberId(paginationNum);
         console.log(courseData)
-        drawLectureList(courseData);
+        drawchapterList(courseData);
       }
     })
   })

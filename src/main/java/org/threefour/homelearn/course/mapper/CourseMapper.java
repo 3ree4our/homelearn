@@ -10,7 +10,7 @@ import org.threefour.homelearn.course.domain.Pager;
 public interface CourseMapper {
 
 	public long courseWrite(CourseVO courseVo);
-	
+
 	public List<Course> list(Pager pager);
 	public int total();
 	public List<Course> searchList(String name);

@@ -12,7 +12,6 @@
     <!-- Enables the Spring MVC @Controller programming model -->
     <annotation-driven/>
 
-    <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
     <resources mapping="/resources/**" location="/resources/"/>
     <resources mapping="/resources/js/**" location="/resources/js/"/>
     <resources mapping="/resources/css/**" location="/resources/css/"/>
@@ -27,12 +26,14 @@
 
     <context:component-scan base-package="org.threefour.homelearn.course.controller"/>
     <context:component-scan base-package="org.threefour.homelearn.chapter.controller"/>
-    <context:component-scan base-package="org.threefour.homelearn.cart.controller"/>
-    <context:component-scan base-package="org.threefour.homelearn.member.controller"/>
+
     <context:component-scan base-package="org.threefour.homelearn.home.controller"/>
     <context:component-scan base-package="org.threefour.homelearn.member.controller"/>
     <context:component-scan base-package="org.threefour.homelearn.file"/>
+
+    <context:component-scan base-package="org.threefour.homelearn.cart.controller"/>
     <context:component-scan base-package="org.threefour.homelearn.payment.controller"/>
+
     <context:component-scan base-package="org.threefour.homelearn.admin.controller"/>
     <context:component-scan base-package="org.threefour.homelearn.order.controller"/>
 
