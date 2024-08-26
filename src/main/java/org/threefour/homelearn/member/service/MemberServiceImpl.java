@@ -5,24 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.threefour.homelearn.file.FileUtil;
 import org.threefour.homelearn.file.dto.AttachFile;
 import org.threefour.homelearn.file.mapper.FileMapper;
-import org.threefour.homelearn.member.dto.MemberRequestDTO;
-import org.threefour.homelearn.member.dto.MemberResponseDTO;
-import org.threefour.homelearn.member.dto.MemberRole;
-import org.threefour.homelearn.member.dto.Role;
+import org.threefour.homelearn.member.dto.*;
 import org.threefour.homelearn.member.mapper.MemberMapper;
 import org.threefour.homelearn.member.mapper.MemberRoleMapper;
 import org.threefour.homelearn.member.mapper.RoleMapper;
 
-import javax.servlet.http.Part;
 import java.io.File;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -77,13 +71,13 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  public void updateMemberByMemberid(MemberRequestDTO dto, MultipartFile multipartFile) {
+  public int updateMemberByMemberid(MemberRequestDTO dto, MultipartFile multipartFile) {
 
     String password = dto.getPassword();
     if (password != null)
       dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-    memberMapper.updateMemberByMemberid(dto);
+    int result = memberMapper.updateMemberByMemberId(dto);
 
     List<AttachFile> attachFiles = fileMapper.getProfileImageByMemberId(dto.getId());
 
@@ -92,7 +86,7 @@ public class MemberServiceImpl implements MemberService {
       List<AttachFile> updateAttachFile = fileUtil.fileSave(multipartFile, dto.getId());
       if (updateAttachFile != null)
         fileMapper.insertFile(updateAttachFile);
-      return;
+      return 0;
     }
 
     // 수정
@@ -107,19 +101,42 @@ public class MemberServiceImpl implements MemberService {
         }
       }
     }
+    return result;
   }
 
   @Override
-  public Map<String, String> validateHandling(Errors errors) {
-    Map<String, String> validatorResult = new HashMap<>();
-
-    for (FieldError error : errors.getFieldErrors()) {
-      String validKeyName = String.format("valid_%s", error.getField());
-      validatorResult.put(validKeyName, error.getDefaultMessage());
-    }
-
-    return validatorResult;
+  public int deleteMemberByMemberId(Long memberId) {
+    return memberMapper.deleteMemberByMemberId(memberId);
   }
 
+  @Override
+  public List<EnrolledCourceListDTO> findCoursesWithPagin(Long memberId, int cp) {
+    // * 1 여기 수정 필수
+    int startNum = (cp - 1) * 1;
+    List<EnrolledCourceListDTO> list = memberMapper.selectCoursesWithPaging(memberId, startNum);
+
+    return list;
+  }
+
+
+  @Override
+  public List<PaymentsResponseListDTO> findPamentsWithPaging(Long memberId, int cp) {
+    int startNum = (cp - 1) * 1;
+    List<PaymentsResponseListDTO> list = memberMapper.selectPaymentsWithPaging(memberId, startNum);
+    return list;
+  }
+
+
+  @Override
+  public int coursesCountByMemberId(Long memberId) {
+    int count = memberMapper.coursesCountByMemberId(memberId);
+    return count;
+  }
+
+  @Override
+  public int paymentsCountByMemberId(Long memberId) {
+    int count = memberMapper.paymentsCountByMemberId(memberId);
+    return count;
+  }
 
 }

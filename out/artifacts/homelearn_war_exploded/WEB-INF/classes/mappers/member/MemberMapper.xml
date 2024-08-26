@@ -1,0 +1,42 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.threefour.homelearn.member.mapper.MemberMapper">
+
+    <sql id="memberColumns">
+        id, email, password, nickname
+    </sql>
+
+    <insert id="insertMember" parameterType="MemberRequestDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into member (<include refid="memberColumns"/>)
+        values (#{id}, #{email}, #{password}, #{nickname})
+    </insert>
+
+    <select id="findByUsername" resultType="MemberResponseDTO">
+        select<include refid="memberColumns"/>, created_at, modified_at
+        from member
+        where email = #{username}
+        and delete_yn =0;
+    </select>
+
+    <update id="updateMemberByMemberId" parameterType="MemberRequestDTO">
+        <choose>
+            <when test="password != null">
+                update member set password = #{password}, nickname = #{nickname}, modified_at = current_timestamp where
+                id = #{id}
+            </when>
+            <otherwise>
+                update member set nickname = #{nickname}, modified_at = current_timestamp where id = #{id}
+            </otherwise>
+        </choose>
+    </update>
+
+    <select id="selectCoursesWithPaging" resultType="CourseVO">
+        select * from enrolled_course c join member m on c.student_id = m.id
+        where c.IS_REFUNDED = 0
+        and student_id = #{memberId} limit #{startNum}, 4;
+
+    </select>
+
+</mapper>

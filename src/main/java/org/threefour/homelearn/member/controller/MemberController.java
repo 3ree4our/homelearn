@@ -2,26 +2,25 @@ package org.threefour.homelearn.member.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.threefour.homelearn.member.dto.MemberRequestDTO;
 import org.threefour.homelearn.member.service.MemberService;
+import org.threefour.homelearn.paging.Paging;
+import org.threefour.homelearn.paging.PagingRequestDTO;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/members")
@@ -31,6 +30,13 @@ public class MemberController {
 
   private final MemberService memberService;
 
+  /*@GetMapping("/signup")
+  public String moveToSignup(String code, @ModelAttribute("email") String email) {
+    if (code.isEmpty() || email.isEmpty()) {
+      return "redirect:/members/signup";
+    }
+    return "jsp/signup";
+  }*/
   @GetMapping("/signup")
   public String moveToSignup() {
     return "jsp/signup";
@@ -59,19 +65,26 @@ public class MemberController {
     return "jsp/login";
   }
 
-  @GetMapping("/mypage/{memberid}")
-  public String moveToMypage() {
+  @GetMapping("/mypage/{nickname}")
+  public String moveToMypage(@PathVariable String nickname) {
     return "jsp/mypage";
   }
 
   @PostMapping("/mypage/{memberid}")
   public String updateMember(@PathVariable("memberid") Long memberId, MemberRequestDTO dto, @RequestPart("profileImage") MultipartFile multipartFile) throws ServletException, IOException {
-    String password = dto.getPassword() == null ? "" : dto.getPassword();
+    String password = dto.getPassword().equals("undefined") ? null : dto.getPassword();
     dto.setId(memberId);
     dto.setPassword(password);
 
     memberService.updateMemberByMemberid(dto, multipartFile);
     return "redirect:/members/mypage/" + memberId;
+  }
+
+  @DeleteMapping("/members/{memberid}")
+  public String deleteMember(@PathVariable("memberid") Long memberId) {
+    int result = memberService.deleteMemberByMemberId(memberId);
+    if (result > 0) return "redirect:/";
+    else return "redirect:/members/mypage/" + memberId;
   }
 
   @GetMapping("/cookies")

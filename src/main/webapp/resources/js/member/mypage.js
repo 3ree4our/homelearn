@@ -1,14 +1,17 @@
 import {SERVER_API, getBasicData} from "../common/request.js";
+import {getCoursesByMemberId, getPaymentsByMemberId} from "../member/member-api-request.js"
+import {drawLectureList} from "./draw.js";
 
-//await getBasicData();
+await getBasicData();
 
 const data = JSON.parse(localStorage.getItem('member'));
 const h2Ele = document.querySelector('.page-feature h2');
 const spanNicknameEle = document.querySelector('.tagline');
 const logoutBtnEle = document.querySelector('#logoutBtn');
 const inputFileEle = document.querySelector('input[type="file"]');
-const lectureRegisterListBtnEle = document.querySelector('#navbar button:first-child');
-const paymentListBtnELe = document.querySelector('#navbar button:last-child');
+const courseRegisterListBtnEle = document.querySelector('#navbar button:first-child');
+const paymentListBtnELe = document.querySelector('#navbar button:nth-child(2)');
+const paymentHistoryListBtnELe = document.querySelector('#navbar button:last-child');
 
 if (data) {
   const emailInputEle = document.querySelector('#email');
@@ -39,30 +42,49 @@ if (data) {
           const blob = await result.blob();
           const url = URL.createObjectURL(blob);
           imgEle.setAttribute('src', url);
-          lectureRegisterListBtnEle.click();
         })
   }
+} else {
+  location.href = `${SERVER_API}/members/login`
 }
 
-lectureRegisterListBtnEle.addEventListener('click', async () => {
-  const response = await fetch(`${SERVER_API}/resources/common/jsp/nav/lecture-register-list.jsp`)
-  const result = await response.text();
+courseRegisterListBtnEle.addEventListener('click', async () => {
+  const listData = await fetch(`${SERVER_API}/resources/common/jsp/nav/course-register-list.jsp`)
+  const listResult = await listData.text();
+  const pagingData = await getCoursesByMemberId(1);
   const navbarList = document.querySelector('#navbarList');
+  let html = '';
 
   if (navbarList.hasChildNodes()) navbarList.replaceChildren();
+  navbarList.innerHTML = listResult;
 
-  navbarList.innerHTML = result;
-
+  drawLectureList(pagingData);
 })
+courseRegisterListBtnEle.click();
+
 
 paymentListBtnELe.addEventListener('click', async () => {
   const response = await fetch(`${SERVER_API}/resources/common/jsp/nav/payment-list.jsp`)
   const result = await response.text();
+  const pagingData = await getPaymentsByMemberId(1);
   const navbarList = document.querySelector('#navbarList');
 
   if (navbarList.hasChildNodes()) navbarList.replaceChildren();
 
   navbarList.innerHTML = result;
+
+  //drawLectureList(pagingData);
+})
+
+paymentHistoryListBtnELe.addEventListener('click', async () => {
+  const response = await fetch(`${SERVER_API}/resources/common/jsp/nav/order-list.jsp`)
+  const result = await response.text();
+  const navbarList = document.querySelector('#navbarList');
+
+  if (navbarList.hasChildNodes()) navbarList.replaceChildren();
+
+  navbarList.innerHTML = result;
+
 })
 
 logoutBtnEle.addEventListener('click', () => {
