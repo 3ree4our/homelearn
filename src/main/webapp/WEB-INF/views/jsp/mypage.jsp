@@ -66,7 +66,7 @@
       <div class="align-content-center">
         <button type="button" class="btn btn-primary">수강목록 보기</button>
         <button type="button" class="btn btn-primary">결제내역 보기</button>
-        <button type="button" class="btn btn-primary">환불내역 보기</button>
+        <button type="button" class="btn btn-primary">장바구니 보기(아직 구현 x)</button>
       </div>
     </div>
     <%--navbar end--%>

@@ -1,9 +1,9 @@
 const accessToken = localStorage.getItem("access_token")
 const basicData = localStorage.getItem("member")
 export const SERVER_API = 'http://localhost:8080'
+
 export const getBasicData = async () => {
-  
-  if (accessToken !== null && basicData === null) {
+  if (accessToken !== null) {
     const result = await fetch(`${SERVER_API}/get-info`, {
       method     : "GET",
       credentials: "include",
@@ -29,6 +29,7 @@ export const getBasicData = async () => {
         localStorage.setItem('access_token', result);
       }
     }
+
   }
 
 }

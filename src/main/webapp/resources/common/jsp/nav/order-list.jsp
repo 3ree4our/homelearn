@@ -2,20 +2,23 @@
 <%@ page session="false" pageEncoding="UTF-8" %>
 
 <div class="container">
-  <h3>결제 목록</h3>
+  <h3>환불 목록</h3>
   <div class="row">
     <div class="col-12 mb-4">
       <div class="card">
+        <div class="card-header">
+          Featured
+        </div>
         <div class="card-body">
-          <span>수강명</span>
-          <span>결제 금액</span>
-          <span>결제 일자</span>
-          <span>환불 상태</span>
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 
 <nav aria-label="Page navigation example">
   <ul class="pagination d-flex justify-content-center">

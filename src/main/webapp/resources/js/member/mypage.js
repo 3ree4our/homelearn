@@ -1,5 +1,8 @@
-import {SERVER_API} from "../common/request.js";
-import {getCoursesByMemberId} from "../member/member-api-request.js"
+import {SERVER_API, getBasicData} from "../common/request.js";
+import {getCoursesByMemberId, getPaymentsByMemberId} from "../member/member-api-request.js"
+import {drawLectureList} from "./draw.js";
+
+await getBasicData();
 
 const data = JSON.parse(localStorage.getItem('member'));
 const h2Ele = document.querySelector('.page-feature h2');
@@ -11,6 +14,7 @@ const paymentListBtnELe = document.querySelector('#navbar button:nth-child(2)');
 const paymentHistoryListBtnELe = document.querySelector('#navbar button:last-child');
 
 if (data) {
+  console.log("data", data)
   const emailInputEle = document.querySelector('#email');
   const createdAtInputEle = document.querySelector('#createdAt');
   const nicknameInputEle = document.querySelector('#nickname');
@@ -41,6 +45,8 @@ if (data) {
           imgEle.setAttribute('src', url);
         })
   }
+} else {
+  location.href = `${SERVER_API}/members/login`
 }
 
 courseRegisterListBtnEle.addEventListener('click', async () => {
@@ -53,22 +59,7 @@ courseRegisterListBtnEle.addEventListener('click', async () => {
   if (navbarList.hasChildNodes()) navbarList.replaceChildren();
   navbarList.innerHTML = listResult;
 
-  console.log("뀽뀽 카리나", pagingData)
-
-  if (pagingData) {
-    for (let element of pagingData.elements) {
-      html += ` <div class="col-xs-12 col-lg-6 col-xl-4">`;
-      html += ` <div class="card" style="width: 100%;">`;
-      html += `  <img src="$/resources/images/member/금발카리나.jpg" class="card-img-top" alt="...">`
-      html += `<div class="card-body">`;
-      html += `<h5 class="card-title">카리나와 연애하는법 같은게 있을까??</h5>`;
-      html += `<p>평점 </p>`;
-      html += `<a href="#" class="btn btn-primary">해당 강의 uri</a>`;
-      html += `</div></div></div>`;
-    }
-    document.querySelector('#course-list').innerHTML = html;
-  }
-
+  drawLectureList(pagingData);
 })
 courseRegisterListBtnEle.click();
 
@@ -76,16 +67,18 @@ courseRegisterListBtnEle.click();
 paymentListBtnELe.addEventListener('click', async () => {
   const response = await fetch(`${SERVER_API}/resources/common/jsp/nav/payment-list.jsp`)
   const result = await response.text();
+  const pagingData = await getPaymentsByMemberId(1);
   const navbarList = document.querySelector('#navbarList');
 
   if (navbarList.hasChildNodes()) navbarList.replaceChildren();
 
   navbarList.innerHTML = result;
 
+  //drawLectureList(pagingData);
 })
 
 paymentHistoryListBtnELe.addEventListener('click', async () => {
-  const response = await fetch(`${SERVER_API}/resources/common/jsp/nav/payment-history-list.jsp`)
+  const response = await fetch(`${SERVER_API}/resources/common/jsp/nav/order-list.jsp`)
   const result = await response.text();
   const navbarList = document.querySelector('#navbarList');
 

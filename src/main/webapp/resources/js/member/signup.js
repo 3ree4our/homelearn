@@ -2,8 +2,6 @@ const inputFileEle = document.querySelector('input[type="file"]');
 const formEle = document.querySelector('form');
 
 const emailEle = document.querySelector('input[name="email"]');
-const emailSuccessMessageEle = document.querySelector('.email-success-message');
-const emailFailureMessageEle = document.querySelector('.email-failure-message');
 
 const passwordEle = document.querySelector('#password');
 const passwordEle2 = document.querySelector('#password2');
@@ -13,9 +11,14 @@ const passwordMismatchMessageEle = document.querySelector('.password-mismatch-me
 // 유효성 검증 함수
 const provePassword = str => /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(str);
 const isMatch = (password1, password2) => password1 === password2;
-
 let provePasswordState1 = false;
 let provePasswordState2 = false;
+
+
+emailEle.addEventListener('keydown', (e) => {
+  e.preventDefault();
+});
+
 passwordEle.addEventListener('keyup', () => {
   if (passwordEle.value.length !== 0) {
 
@@ -56,10 +59,10 @@ passwordEle2.addEventListener('keyup', () => {
 
 formEle.addEventListener('submit', (e) => {
   e.preventDefault();
-/*  if (!provePasswordState1 || !provePasswordState2) {
-    alert('값 ㄴㄴ');
+  if (!provePasswordState1 || !provePasswordState2) {
+    alert('비밀번호가 일치하지 않습니다.');
     return;
-  }*/
+  }
 
   formEle.submit();
 })

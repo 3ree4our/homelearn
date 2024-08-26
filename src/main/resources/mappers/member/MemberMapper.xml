@@ -32,13 +32,36 @@
         </choose>
     </update>
 
-    <select id="selectCoursesWithPaging" resultType="CourseVO">
-        select * from enrolled_course c join member m on c.student_id = m.id
-        where c.IS_REFUNDED = 0
-        and student_id = #{memberId} limit #{startNum}, 4;
+
+    <select id="selectCoursesWithPaging" resultType="org.threefour.homelearn.member.dto.EnrolledCourceListDTO">
+        select c.id course_id, c.name course_name, c.ffname course_ffname, c.fname course_fname, c.ofname course_ofname,
+        ec.is_started enroll_is_started, m.id member_id
+        from course c join enrolled_course ec on c.id = ec.course_id
+        join member m on m.id = ec.student_id
+        where ec.is_refunded = 0 and m.id = #{memberId}
+        order by ec.created_at desc
+        limit #{startNum}, 1;
     </select>
 
-    <select id="countByMemberId" resultType="int">
-        select count(*) from enrolled_course where student_id = #{memberId} and is_refunded = 0;
+    <select id="selectPaymentsWithPaging" resultType="org.threefour.homelearn.member.dto.PaymentsResponseListDTO">
+        select s.name course_name, ph.payed_amount, ph.REFUNDED_AMOUNT, ph.CREATED_AT from `order` o left join
+        payment_history ph on o.id = ph.order_id
+        join member m on m.id = o.student_id
+        join enrolled_course ec on ec.ORDER_ID = o.id
+        join course s on s.id = ec.course_id
+        where m.id = #{memberId}
+        limit #{startNum}, 1
     </select>
+
+    <select id="coursesCountByMemberId" resultType="int">
+        select count(*) from enrolled_course where student_id = #{memberId} and is_refunded = 0
+    </select>
+
+    <select id="paymentsCountByMemberId" resultType="int">
+        select count(*) from payment_history where member_id = #{memberId}
+    </select>
+
+    <update id="deleteMemberByMemberId">
+        update member set delete_yn = 1 where id = #{memberId}
+    </update>
 </mapper>

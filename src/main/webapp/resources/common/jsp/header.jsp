@@ -55,5 +55,5 @@
     </nav>
   </div>
 </header>
-<script defer type="module" src="${pageContext.request.contextPath}/resources/js/common/header.js"></script>
+<script type="module" src="${pageContext.request.contextPath}/resources/js/common/header.js"></script>
 <!-- Header end -->

@@ -31,12 +31,8 @@ button[type='submit'] {
 }
 
 /*lecture-register-list start*/
-.card {
-    padding: 15px !important;
-}
-
-.card-body {
-    padding: 20px 0;
+#course-list div {
+    padding: 10px !important;
 }
 
 .card-title {
@@ -52,3 +48,7 @@ button[type='submit'] {
 }
 
 /*lecture-register-list end*/
+
+/*payment-list start*/
+
+/*payment-list end*/

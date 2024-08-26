@@ -5,10 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.threefour.homelearn.member.dto.MemberRequestDTO;
 import org.threefour.homelearn.member.service.MemberService;
 import org.threefour.homelearn.paging.Paging;
@@ -28,6 +30,13 @@ public class MemberController {
 
   private final MemberService memberService;
 
+  /*@GetMapping("/signup")
+  public String moveToSignup(String code, @ModelAttribute("email") String email) {
+    if (code.isEmpty() || email.isEmpty()) {
+      return "redirect:/members/signup";
+    }
+    return "jsp/signup";
+  }*/
   @GetMapping("/signup")
   public String moveToSignup() {
     return "jsp/signup";
@@ -56,14 +65,14 @@ public class MemberController {
     return "jsp/login";
   }
 
-  @GetMapping("/mypage/{memberid}")
-  public String moveToMypage() {
+  @GetMapping("/mypage/{nickname}")
+  public String moveToMypage(@PathVariable String nickname) {
     return "jsp/mypage";
   }
 
   @PostMapping("/mypage/{memberid}")
   public String updateMember(@PathVariable("memberid") Long memberId, MemberRequestDTO dto, @RequestPart("profileImage") MultipartFile multipartFile) throws ServletException, IOException {
-    String password = dto.getPassword() == null ? "" : dto.getPassword();
+    String password = dto.getPassword().equals("undefined") ? null : dto.getPassword();
     dto.setId(memberId);
     dto.setPassword(password);
 
@@ -71,6 +80,12 @@ public class MemberController {
     return "redirect:/members/mypage/" + memberId;
   }
 
+  @DeleteMapping("/members/{memberid}")
+  public String deleteMember(@PathVariable("memberid") Long memberId) {
+    int result = memberService.deleteMemberByMemberId(memberId);
+    if (result > 0) return "redirect:/";
+    else return "redirect:/members/mypage/" + memberId;
+  }
 
   @GetMapping("/cookies")
   public void cookies(HttpServletRequest request, HttpServletResponse response) throws IOException {
