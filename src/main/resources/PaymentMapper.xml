@@ -6,12 +6,22 @@
 <mapper namespace="org.threefour.homelearn.payment.mapper.PaymentMapper">
 
     <insert id="insertPayment" parameterType="Payment">
-        INSERT INTO payments (imp_uid, merchant_uid, paid_amount, refunded_amount)
-        VALUES (#{imp_uid}, #{merchant_uid}, #{paid_amount}, #{refunded_amount})
+        INSERT INTO PAYMENT_HISTORY (orderer_id, imp_uid, paid_amount, refunded_amount, remained_amount, created_at)
+        VALUES (#{orderer_id}, #{imp_uid}, #{paid_amount}, #{refunded_amount}, #{remained_amount}, now())
     </insert>
 
     <select id="selectPaymentByImpUid" parameterType="String" resultType="Payment">
-        SELECT * FROM payments WHERE imp_uid = #{imp_uid}
+        SELECT * FROM PAYMENT_HISTORY WHERE imp_uid = #{imp_uid}
     </select>
+    <select id="selectPaymentByOrderer_id" parameterType="long" resultType="org.threefour.homelearn.payment.domain.Payment">
+        SELECT * FROM PAYMENT_HISTORY WHERE orderer_id =#{orderer_id}
+    </select>
+
+
+    <!--    <select id="selectPaymentByOrdererId" parameterType="String" resultType="Payment">-->
+<!--        SELECT * FROM payments WHERE orderer_id = #{orderer_id}-->
+<!--    </select>-->
+
+
 
 </mapper>

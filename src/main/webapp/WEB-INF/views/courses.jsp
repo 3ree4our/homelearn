@@ -2,9 +2,34 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="org.threefour.homelearn.course.domain.Pager" %>
-<%@ include file="header.jsp" %>
-    <!-- Header strat -->
 
+
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon icons -->
+    <link href="resources/images/favicon.png" rel="shortcut icon">
+
+    <!-- All CSS -->
+    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/css/themify-icons.css">
+    <link rel="stylesheet" href="resources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="resources/css/style.css">
+
+    <title>Elearning - Tutor, Education HTML Template</title>
+  </head>
+  <body class="courses-page">
+
+    <!-- Preloader -->
+    <div id="preloader">
+      <div id="status"></div>
+    </div>
+
+    <!-- Header strat -->
+<%@ include file="header.jsp" %>
     <!-- Page feature start -->
     <section class="page-feature">
       <div class="container text-center">

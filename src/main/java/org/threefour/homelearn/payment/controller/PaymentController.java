@@ -38,16 +38,24 @@ public class PaymentController {
             //}
 
             // 결제 검증
+            Payment payment = paymentService.verifyPayment(paymentRequest);
+            return ResponseEntity.ok(payment);
 
-            //System.out.println("yahoo!"); 여기까진 옴
-
-
-            return ResponseEntity.ok(paymentService.verifyPayment(paymentRequest));
+            //return ResponseEntity.ok(paymentService.verifyPayment(paymentRequest));
         } catch (Exception e) {
-            log.info("Payment verification failed: " + e.getMessage());
-            return null;
-            //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment verification failed: " + e.getMessage());
+            log.error("Payment verification failed: " + e.getMessage(), e);
+            //return null;
+
+            Payment errorPayment = new Payment();
+            errorPayment.setErrorMessage("Payment verification failed: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorPayment);
         }
+    }
+
+    @PostMapping("/save")
+    public void savePayment(@RequestBody Payment payment) {
+        paymentService.savePayment(payment);
+        System.out.println("저장 완");
     }
 
     @PostMapping("/cancel")
@@ -60,6 +68,7 @@ public class PaymentController {
             //}
             //System.out.println(paymentRequest);
             // 결제 취소
+
             paymentService.cancelPayment(paymentRequest);
 
 

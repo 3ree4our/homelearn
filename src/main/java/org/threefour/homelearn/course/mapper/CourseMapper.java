@@ -19,4 +19,5 @@ public interface CourseMapper {
 	public Course courseDetail(long id);
 	public long courseLastId();
 	public String getSubjectName(long subject_id);
+	public List<Course> getList();
 }

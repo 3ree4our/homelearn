@@ -3,6 +3,7 @@ package org.threefour.homelearn.course.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,6 +142,11 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	public String getSubjectName(long subject_id) {
 		return courseMapper.getSubjectName(subject_id);
+	}
+
+	@Override
+	public List<Course> getList() {
+		return courseMapper.getList();
 	}
 
 

@@ -1,5 +1,7 @@
 package org.threefour.homelearn.cart.domain;
 
+import org.threefour.homelearn.course.service.CourseService;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,15 +14,14 @@ public class GetCartResponse {
         this.getCartCourseResponses = getCartCourseResponses;
     }
 
-    public static GetCartResponse from(Long studentId, Cart cart) {
+    public static GetCartResponse from(Long studentId, Cart cart, CourseService courseService) {
         if (cart == null) {
             return new GetCartResponse(studentId, new ArrayList<>());
         }
 
         List<GetCartCourseResponse> getCartResponse = new ArrayList<>();
         for (CartCourse cartCourse : cart.getCartCourses()) {
-            // TODO: 과목 연결
-            String subjectName = "수학";
+            String subjectName = courseService.getSubjectName(cartCourse.getCourse().getSubjectId());
             getCartResponse.add(GetCartCourseResponse.from(cartCourse, subjectName));
         }
 

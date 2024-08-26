@@ -17,6 +17,9 @@
         <typeAlias alias="Course" type="org.threefour.homelearn.course.domain.Course"/>
         <typeAlias alias="Pager" type="org.threefour.homelearn.course.domain.Pager"/>
         <typeAlias alias="Chapter" type="org.threefour.homelearn.chapter.domain.Chapter"/>
+        <typeAlias alias="Cart" type="org.threefour.homelearn.cart.domain.Cart"/>
+        <typeAlias alias="CartCourse" type="org.threefour.homelearn.cart.domain.CartCourse"/>
+        <typeAlias alias="Order" type="org.threefour.homelearn.order.domain.Order"/>
 
         <typeAlias type="org.threefour.homelearn.member.dto.MemberRequestDTO" alias="MemberRequestDTO"/>
         <typeAlias type="org.threefour.homelearn.member.dto.MemberResponseDTO" alias="MemberResponseDTO"/>
@@ -25,6 +28,7 @@
         <typeAlias type="org.threefour.homelearn.member.dto.RefreshToken" alias="RefreshToken"/>
         <typeAlias type="org.threefour.homelearn.file.dto.AttachFile" alias="AttachFile"/>
         <typeAlias type="org.threefour.homelearn.file.dto.FileRequestDTO" alias="FileRequestDTO"/>
+        <typeAlias type="org.threefour.homelearn.home.domain.HomeSearchVO" alias="HomeSearchVO"/>
 
         <typeAlias alias="MemberAdmin" type="org.threefour.homelearn.admin.domain.MemberAdmin"/>
         <typeAlias alias="CoursesAdmin" type="org.threefour.homelearn.admin.domain.CoursesAdmin"/>
@@ -32,6 +36,7 @@
         <typeAlias alias="RateSubjectAdmin" type="org.threefour.homelearn.admin.domain.RateSubjectAdmin"/>
         <typeAlias alias="RankingSubjectAdmin" type="org.threefour.homelearn.admin.domain.RankingSubjectAdmin"/>
         <typeAlias alias="CourseMemberAdmin" type="org.threefour.homelearn.admin.domain.CourseMemberAdmin"/>
+        <typeAlias alias="Payment" type="org.threefour.homelearn.payment.domain.Payment"/>
     </typeAliases>
 
     <mappers>
@@ -44,5 +49,8 @@
         <mapper resource="mappers/file/FileMapper.xml"/>
         <mapper resource="AdminMapper.xml"/>
         <mapper resource="CartMapper.xml"/>
+        <mapper resource="HomeMapper.xml"/>
+        <mapper resource="PaymentMapper.xml"/>
+        <mapper resource="OrderMapper.xml"/>
     </mappers>
 </configuration>
