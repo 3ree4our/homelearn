@@ -95,43 +95,7 @@
 <!-- Feature Box section end -->
 
 <!-- Categories sectiion start -->
-<section class="categories bg-light">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-7 col-md-9 m-auto text-center">
-                <div class="sec-heading">
 
-                    <h3 class="sec-title">카테고리</h3>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 col-sm-6">
-                <a href="#" class="icon-list-block">
-                    <img src="${pageContext.request.contextPath}/resources/images/icons/categories/1.png"
-                         alt=""/>
-                    <span>국어</span>
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="#" class="icon-list-block">
-                    <img src="${pageContext.request.contextPath}/resources/images/icons/categories/2.png"
-                         alt=""/>
-                    <span>영어</span>
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="#" class="icon-list-block">
-                    <img src="${pageContext.request.contextPath}/resources/images/icons/categories/3.png"
-                         alt=""/>
-                    <span style="align: center">수학</span>
-                </a>
-            </div>
-
-
-        </div>
-    </div>
-</section>
 <!-- Categories sectiion end -->
 
 <!-- Trial section start -->
@@ -201,71 +165,8 @@
 <!-- Call to action section end -->
 
 <!-- Footer strat -->
-<footer class="footer" style="background-color: #0c2e60">
-    <div class="foo-top" style="background-color: #0c2e60">
-        <div class="container" style="background-color: #0c2e60">
-            <div class="row">
-                <div class="col-md-3 col-sm-6">
-                    <div class="widget widget-navigation">
-                        <h4 class="widget-title">Information for</h4>
-                        <ul>
-                            <li><a href="#">Prospective undergraduates</a></li>
-                            <li><a href="#">Prospective graduate students</a></li>
-                            <li><a href="#">Businesses/Partnerships</a></li>
-                            <li><a href="#">Visitors/Tourists</a></li>
-                            <li><a href="#">Parliamentarians</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="widget widget-navigation">
-                        <h4 class="widget-title">Quick Links</h4>
-                        <ul>
-                            <li><a href="#">Contact Searches</a></li>
-                            <li><a href="#">Jobs and Vacancies</a></li>
-                            <li><a href="#">University images</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms and Conditions</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="widget widget-navigation">
-                        <h4 class="widget-title">Information About</h4>
-                        <ul>
-                            <li><a href="#">Strategic Plan</a></li>
-                            <li><a href="#">Fees and Funding</a></li>
-                            <li><a href="#">Museums and collections</a></li>
-                            <li><a href="#">Statement on Modern Slavery</a></li>
-                            <li><a href="#">Data privacy / GDPR</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="widget widget-navigation">
-                        <h4 class="widget-title">Security Brand</h4>
-                        <ul>
-                            <li><a href="#">Privacy Statement</a></li>
-                            <li><a href="#">Report Copyright Infringement</a></li>
-                            <li><a href="#">Report Security Issue</a></li>
-                            <li><a href="#">Trademark Notice</a></li>
-                            <li><a href="#">Access Control</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<c:import url="${pageContext.request.contextPath}/resources/common/jsp/footer.jsp"/>
 
-
-    <div class="foo-btm">
-        <div class="container">
-            <p class="copyright">Copyright © 2019 <a href="#">themeies.com</a>. All rights reserved.
-            </p>
-        </div>
-    </div>
-
-</footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- Footer end -->
 <script>

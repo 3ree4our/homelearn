@@ -28,7 +28,9 @@
 </div>
 
 <!-- Header strat -->
-<%@ include file="header.jsp" %>
+<c:import url="${pageContext.request.contextPath}/resources/common/jsp/header.jsp"/>
+
+
 <!-- Header strat -->
 
 <!-- Login / Registration start -->

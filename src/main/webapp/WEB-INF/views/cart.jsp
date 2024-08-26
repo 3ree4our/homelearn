@@ -4,7 +4,8 @@
 <%@ page import="org.threefour.homelearn.cart.domain.GetCartResponse" %>
 <%@ page import="org.threefour.homelearn.course.domain.Course" %>
 <%@ page import="static org.threefour.homelearn.cart.RequestConstant.*" %>
-<%@ include file="header.jsp" %>
+<c:import url="${pageContext.request.contextPath}/resources/common/jsp/header.jsp"/>
+
 <%
     GetCartResponse getCartResponse = (GetCartResponse) request.getAttribute(CART_PARAMETER_NAME);
 %>
@@ -12,92 +13,93 @@
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script src="resources/js/payment.js"></script>
 <script>
-    let totalPrice = 0;
+  let totalPrice = 0;
 
-    function updateTotalPrice() {
-        $("#totalPrice").text(totalPrice.toLocaleString() + " 원");
-    }
+  function updateTotalPrice() {
+    $("#totalPrice").text(totalPrice.toLocaleString() + " 원");
+  }
 
-    function calculateTotalPrice() {
-        totalPrice = 0;
-        $("input[name='selectedCourses']:checked").each(function () {
-            const price = parseFloat($(this).closest('li').find('.post-meta.date').text().replace(/[^0-9.-]+/g, ""));
-            if (!isNaN(price)) {
-                totalPrice += price;
-            }
-        });
-        updateTotalPrice();
-    }
+  function calculateTotalPrice() {
+    totalPrice = 0;
+    $("input[name='selectedCourses']:checked").each(function () {
+      const price = parseFloat(
+          $(this).closest('li').find('.post-meta.date').text().replace(/[^0-9.-]+/g, ""));
+      if (!isNaN(price)) {
+        totalPrice += price;
+      }
+    });
+    updateTotalPrice();
+  }
 
-    $(document).ready(function () {
-        $("#selectAll").on('change', function () {
-            const isChecked = $(this).is(':checked');
-            $("input[name='selectedCourses']").prop('checked', isChecked);
-            calculateTotalPrice();
-        });
-
-        $("input[name='selectedCourses']").on('change', function () {
-            if ($("#selectAll").is(':checked')) {
-                $("#selectAll").prop('checked', false);
-            }
-            calculateTotalPrice();
-        });
-
-        $("#orderButton").on('click', async function () {
-            const selectedCourses = [];
-            const studentId = "<%= getCartResponse.getStudentId() %>";
-
-            $("input[name='selectedCourses']:checked").each(function () {
-                const cartCourseId = $(this).val();
-                const courseId = $(this).closest('li').find('a').data('course-id');
-                const courseName = $(this).closest('li').find('.course-name').text();
-
-                selectedCourses.push({
-                    cartCourseId: cartCourseId,
-                    courseId: courseId,
-                    courseName: courseName
-                });
-            });
-
-            if (selectedCourses.length > 0) {
-                const orderData = {
-                    studentId: studentId,
-                    orderedCourseRequests: selectedCourses,
-                    orderPrice: totalPrice,
-                };
-
-                const result = await requestPay(orderData);
-
-                const paidOrderData = {
-                    impUid: result.imp_uid,
-                    merchantUid: 'asdflkj',
-                    ordererId: studentId,
-                    paidAmount: result.paid_amount,
-                    courseOrderRequests: selectedCourses
-                }
-
-                let paidOrderRequest = JSON.stringify(paidOrderData);
-
-                requestOrder(paidOrderRequest);
-            } else {
-                alert("주문할 상품을 선택하세요.");
-            }
-        })
+  $(document).ready(function () {
+    $("#selectAll").on('change', function () {
+      const isChecked = $(this).is(':checked');
+      $("input[name='selectedCourses']").prop('checked', isChecked);
+      calculateTotalPrice();
     });
 
-    async function requestOrder(paidOrderRequest) {
-        await $.ajax({
-            type: "POST",
-            url: "/submit-order.do",
-            contentType: "application/json",
-            data: paidOrderRequest,
-            success: function (data) {
-            },
-            error: function () {
-                alert('요청에 실패했습니다. 다시 시도해 주세요.');
-            }
+    $("input[name='selectedCourses']").on('change', function () {
+      if ($("#selectAll").is(':checked')) {
+        $("#selectAll").prop('checked', false);
+      }
+      calculateTotalPrice();
+    });
+
+    $("#orderButton").on('click', async function () {
+      const selectedCourses = [];
+      const studentId = "<%= getCartResponse.getStudentId() %>";
+
+      $("input[name='selectedCourses']:checked").each(function () {
+        const cartCourseId = $(this).val();
+        const courseId = $(this).closest('li').find('a').data('course-id');
+        const courseName = $(this).closest('li').find('.course-name').text();
+
+        selectedCourses.push({
+          cartCourseId: cartCourseId,
+          courseId: courseId,
+          courseName: courseName
         });
-    }
+      });
+
+      if (selectedCourses.length > 0) {
+        const orderData = {
+          studentId: studentId,
+          orderedCourseRequests: selectedCourses,
+          orderPrice: totalPrice,
+        };
+
+        const result = await requestPay(orderData);
+
+        const paidOrderData = {
+          impUid: result.imp_uid,
+          merchantUid: 'asdflkj',
+          ordererId: studentId,
+          paidAmount: result.paid_amount,
+          courseOrderRequests: selectedCourses
+        }
+
+        let paidOrderRequest = JSON.stringify(paidOrderData);
+
+        requestOrder(paidOrderRequest);
+      } else {
+        alert("주문할 상품을 선택하세요.");
+      }
+    })
+  });
+
+  async function requestOrder(paidOrderRequest) {
+    await $.ajax({
+      type: "POST",
+      url: "/submit-order.do",
+      contentType: "application/json",
+      data: paidOrderRequest,
+      success: function (data) {
+      },
+      error: function () {
+        alert('요청에 실패했습니다. 다시 시도해 주세요.');
+      }
+    });
+  }
 </script>
 <!-- Page feature start -->
 <section class="page-feature">
@@ -119,7 +121,8 @@
 
             <ul style="margin-top: 20px; list-style-type: none; padding: 0; display: flex; flex-direction: column; align-items: flex-start;">
                 <li style="display: flex; align-items: center; justify-content: flex-start; width: 12%; margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                    <input type="checkbox" id="selectAll" style="margin-right: 10px; display: inline-block;">
+                    <input type="checkbox" id="selectAll"
+                           style="margin-right: 10px; display: inline-block;">
                     <label for="selectAll" style="display: inline-block; margin: 0;">전체 선택</label>
                 </li>
 
@@ -135,18 +138,23 @@
                         Course course = getCartResponse.get(i).getCourse();
                 %>
                 <li style="display: flex; align-items: center; justify-content: space-between; width: 80%; margin-bottom: 30px; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                    <input type="checkbox" name="selectedCourses" value="<%= getCartResponse.get(i).getId() %>"
+                    <input type="checkbox" name="selectedCourses"
+                           value="<%= getCartResponse.get(i).getId() %>"
                            style="margin-right: 20px;">
 
-                    <a href="courseDetail.do?courseId=<%= course.getId() %>" data-course-id="<%= course.getId() %>"
+                    <a href="courseDetail.do?courseId=<%= course.getId() %>"
+                       data-course-id="<%= course.getId() %>"
                        style="flex-grow: 1; display: block; text-decoration: none; color: inherit; text-align: left;">
-                        <img src="resources/images/국어의정석_1724027808769.jpeg" alt="<%= course.getName() %>"
+                        <img src="resources/images/국어의정석_1724027808769.jpeg"
+                             alt="<%= course.getName() %>"
                              style="width: 100px; height: auto; border-radius: 8px; float: left; margin-right: 20px;">
                         <div style="overflow: hidden;">
-                            <h5 class="course-name" style="margin-top: 10px;"><%= course.getName() %>
+                            <h5 class="course-name"
+                                style="margin-top: 10px;"><%= course.getName() %>
                             </h5>
                             <div class="meta-tags" style="font-size: 0.9em; color: gray;">
-                                <span class="post-meta category"><%= getCartResponse.get(i).getSubjectName() %></span> |
+                                <span class="post-meta category"><%= getCartResponse.get(i)
+                                        .getSubjectName() %></span> |
                                 <span class="post-meta date"><%= course.getPrice() %> 원</span> |
                                 <span class="post-meta period"><%= course.getPeriod() %> 일</span>
                             </div>
@@ -155,8 +163,10 @@
 
                     <!-- 삭제 버튼 -->
                     <form action="delete-cart-course.do" method="GET" style="margin-left: 20px;">
-                        <input type="hidden" name="studentId" value="<%= getCartResponse.getStudentId() %>">
-                        <input type="hidden" name="cartCourseId" value="<%= getCartResponse.get(i).getId() %>">
+                        <input type="hidden" name="studentId"
+                               value="<%= getCartResponse.getStudentId() %>">
+                        <input type="hidden" name="cartCourseId"
+                               value="<%= getCartResponse.get(i).getId() %>">
                         <button type="submit" class="btn btn-danger">삭제</button>
                     </form>
                 </li>
@@ -178,6 +188,7 @@
 </section>
 <!-- Total Price and Order Button Section End -->
 
-<%@ include file="footer.jsp" %>
+<c:import url="${pageContext.request.contextPath}/resources/common/jsp/footer.jsp"/>
+
 </body>
 </html>
