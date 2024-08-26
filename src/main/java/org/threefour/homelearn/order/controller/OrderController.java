@@ -11,9 +11,10 @@ import org.threefour.homelearn.order.domain.GetOrderResponse;
 import org.threefour.homelearn.order.domain.PaidOrderRequest;
 import org.threefour.homelearn.order.service.OrderService;
 
+import javax.servlet.http.HttpSession;
+
 import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.threefour.homelearn.cart.RequestConstant.ORDER_PARAMETER_NAME;
-import static org.threefour.homelearn.cart.RequestConstant.ORDER_VIEW_NAME;
+import static org.threefour.homelearn.cart.RequestConstant.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,6 +31,14 @@ public class OrderController {
     @PostMapping("/submit-order.do")
     public ResponseEntity<Void> createOrder(@RequestBody PaidOrderRequest paidOrderRequest) {
         orderService.createOrder(paidOrderRequest);
+
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    @PostMapping("/cancel-order.do")
+    public ResponseEntity<Void> createOrder(@RequestBody PaidOrderRequest paidOrderRequest, HttpSession session) {
+        orderService.createOrder(paidOrderRequest);
+        session.setAttribute(COURSE_ORDER_PARAMETER_NAME, paidOrderRequest.getCourseOrderRequests());
 
         return ResponseEntity.status(NO_CONTENT).build();
     }
