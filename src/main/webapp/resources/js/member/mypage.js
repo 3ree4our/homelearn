@@ -14,7 +14,6 @@ const paymentListBtnELe = document.querySelector('#navbar button:nth-child(2)');
 const paymentHistoryListBtnELe = document.querySelector('#navbar button:last-child');
 
 if (data) {
-  console.log("data", data)
   const emailInputEle = document.querySelector('#email');
   const createdAtInputEle = document.querySelector('#createdAt');
   const nicknameInputEle = document.querySelector('#nickname');
