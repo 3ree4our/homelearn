@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.threefour.homelearn.course.mapper.CourseMapper">
 	<insert id="courseWrite" parameterType="CourseVO" >
 		insert into course(subject_ID,TEACHER_ID,NAME,DESCRIPTION,PRICE,PERIOD,ffname,fname,ofname,CREATED_AT,MODIFIED_AT) values(#{subjectId},1,#{name},#{description},#{price},#{period},#{ffname},#{fname},#{ofname},now(),now())
 	</insert>
 	<select id="courseLastId"  resultType="long">
-		select LAST_INSERT_ID()	
+		select LAST_INSERT_ID()
 	</select>
-	
-	 <select id="list" parameterType="Pager" resultType="Course">
+
+	<select id="list" parameterType="Pager" resultType="Course">
 		select * from COURSE order by ID desc LIMIT #{startPage},#{pageSize}
 	</select>
 	<select id="total" resultType="int">
-		select count(ID) from course 
+		select count(ID) from course
 	</select>
 	<select id="searchList" parameterType="String" resultType="Course">
-        SELECT * FROM COURSE
-        WHERE name LIKE CONCAT('%', #{name}, '%')
-        ORDER BY ID DESC
-	</select> 
+		SELECT * FROM COURSE
+		WHERE name LIKE CONCAT('%', #{name}, '%')
+		ORDER BY ID DESC
+	</select>
 	<select id="subjectList" parameterType="int" resultType="Course">
-         select * from course c join subject s on c.SUBJECT_ID = s.ID where c.SUBJECT_ID = #{subject} order by c.id desc;
-	</select> 
+		select * from course c join subject s on c.SUBJECT_ID = s.ID where c.SUBJECT_ID = #{subject} order by c.id desc;
+	</select>
 	<select id="courseDetail" parameterType="long" resultType="Course">
-         select * from course where id = #{id};
+		select * from course where id = #{id};
 	</select>
 	<select id="getSubjectName" parameterType="long" resultType="String">
 		select name from subject where id = #{subject_id};
@@ -33,7 +33,7 @@
 	<select id="getList"  resultType="Course">
 		select * from course order by id desc limit 3;
 	</select>
-	<!-- 
+	<!--
 	<insert id="insert" parameterType="Board">
 		 insert into BOARD(WRITER, EMAIL, SUBJECT,CONTENT,FNAME,OFNAME,FSIZE,RDATE) values(#{writer}, #{email},#{subject},#{content},#{fname},#{ofname}, #{fsize},CURRENT_TIMESTAMP())
 	</insert>
@@ -55,5 +55,5 @@
         WHERE ${keyword} LIKE CONCAT('%', #{search}, '%')
         ORDER BY ${keyword}, SEQ DESC
 	</select> -->
-	 
+
 </mapper>

@@ -1,6 +1,5 @@
 package org.threefour.homelearn.home.controller;
 
-import com.sun.deploy.panel.ExceptionListDialog.IconRenderer;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
