@@ -12,17 +12,22 @@ public class EnrolledCourse {
     private Long courseId;
     private String impUid;
     private Long studentId;
+    private boolean isRefunded;
+    private boolean isStarted;
     private Timestamp createdAt;
     private Timestamp modifiedAt;
 
     @Builder
     private EnrolledCourse(
-            Long id, Long courseId, String impUid, Long studentId, Timestamp createdAt, Timestamp modifiedAt
+            Long id, Long courseId, String impUid, Long studentId, boolean isRefunded,
+            boolean isStarted, Timestamp createdAt, Timestamp modifiedAt
     ) {
         this.id = id;
         this.courseId = courseId;
         this.impUid = impUid;
         this.studentId = studentId;
+        this.isRefunded = isRefunded;
+        this.isStarted = isStarted;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
@@ -32,6 +37,8 @@ public class EnrolledCourse {
                 .courseId(courseOrderRequest.getCourseId())
                 .impUid(impUid)
                 .studentId(studentId)
+                .isRefunded(false)
+                .isStarted(false)
                 .build();
     }
 }
