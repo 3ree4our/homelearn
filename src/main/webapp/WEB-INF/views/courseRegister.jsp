@@ -72,6 +72,7 @@
           </div>
           <button type="button" class="btn btn-filled btn-round" onclick="check()">개설하기
           </button>
+          <p class="notice">이미 로그인한 아이디가 있습니까? <a href="login.html">로그인 하러가기</a></p>
         </form>
       </div>
     </div>
