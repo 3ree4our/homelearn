@@ -15,10 +15,12 @@
   <link href="images/favicon.png" rel="shortcut icon">
 
   <!-- All CSS -->
-  <link rel="stylesheet" href="resources/css/bootstrap.min.css">
-  <link rel="stylesheet" href="resources/css/themify-icons.css">
-  <link rel="stylesheet" href="resources/css/owl.carousel.min.css">
-  <link rel="stylesheet" href="resources/css/style.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/themify-icons.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
+
+  <script defer type="module" src="${pageContext.request.contextPath}/resources/js/courses/course-details.js"></script>
 
   <title>Elearning - Tutor, Education HTML Template</title>
 </head>
@@ -113,8 +115,12 @@
           <div class="widget buy-course">
             <p class="price"><strong>$<%=course.getPrice()%>
             </strong></p>
-
-            <a href="#" class="btn btn-outline mb-3">장바구니에 담기</a><a href="#" class="btn btn-filled">수강 신청</a>
+            <form action="/add-cart-course.do" method="POST">
+              <input type="hidden" name="studentId" value="">
+              <input type="hidden" name="courseId" value="">
+              <button class="btn btn-filled" id="cartBtn">장바구니</button>
+            </form>
+            <button class="btn btn-filled">수강신청</button>
           </div>
 
         </aside>
@@ -166,7 +172,11 @@
         // listReview(url);
       },
       error   : function (error) {
-        console.log(error + '실패 자바스크립트')
+        if (error.status === 404) {
+          alert("구매 후 작성하실 수 있습니다.")
+          return;
+        }
+        console.log(JSON.stringify(error) + '실패 자바스크립트')
       }
     });
   }

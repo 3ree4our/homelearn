@@ -15,6 +15,7 @@ const paymentListAELe = document.querySelector('#mypageNav a:nth-child(2)');
 const paymentHistoryListAELe = document.querySelector('#mypageNav a:last-child');
 
 const outUlDiv = document.querySelector('div.col-md-4.col-sm-6:first-child > div ul')
+const courseDiv = document.querySelector('div.col-md-4.col-sm-6:nth-child(2) > div ul')
 
 if (data === null || accessToken === null) location.href = `${SERVER_API}/members/login`
 
@@ -66,6 +67,8 @@ if (data) {
     }
 
   })
+
+  courseDiv.firstElementChild.firstElementChild.innerText = '등록한 강좌'
 
   if (filePath && saveName) {
     fetch(`${SERVER_API}/files/${jsonData.id}`, {
@@ -132,6 +135,7 @@ logoutBtnEle.addEventListener('click', () => {
       })
       .catch(err => alert("err" + err))
 })
+
 
 inputFileEle.addEventListener('change', (e) => {
   const file = e.target.files[0];

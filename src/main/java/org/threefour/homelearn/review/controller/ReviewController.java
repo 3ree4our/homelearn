@@ -1,14 +1,21 @@
 package org.threefour.homelearn.review.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.threefour.homelearn.course.domain.Course;
+import org.threefour.homelearn.course.service.CourseService;
+import org.threefour.homelearn.enrollment.domain.EnrolledCourse;
+import org.threefour.homelearn.enrollment.service.EnrollmentService;
 import org.threefour.homelearn.member.dto.MemberResponseDTO;
 import org.threefour.homelearn.member.jwt.JWTUtil;
 import org.threefour.homelearn.member.mapper.MemberMapper;
+import org.threefour.homelearn.member.service.MemberService;
 import org.threefour.homelearn.review.domain.Review;
 import org.threefour.homelearn.review.service.ReviewService;
 
@@ -25,12 +32,14 @@ public class ReviewController {
   @Autowired
   private ReviewService reviewService;
 
+  @Autowired
+  private MemberService memberService;
 
   @Autowired
-  private JWTUtil jwtUtil;
+  private CourseService courseService;
 
   @PostMapping("/writeReview")
-  public @ResponseBody List<Review> writeReview(String content, String url) {
+  public ResponseEntity<?> writeReview(String content, String url) {
     ModelAndView view = new ModelAndView();
     MemberResponseDTO memberDTO = memberMapper.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
@@ -39,8 +48,15 @@ public class ReviewController {
 
     long member_id = memberDTO.getId();
     long course_id = 0L;
+
     if (strCourse_id != null) {
       course_id = Long.parseLong(strCourse_id);
+      Course course = courseService.courseDetail(course_id);
+      if (course.getTeacher_id() != member_id) {
+        EnrolledCourse enrolledCourseByMemberIdAndCourseId = memberService.getEnrolledCourseByMemberIdAndCourseId(member_id, course_id);
+        if (enrolledCourseByMemberIdAndCourseId == null) return ResponseEntity.status(403).build();
+      }
+
     }
 
 
@@ -70,7 +86,7 @@ public class ReviewController {
     System.out.println("createat :   " + reviews.get(0).getCreated_at());
     System.out.println("reviews :   " + reviews.get(0).getCreated_at());
     System.out.println("reviews :   " + reviews.get(0).getModified_at());
-    return reviews;
+    return ResponseEntity.ok(reviews);
   }
 
   @ResponseBody
@@ -93,10 +109,11 @@ public class ReviewController {
 
     return reviews;
   }
-  public List<Review> getList2(long course_id){
+
+  public List<Review> getList2(long course_id) {
     System.out.println();
 
-    System.out.println("getList(String url)2 실행됨"+course_id);
+    System.out.println("getList(String url)2 실행됨" + course_id);
     System.out.println();
 
     ModelAndView view = new ModelAndView();

@@ -66,7 +66,7 @@ public class MemberController {
     return "jsp/mypage";
   }
 
-  @RequestMapping(value = "/{memberid}", method = {RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.POST})
+  @RequestMapping(value = "/mypage/{memberid}", method = {RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.POST})
   public String updateMember(@PathVariable("memberid") Long memberId, MemberRequestDTO dto, @RequestPart("profileImage") MultipartFile multipartFile) throws ServletException, IOException {
     String password = dto.getPassword().equals("undefined") ? null : dto.getPassword();
     dto.setId(memberId);

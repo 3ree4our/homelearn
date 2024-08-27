@@ -69,7 +69,7 @@ public class EmailService {
       sb.append("                            <table cellspacing=\"0\" cellpadding=\"0\" style=\"margin: auto;\">");
       sb.append("                                <tr>");
       sb.append("                                    <td align=\"center\" style=\"background-color: #345C72; padding: 10px 20px; border-radius: 5px;\">");
-      sb.append("                                        <a href=\"http://localhost:8080/members/signup?code=" + authenticationNumber + "&email=" + email + "\" style=\"color: #ffffff; text-decoration: none; font-weight: bold;\">계속하기</a>");
+      sb.append("                                        <a href=\"http://10.41.2.91:8080/members/signup?code=" + authenticationNumber + "&email=" + email + "\" style=\"color: #ffffff; text-decoration: none; font-weight: bold;\">계속하기</a>");
       sb.append("                                    </td>");
       sb.append("                                </tr>");
       sb.append("                            </table>");

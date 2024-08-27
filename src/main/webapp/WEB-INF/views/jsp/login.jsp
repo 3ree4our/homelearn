@@ -36,7 +36,7 @@
 <!-- Login / Registration start -->
 <section class="banner login-registration">
   <div class="vector-img">
-    <img src="${pageContext.request.contextPath}/resources/images/vector.png" alt="">
+    <img src="${pageContext.request.contextPath}/resources/image/member/" alt="">
   </div>
   <div class="container">
     <div class="row">
@@ -54,17 +54,10 @@
             <label>Password</label>
             <input type="password" name="password" placeholder="Password" required>
           </div>
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input">
-            <label class="form-check-label">Remember Password</label>
-          </div>
           <button id="loginBtn" class="btn btn-filled btn-round"><span class="bh"></span> <span>로그인</span></button>
-          <button id="findPasswordBtn" class="btn btn-filled btn-round"><span class="bh"></span> <span>비밀번호 찾기</span>
-          </button>
         </form>
-        <p class="notice">Don’t have an account?
-          <button id="signupBtn" class="btn btn-primary">회원가입</button>
-        </p>
+        <p class="notice" role="button" id="findPasswordBtn">비밀번호 찾기</p>
+        <p class="notice" role="button" id="signupBtn">회원 가입</p>
       </div>
     </div>
   </div>

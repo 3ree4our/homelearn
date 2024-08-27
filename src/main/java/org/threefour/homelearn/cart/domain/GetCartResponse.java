@@ -6,40 +6,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetCartResponse {
-    private Long studentId;
-    private List<GetCartCourseResponse> getCartCourseResponses;
+  private Long studentId;
+  private List<GetCartCourseResponse> getCartCourseResponses;
 
-    private GetCartResponse(Long studentId, List<GetCartCourseResponse> getCartCourseResponses) {
-        this.studentId = studentId;
-        this.getCartCourseResponses = getCartCourseResponses;
+  private GetCartResponse(Long studentId, List<GetCartCourseResponse> getCartCourseResponses) {
+    this.studentId = studentId;
+    this.getCartCourseResponses = getCartCourseResponses;
+  }
+
+  public static GetCartResponse from(Long studentId, Cart cart, CourseService courseService) {
+    if (cart == null) {
+      return new GetCartResponse(studentId, new ArrayList<>());
     }
 
-    public static GetCartResponse from(Long studentId, Cart cart, CourseService courseService) {
-        if (cart == null) {
-            return new GetCartResponse(studentId, new ArrayList<>());
-        }
+    List<GetCartCourseResponse> getCartResponse = new ArrayList<>();
 
-        List<GetCartCourseResponse> getCartResponse = new ArrayList<>();
-
-        for (CartCourse cartCourse : cart.getCartCourses()) {
-            if (cartCourse.getCourse() != null) {
-                String subjectName = courseService.getSubjectName(cartCourse.getCourse().getSubjectId());
-                getCartResponse.add(GetCartCourseResponse.from(cartCourse, subjectName));
-            }
-        }
-
-        return new GetCartResponse(studentId, getCartResponse);
+    for (CartCourse cartCourse : cart.getCartCourses()) {
+      if (cartCourse.getCourse() != null) {
+        String subjectName = courseService.getSubjectName(cartCourse.getCourse().getSubject_id());
+        getCartResponse.add(GetCartCourseResponse.from(cartCourse, subjectName));
+      }
     }
 
-    public Long getStudentId() {
-        return studentId;
-    }
+    return new GetCartResponse(studentId, getCartResponse);
+  }
 
-    public GetCartCourseResponse get(int index) {
-        return getCartCourseResponses.get(index);
-    }
+  public Long getStudentId() {
+    return studentId;
+  }
 
-    public int size() {
-        return getCartCourseResponses.size();
-    }
+  public GetCartCourseResponse get(int index) {
+    return getCartCourseResponses.get(index);
+  }
+
+  public int size() {
+    return getCartCourseResponses.size();
+  }
 }

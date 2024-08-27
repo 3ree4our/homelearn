@@ -1,6 +1,5 @@
 const accessToken = localStorage.getItem("access_token")
-const basicData = localStorage.getItem("member")
-export const SERVER_API = 'http://localhost:8080'
+export const SERVER_API = 'http://10.41.2.91:8080'
 
 export const getBasicData = async () => {
   if (accessToken !== null) {
@@ -52,7 +51,7 @@ export const getAccessToken = async () => {
  * @returns {Promise<string>}
  */
 export const getNewAccessToken = async () => {
-  await fetch('http://localhost:8080/refresh', {
+  await fetch(`${SERVER_API}/refresh`, {
     method     : "POST",
     credentials: "include",
   });

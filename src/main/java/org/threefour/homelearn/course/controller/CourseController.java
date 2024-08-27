@@ -202,7 +202,6 @@ public class CourseController {
   @ResponseBody
   @GetMapping("/courses/{courseid}")
   public ResponseEntity<Void> checkEnrolledByCourseId(@PathVariable("courseid") Long courseId) {
-    System.out.println("호출!!");
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     CustomUserDetails customUser = (CustomUserDetails) authentication.getPrincipal();
     Long memberId = customUser.getId();
