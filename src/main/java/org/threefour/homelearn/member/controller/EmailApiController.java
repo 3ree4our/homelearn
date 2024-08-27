@@ -21,7 +21,6 @@ public class EmailApiController {
 
   @PostMapping("/password")
   public ResponseEntity<Void> getEmail(String email) {
-    System.out.println("비밀번호 찾기 email" + email);
     emailService.sendNewPassword(email);
 
     return ResponseEntity.ok().build();

@@ -3,6 +3,12 @@ import {getAccessToken, SERVER_API} from "../common/request.js";
 const loginBtnEle = document.querySelector("#loginBtn");
 const emailCheckBtn = document.querySelector('.content-input button');
 const findPasswordBtn = document.querySelector('#findPasswordModal button');
+const data = localStorage.getItem('member');
+
+if (data) {
+  alert("로그인 되셨습니다.")
+  return;
+}
 
 loginBtnEle.addEventListener('click', async (e) => {
   e.preventDefault();

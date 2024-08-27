@@ -17,13 +17,13 @@ public class FileServiceImpl implements FileService {
 
 
   @Override
-  public List<AttachFile> getProfileImageByMemberId(Long memberId) {
+  public AttachFile getProfileImageByMemberId(Long memberId) {
     return fileMapper.getProfileImageByMemberId(memberId);
   }
 
   @Override
-  public int addFile(List<AttachFile> files) {
-    return fileMapper.insertFile(files);
+  public int addFile(AttachFile file) {
+    return fileMapper.insertFile(file);
   }
 
   @Override

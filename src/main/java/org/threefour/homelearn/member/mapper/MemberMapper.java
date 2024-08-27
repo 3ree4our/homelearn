@@ -1,6 +1,7 @@
 package org.threefour.homelearn.member.mapper;
 
 import org.apache.ibatis.annotations.Param;
+import org.threefour.homelearn.course.domain.Course;
 import org.threefour.homelearn.enrollment.domain.EnrolledCourse;
 import org.threefour.homelearn.member.dto.EnrolledCourceListDTO;
 import org.threefour.homelearn.member.dto.MemberRequestDTO;
@@ -32,4 +33,8 @@ public interface MemberMapper {
   EnrolledCourse selectEnrolledCourseByMemberIdAndCourseId(@Param("memberId") Long memberId, @Param("courseId") Long courseId);
 
   List<MemberResponseDTO> selectReview(long course_id);
+
+  int updateMemberRoleByMemberId(Long memberId);
+
+  List<Course> selectCoursesByTeacherId(Long memberId);
 }

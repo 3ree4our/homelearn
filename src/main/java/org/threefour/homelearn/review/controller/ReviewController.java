@@ -32,6 +32,7 @@ public class ReviewController {
   @Autowired
   private ReviewService reviewService;
 
+
   @Autowired
   private MemberService memberService;
 
@@ -70,16 +71,15 @@ public class ReviewController {
     reviewService.writeReview(review);
     List<MemberResponseDTO> getMemberResponseDTOList = memberMapper.selectReview(course_id);
 
-    int i = 0;
     List<Review> reviews = getList2(course_id);
-    for (i = 0; i < reviews.size() - 1; i++) {
+    for (int i = 0; i < reviews.size() - 1; i++) {
 
+      reviews.get(i).setNickName(getMemberResponseDTOList.get(i).getNickname());
       String createdAt = getMemberResponseDTOList.get(i).getCreatedAt();
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
       LocalDateTime dateTime = LocalDateTime.parse(createdAt, formatter);
       reviews.get(i).setCreated_at(dateTime);
 
-      reviews.get(i).setMember_nickName(getMemberResponseDTOList.get(i).getNickname());
 
     }
 
@@ -90,27 +90,51 @@ public class ReviewController {
   }
 
   @ResponseBody
-  @PostMapping("/reviewList")
-  public List<Review> getList(String url) {
+  @PostMapping("/listReview")
+  public List<Review> getList(String course_id , String url) {
     System.out.println();
 
-    System.out.println("getList(String url)1 실행됨" + url);
+    System.out.println("getList(String url)1 ko" + course_id);
+    System.out.println("getList(String url)1 ko" + url);
     System.out.println();
 
-    ModelAndView view = new ModelAndView();
     int index = url.lastIndexOf("=");
     String strCourse_id = url.substring(index + 1, url.length());
-    long course_id = 0L;
+    long course_id1 = 0L;
     if (strCourse_id != null) {
-      course_id = Long.parseLong(strCourse_id);
+      course_id1 = Long.parseLong(strCourse_id);
     }
 
-    List<Review> reviews = reviewService.getList(course_id);
+    List<Review> reviews = reviewService.getList(course_id1);
 
     return reviews;
   }
 
-  public List<Review> getList2(long course_id) {
+  @ResponseBody
+  @PostMapping("/reviewList")
+  public List<Review> getList(String url){
+    System.out.println();
+
+    System.out.println("reviewList(String url) 실행됨"+url);
+    System.out.println();
+
+    int index = url.lastIndexOf("=");
+    String strCourse_id = url.substring(index+1,url.length());
+    long course_id =0L;
+    if(strCourse_id!=null){
+      course_id = Long.parseLong(strCourse_id);
+    }
+
+    List<Review> reviews = reviewService.getList(course_id);
+    for(Review review : reviews){
+      System.out.println("memnick       " + review.getNickName());
+    }
+    System.out.println("memnick       " + reviews.get(0).getNickName());
+
+    return reviews;
+  }
+
+  public List<Review> getList2(long course_id){
     System.out.println();
 
     System.out.println("getList(String url)2 실행됨" + course_id);

@@ -76,7 +76,9 @@ public class RefreshTokenController {
     String newRefreshToken = jwtUtil.createToken(refreshTokenMap, username, 1000 * 60 * 60 * 24L);
 
     int result = refreshService.deleteRefreshToken(refreshToken);
-    refreshService.addRefreshToken(username, newRefreshToken, 1000 * 60 * 60 * 24L);
+    if (result > 0) refreshService.addRefreshToken(username, newRefreshToken, 1000 * 60 * 60 * 24L);
+    System.out.println("뉴 리프레시 생명주기: " + System.currentTimeMillis() + 1000 * 60 * 60 * 24L);
+    System.out.println("뉴 리프레시 쿠키: " + 24 * 60 * 60);
 
     response.addCookie(createCookie("accessToken", newAccessToken));
     response.addCookie(createCookie("refreshToken", newRefreshToken));

@@ -9,7 +9,7 @@
             <h4 class="widget-title">Information for</h4>
             <ul>
               <li><a href="#" style="font-weight: bold">회원가입</a></li>
-              <li><a href="#" style="font-weight: bold">로그인</a></li>
+              <li><a href="/members/login" style="font-weight: bold">로그인</a></li>
             </ul>
           </div>
         </div>
@@ -17,7 +17,7 @@
           <div class="widget widget-navigation">
             <h4 class="widget-title">Information About</h4>
             <ul>
-              <li><a href="#" style="font-weight: bold">강좌 목록</a></li>
+              <li><a href="/coursesList.do" style="font-weight: bold">강좌 목록</a></li>
               <li><a href="#" style="font-weight: bold">강좌개설</a></li>
             </ul>
           </div>

@@ -18,7 +18,6 @@
         <property name="username" value="three"></property>
         <property name="password" value="four"></property>
     </bean>
-
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
           destroy-method="close">
         <constructor-arg ref="hikariConfig"/>

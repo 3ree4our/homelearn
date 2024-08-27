@@ -168,7 +168,7 @@
         // listReview(url);
       },
       error   : function (error) {
-        if (error.status === 404) {
+        if (error.status === 403) {
           alert("구매 후 작성하실 수 있습니다.")
           return;
         }

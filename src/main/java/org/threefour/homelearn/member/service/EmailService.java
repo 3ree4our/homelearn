@@ -96,6 +96,8 @@ public class EmailService {
     MimeMessage message = mailSender.createMimeMessage();
     String uuid = UUID.randomUUID().toString().substring(0, 12);
 
+    System.out.println("변경 패스워드!!" + uuid);
+
     MemberResponseDTO member = memberMapper.findByUsername(email);
 
     MemberRequestDTO dto = MemberRequestDTO.builder()

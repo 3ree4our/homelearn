@@ -1,7 +1,6 @@
 import {getBasicData, getNewAccessToken, SERVER_API} from "./request.js";
 
 await getBasicData();
-
 const data = localStorage.getItem('member');
 const accessToken = localStorage.getItem('access_token');
 const cartAEle = document.querySelector('.navbar--cart')

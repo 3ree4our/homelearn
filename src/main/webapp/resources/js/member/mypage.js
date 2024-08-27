@@ -1,8 +1,7 @@
-import {SERVER_API, getBasicData} from "../common/request.js";
+import {SERVER_API} from "../common/request.js";
 import {getCoursesByMemberId, getPaymentsByMemberId} from "../member/member-api-request.js"
 import {drawchapterList, drawPagination, drawPaymentHistory} from "./draw.js";
 
-await getBasicData();
 
 const data = localStorage.getItem('member');
 const accessToken = localStorage.getItem('access_token');
@@ -17,7 +16,10 @@ const paymentHistoryListAELe = document.querySelector('#mypageNav a:last-child')
 const outUlDiv = document.querySelector('div.col-md-4.col-sm-6:first-child > div ul')
 const courseDiv = document.querySelector('div.col-md-4.col-sm-6:nth-child(2) > div ul')
 
-if (data === null || accessToken === null) location.href = `${SERVER_API}/members/login`
+if (data === null || data === 'null' || accessToken === null || accessToken === 'null') {
+  alert('로그인을 진행해주세요.')
+  location.href = '/members/login'
+}
 
 if (data) {
   const jsonData = JSON.parse(data);
@@ -30,6 +32,16 @@ if (data) {
   const saveName = jsonData?.attachFile?.saveName;
   const logoutAEle = outUlDiv.firstElementChild.firstElementChild;
   const outAEle = outUlDiv.lastElementChild.lastElementChild;
+  const teacherRegisterAEle = courseDiv.firstElementChild.firstElementChild;
+  const showRegisterCoursesAEle = courseDiv.firstElementChild.firstElementChild;
+  if (saveName && filePath) {
+    fetch(`${SERVER_API}/files/${jsonData.id}`)
+        .then(async result => {
+          const blob = await result.blob();
+          const url = URL.createObjectURL(blob);
+          imgEle.setAttribute('src', url);
+        })
+  }
 
   logoutBtnEle.style.display = 'none';
 
@@ -68,22 +80,26 @@ if (data) {
 
   })
 
-  courseDiv.firstElementChild.firstElementChild.innerText = '등록한 강좌'
-
-  if (filePath && saveName) {
-    fetch(`${SERVER_API}/files/${jsonData.id}`, {
-      method: 'POST',
-      body  : JSON.stringify({
-        filePath,
-        saveName
-      })
+  if (jsonData.roles.length < 2) {
+    teacherRegisterAEle.innerText = '강사신청'
+  } else {
+    showRegisterCoursesAEle.innerText = '등록강좌'
+    showRegisterCoursesAEle.addEventListener('click', () => {
+      location.href = `${SERVER_API}/members/${jsonData.id}/courses`;
     })
-        .then(async result => {
-          const blob = await result.blob();
-          const url = URL.createObjectURL(blob);
-          imgEle.setAttribute('src', url);
-        })
   }
+
+  teacherRegisterAEle.addEventListener('click', (e) => {
+    e.preventDefault();
+    fetch(`${SERVER_API}/members/${jsonData.id}/teacher`)
+        .then(result => {
+          if (result.status === 200) {
+            teacherRegisterAEle.innerText = '등록강좌';
+            teacherRegisterAEle.href = '';
+          }
+        })
+  })
+
 }
 
 courseRegisterListAEle.addEventListener('click', async (e) => {

@@ -1,5 +1,5 @@
-const accessToken = localStorage.getItem("access_token")
 export const SERVER_API = 'http://10.41.2.91:8080'
+const accessToken = localStorage.getItem('access_token');
 
 export const getBasicData = async () => {
   if (accessToken !== null) {
@@ -17,7 +17,6 @@ export const getBasicData = async () => {
     } catch (err) {
       console.log('getBasicData', err);
       if (err.statusCode === 401) {
-        console.log('getBasicData', err);
         alert('다시 로그인 해주세요')
         location.href = '/';
         return;
@@ -30,7 +29,6 @@ export const getBasicData = async () => {
     }
 
   }
-
 }
 
 /**

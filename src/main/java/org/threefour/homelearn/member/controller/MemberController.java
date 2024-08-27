@@ -11,6 +11,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.threefour.homelearn.course.domain.Course;
+import org.threefour.homelearn.member.dto.EnrolledCourceListDTO;
 import org.threefour.homelearn.member.dto.MemberRequestDTO;
 import org.threefour.homelearn.member.service.MemberService;
 import org.threefour.homelearn.paging.Paging;
@@ -21,6 +23,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/members")
@@ -103,6 +106,13 @@ public class MemberController {
         response.addCookie(cookie);
       }
     }
+  }
+
+  @GetMapping("/{memberid}/courses")
+  public String getAllCourseByMemberId(@PathVariable("memberid") Long memberId, Model model) {
+    List<Course> list = memberService.findCoursesByTeacherId(memberId);
+    model.addAttribute("courses", list);
+    return "jsp/mycourse-list";
   }
 
 }

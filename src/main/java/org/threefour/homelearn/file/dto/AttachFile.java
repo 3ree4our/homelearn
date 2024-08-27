@@ -3,6 +3,7 @@ package org.threefour.homelearn.file.dto;
 import lombok.*;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
