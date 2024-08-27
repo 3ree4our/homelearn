@@ -4,7 +4,7 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.threefour.homelearn.course.mapper.CourseMapper">
 	<insert id="courseWrite" parameterType="CourseVO" >
-		insert into course(subject_ID,TEACHER_ID,NAME,DESCRIPTION,PRICE,PERIOD,ffname,fname,ofname,CREATED_AT,MODIFIED_AT) values(#{subjectId},1,#{name},#{description},#{price},#{period},#{ffname},#{fname},#{ofname},now(),now())
+		insert into course(subject_ID,TEACHER_ID,NAME,DESCRIPTION,PRICE,PERIOD,ffname,fname,ofname,CREATED_AT,MODIFIED_AT) values(#{subject_id},1,#{name},#{description},#{price},#{period},#{ffname},#{fname},#{ofname},now(),now())
 	</insert>
 	<select id="courseLastId"  resultType="long">
 		select LAST_INSERT_ID()

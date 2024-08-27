@@ -142,11 +142,11 @@ public class CourseController {
     long fsize = file.getSize();
     String fname = courseService.saveAtStore(file);
     if (cate.equals("korean")) {
-      courseVO.setSubjectId(1);
+      courseVO.setSubject_id(1);
     } else if (cate.equals("english")) {
-      courseVO.setSubjectId(2);
+      courseVO.setSubject_id(2);
     } else {
-      courseVO.setSubjectId(3);
+      courseVO.setSubject_id(3);
     }
     int of = fname.lastIndexOf("/") + 1;
     String sub = fname.substring(of, fname.length());
