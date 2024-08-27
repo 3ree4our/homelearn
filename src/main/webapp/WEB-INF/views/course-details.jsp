@@ -89,7 +89,7 @@
                                     <h5 class="" data-toggle="collapse" data-target="#acpan1"
                                         aria-expanded="true">
                                         <%= chapter.get(i).getName()%>
-                                        <span></span>
+
                                     </h5>
 
                                     <div id="acpan1" class="collapse show" data-parent="#accordion">
