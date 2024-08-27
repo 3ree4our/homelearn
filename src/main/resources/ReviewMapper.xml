@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.threefour.homelearn.review.mapper.ReviewMapper">
+
+  <insert id="writeReview" parameterType="Review">
+    insert into review(course_id,student_ID,content,score,CREATED_AT,MODIFIED_AT) values(#{course_id},#{student_id},#{content},#{score},now(),now())
+  </insert>
+
+  <select id="getList" parameterType="long" resultType="Review">
+    select * from review where course_id = #{course_id} order by ID desc;
+  </select>
+
+</mapper>

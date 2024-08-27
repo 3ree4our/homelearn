@@ -70,7 +70,7 @@ public class MemberController {
     return "jsp/mypage";
   }
 
-  @PostMapping("/mypage/{memberid}")
+  @RequestMapping(value = "/{memberid}", method = {RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.POST})
   public String updateMember(@PathVariable("memberid") Long memberId, MemberRequestDTO dto, @RequestPart("profileImage") MultipartFile multipartFile) throws ServletException, IOException {
     String password = dto.getPassword().equals("undefined") ? null : dto.getPassword();
     dto.setId(memberId);
@@ -80,11 +80,19 @@ public class MemberController {
     return "redirect:/members/mypage/" + memberId;
   }
 
-  @DeleteMapping("/members/{memberid}")
-  public String deleteMember(@PathVariable("memberid") Long memberId) {
+  @DeleteMapping("/{memberid}")
+  @ResponseBody
+  public ResponseEntity<Void> deleteMember(@PathVariable("memberid") Long memberId, HttpServletResponse response) {
     int result = memberService.deleteMemberByMemberId(memberId);
-    if (result > 0) return "redirect:/";
-    else return "redirect:/members/mypage/" + memberId;
+    if (result > 0) {
+      Cookie cookie = new Cookie("refreshToken", null);
+      cookie.setPath("/");
+      cookie.setMaxAge(0);
+      cookie.setHttpOnly(true);
+      response.addCookie(cookie);
+      return ResponseEntity.ok().build();
+    }
+    return ResponseEntity.badRequest().build();
   }
 
   @GetMapping("/cookies")

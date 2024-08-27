@@ -10,10 +10,13 @@
         offset #{pageSequence}
     </select>
     <select id="findByImpUid" resultType="Order">
-        select * from ORDERS where IMP_UID = #{impUid}
+        select *
+        from ORDERS
+        where IMP_UID = #{impUid}
     </select>
     <insert id="save">
-        insert into ORDERS values (#{impUid}, #{ordererId}, #{merchantUid}, now(), now())
+        insert into ORDERS
+        values (#{impUid}, #{ordererId}, #{merchantUid}, now(), now())
     </insert>
         <select id="getSize" resultType="Integer">
             select count(ORDERER_ID) from ORDERS

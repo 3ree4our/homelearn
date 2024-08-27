@@ -64,4 +64,8 @@
     <update id="deleteMemberByMemberId">
         update member set delete_yn = 1 where id = #{memberId}
     </update>
+
+    <select id="selectEnrolledCourseByMemberIdAndCourseId" resultType="EnrolledCourse">
+        select * from enrolled_course where student_id = #{memberId} and course_id = #{courseId}
+    </select>
 </mapper>

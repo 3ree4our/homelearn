@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.threefour.homelearn.member.dto.EnrolledCourceListDTO;
 import org.threefour.homelearn.member.dto.PaymentsResponseListDTO;
@@ -36,4 +37,9 @@ public class MemberApiController {
     return ResponseEntity.ok(paging);
   }
 
+  @PostMapping("/members/password")
+  public String findPasswordByEmail(String email) {
+    //memberService
+    return null;
+  }
 }

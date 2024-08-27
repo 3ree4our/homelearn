@@ -15,7 +15,6 @@ import org.threefour.homelearn.member.dto.CustomUserDetails;
 import org.threefour.homelearn.member.dto.MemberResponseDTO;
 import org.threefour.homelearn.member.dto.Role;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -57,7 +56,6 @@ public class HomeApiController {
     List<AttachFile> profileImage = fileService.getProfileImageByMemberId(dto.getId());
     for (AttachFile file : profileImage) dto.setAttachFile(file);
 
-    System.out.println("dto: " + gson.toJson(dto));
     return ResponseEntity.ok(gson.toJson(dto));
   }
 }
