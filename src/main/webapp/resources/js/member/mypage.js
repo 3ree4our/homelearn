@@ -4,6 +4,7 @@ import {drawchapterList, drawPagination, drawPaymentHistory} from "./draw.js";
 
 
 const data = localStorage.getItem('member');
+let jsonData = '';
 const accessToken = localStorage.getItem('access_token');
 
 const h2Ele = document.querySelector('.page-feature h2');
@@ -11,18 +12,19 @@ const logoutBtnEle = document.querySelector('#logoutBtn');
 const inputFileEle = document.querySelector('input[type="file"]');
 const courseRegisterListAEle = document.querySelector('#mypageNav a:first-child');
 const paymentListAELe = document.querySelector('#mypageNav a:nth-child(2)');
-const paymentHistoryListAELe = document.querySelector('#mypageNav a:last-child');
+const cartAELe = document.querySelector('#mypageNav a:last-child');
 
 const outUlDiv = document.querySelector('div.col-md-4.col-sm-6:first-child > div ul')
 const courseDiv = document.querySelector('div.col-md-4.col-sm-6:nth-child(2) > div ul')
+
+if (data) jsonData = JSON.parse(data);
 
 if (data === null || data === 'null' || accessToken === null || accessToken === 'null') {
   alert('로그인을 진행해주세요.')
   location.href = '/members/login'
 }
 
-if (data) {
-  const jsonData = JSON.parse(data);
+if (jsonData) {
   const emailInputEle = document.querySelector('#email');
   const createdAtInputEle = document.querySelector('#createdAt');
   const nicknameInputEle = document.querySelector('#nickname');
@@ -70,7 +72,7 @@ if (data) {
             if (result.status === 200) {
               localStorage.removeItem('member')
               localStorage.removeItem('access_token')
-              alert('이용해 주셔서 감사합니다.')
+              alert('그동안 이용해 주셔서 감사합니다.')
               location.href = '/';
             }
           })
@@ -118,7 +120,6 @@ courseRegisterListAEle.addEventListener('click', async (e) => {
 })
 courseRegisterListAEle.click();
 
-
 paymentListAELe.addEventListener('click', async (e) => {
   e.preventDefault();
   const response = await fetch(`${SERVER_API}/resources/common/jsp/nav/payment-list.jsp`)
@@ -134,9 +135,9 @@ paymentListAELe.addEventListener('click', async (e) => {
   drawPagination(pagingData)
 })
 
-paymentHistoryListAELe.addEventListener('click', async (e) => {
+cartAELe.addEventListener('click', async (e) => {
   e.preventDefault();
-  location.href = `${SERVER_API}/cart.do?studentId=${data.id}`
+  location.href = `${SERVER_API}/cart.do?studentId=${jsonData.id}`
 })
 
 logoutBtnEle.addEventListener('click', () => {
