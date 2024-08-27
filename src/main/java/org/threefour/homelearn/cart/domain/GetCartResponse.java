@@ -23,7 +23,7 @@ public class GetCartResponse {
 
         for (CartCourse cartCourse : cart.getCartCourses()) {
             if (cartCourse.getCourse() != null) {
-                String subjectName = courseService.getSubjectName(cartCourse.getCourse().getSubjectId());
+                String subjectName = courseService.getSubjectName(cartCourse.getCourse().getSubject_id());
                 getCartResponse.add(GetCartCourseResponse.from(cartCourse, subjectName));
             }
         }
