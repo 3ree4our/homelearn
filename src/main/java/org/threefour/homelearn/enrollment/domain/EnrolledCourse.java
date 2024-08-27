@@ -2,11 +2,13 @@ package org.threefour.homelearn.enrollment.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.threefour.homelearn.order.domain.CourseOrderRequest;
 
 import java.sql.Timestamp;
 
 @Getter
+@NoArgsConstructor
 public class EnrolledCourse {
     private Long id;
     private Long courseId;
