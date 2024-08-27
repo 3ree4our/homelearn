@@ -97,11 +97,6 @@
               <div data-i18n="Container">주문관리</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="/mgmt/review/list" class="menu-link">
-              <div data-i18n="Fluid">리뷰관리</div>
-            </a>
-          </li>
         </ul>
       </li>
     </ul>
