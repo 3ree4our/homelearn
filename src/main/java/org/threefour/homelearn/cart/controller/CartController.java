@@ -27,7 +27,7 @@ public class CartController {
         return "redirect:/cart.do?studentId=" + studentId;
     }
 
-    @PostMapping("/add-cart-course.do")
+    @GetMapping("/add-cart-course.do")
     public String addCourse(Long studentId, Long courseId) {
         cartService.addCourse(studentId, courseId);
         return "redirect:/cart.do?studentId=" + studentId;

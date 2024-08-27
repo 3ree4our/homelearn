@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import io.jsonwebtoken.Claims;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
