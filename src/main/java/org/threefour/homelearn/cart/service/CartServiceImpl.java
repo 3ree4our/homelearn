@@ -1,9 +1,12 @@
 package org.threefour.homelearn.cart.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.threefour.homelearn.cart.domain.Cart;
 import org.threefour.homelearn.cart.domain.GetCartResponse;
+import org.threefour.homelearn.cart.exception.CartNotFoundException;
 import org.threefour.homelearn.cart.mapper.CartMapper;
 import org.threefour.homelearn.course.service.CourseService;
 import org.threefour.homelearn.order.domain.CourseOrderRequest;
@@ -12,8 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.springframework.transaction.annotation.Isolation.READ_COMMITTED;
 import static org.springframework.transaction.annotation.Isolation.READ_UNCOMMITTED;
+import static org.springframework.transaction.annotation.Isolation.REPEATABLE_READ;
+import static org.threefour.homelearn.cart.exception.ExceptionMessage.CART_NOT_FOUND_EXCEPTION_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
@@ -21,15 +25,32 @@ import static org.springframework.transaction.annotation.Isolation.READ_UNCOMMIT
 public class CartServiceImpl implements CartService {
     private final CartMapper cartMapper;
     private final CourseService courseService;
+    private final SqlSession sqlSession;
 
     private static final String STUDENT_ID_PARAMETER_NAME = "studentId";
     private static final String COURSE_ID_PARAMETER_NAME = "courseId";
     private static final String CART_COURSE_ID_PARAMETER_NAME = "cartCourseId";
 
     @Override
-    @Transactional(isolation = READ_COMMITTED, readOnly = true, timeout = 20)
+    @Transactional(isolation = REPEATABLE_READ, readOnly = true, timeout = 20)
     public GetCartResponse get(Long studentId) {
-        return GetCartResponse.from(studentId, cartMapper.findByStudentId(studentId), courseService);
+        Cart cart = null;
+        try {
+            cart = getCart(studentId);
+        } catch (CartNotFoundException cnfe) {
+            createCart(studentId);
+        }
+
+        return GetCartResponse.from(studentId, cart, courseService);
+    }
+
+    private Cart getCart(Long studentId) throws CartNotFoundException {
+        Cart cart = cartMapper.findByStudentId(studentId);
+        if (cart == null) {
+            throw new CartNotFoundException(String.format(CART_NOT_FOUND_EXCEPTION_MESSAGE, studentId));
+        }
+
+        return cart;
     }
 
     @Override

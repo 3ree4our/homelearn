@@ -205,8 +205,7 @@
                         </div>
                     </a>
 
-                    <!-- 삭제 버튼 -->
-                    <form action="delete-cart-course.do" method="GET" style="margin-left: 20px;">
+                    <form action="delete-cart-course.do" method="POST" style="margin-left: 20px;">
                         <input type="hidden" name="studentId" value="<%= getCartResponse.getStudentId() %>">
                         <input type="hidden" name="cartCourseId" value="<%= getCartResponse.get(i).getId() %>">
                         <button type="submit" class="btn btn-danger">삭제</button>
