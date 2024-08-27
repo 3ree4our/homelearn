@@ -1,7 +1,6 @@
 package org.threefour.homelearn.cart.service;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.threefour.homelearn.cart.domain.Cart;
@@ -25,7 +24,6 @@ import static org.threefour.homelearn.cart.exception.ExceptionMessage.CART_NOT_F
 public class CartServiceImpl implements CartService {
     private final CartMapper cartMapper;
     private final CourseService courseService;
-    private final SqlSession sqlSession;
 
     private static final String STUDENT_ID_PARAMETER_NAME = "studentId";
     private static final String COURSE_ID_PARAMETER_NAME = "courseId";

@@ -193,7 +193,7 @@
                 <li style="display: flex; align-items: center; justify-content: space-between; width: 80%; margin-bottom: 30px; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
                     <input type="checkbox" name="selectedCourses" value="<%= getCartResponse.get(i).getId() %>" style="margin-right: 20px;">
 
-                    <a href="courseDetail.do?courseId=<%= course.getId() %>" data-course-id="<%= course.getId() %>" style="flex-grow: 1; display: block; text-decoration: none; color: inherit; text-align: left;">
+                    <a href="courseDetail.do?course_id=<%= course.getId() %>" data-course-id="<%= course.getId() %>" style="flex-grow: 1; display: block; text-decoration: none; color: inherit; text-align: left;">
                         <img src="resources/images/${course.ffname}" alt="<%= course.getName() %>" style="width: 100px; height: auto; border-radius: 8px; float: left; margin-right: 20px;">
                         <div style="overflow: hidden;">
                             <h5 class="course-name" style="margin-top: 10px;"><%= course.getName() %></h5>
