@@ -9,4 +9,6 @@ public interface EnrollmentService {
     List<EnrolledCourse> get(String impUid);
 
     void enrollCourses(String impUid, Long studentId, List<CourseOrderRequest> courseOrderRequests);
+
+    void cancelEnrolledCourse(Long courseId, String impUid);
 }
