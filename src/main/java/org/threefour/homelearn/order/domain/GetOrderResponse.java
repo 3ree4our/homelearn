@@ -3,6 +3,7 @@ package org.threefour.homelearn.order.domain;
 import lombok.Builder;
 import lombok.Getter;
 import org.threefour.homelearn.course.domain.Course;
+import org.threefour.homelearn.enrollment.domain.EnrolledCourse;
 import org.threefour.homelearn.payment.domain.Payment;
 
 import java.sql.Timestamp;
@@ -16,13 +17,14 @@ public class GetOrderResponse {
     private int paidAmount;
     private int refundedAmount;
     private List<Course> courses;
+    private List<EnrolledCourse> enrolledCourses;
     private Timestamp createdAt;
     private Timestamp modifiedAt;
 
     @Builder
     private GetOrderResponse(
             String impUid, Long ordererId, String merchantUid, int paidAmount, int refundedAmount,
-            List<Course> courses, Timestamp createdAt, Timestamp modifiedAt
+            List<Course> courses, List<EnrolledCourse> enrolledCourses, Timestamp createdAt, Timestamp modifiedAt
     ) {
         this.impUid = impUid;
         this.ordererId = ordererId;
@@ -30,11 +32,14 @@ public class GetOrderResponse {
         this.paidAmount = paidAmount;
         this.refundedAmount = refundedAmount;
         this.courses = courses;
+        this.enrolledCourses = enrolledCourses;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
 
-    public static GetOrderResponse from(Order order, List<Payment> payments, List<Course> courses) {
+    public static GetOrderResponse from(
+            Order order, List<Payment> payments, List<Course> courses, List<EnrolledCourse> enrolledCourses
+    ) {
         int paidAmount = 0;
         int refundedAmount = 0;
         for (Payment payment : payments) {
@@ -54,6 +59,7 @@ public class GetOrderResponse {
                 .paidAmount(paidAmount)
                 .refundedAmount(refundedAmount)
                 .courses(courses)
+                .enrolledCourses(enrolledCourses)
                 .createdAt(order.getCreatedAt())
                 .modifiedAt(order.getModifiedAt())
                 .build();
@@ -61,9 +67,5 @@ public class GetOrderResponse {
 
     public int size() {
         return courses.size();
-    }
-
-    public Course getEnrolledCourse(int index) {
-        return courses.get(index);
     }
 }
