@@ -3,7 +3,7 @@
 
 <div class="container">
   <h3>수강 목록</h3>
-  <div class="row" id="course-list"></div>
+  <div class="row" id="courseList"></div>
 </div>
 
 <nav aria-label="Page navigation example">

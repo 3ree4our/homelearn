@@ -78,7 +78,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
     refreshMapper.deleteByRefreshToken(refreshToken);
 
     // refresh 토큰 Cookie 값 0
-    Cookie cookie = new Cookie("refresh", null);
+    Cookie cookie = new Cookie("refreshToken", null);
     cookie.setMaxAge(0);
     cookie.setPath("/");
 

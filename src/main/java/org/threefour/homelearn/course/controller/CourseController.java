@@ -2,13 +2,16 @@ package org.threefour.homelearn.course.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
+import io.jsonwebtoken.Claims;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.threefour.homelearn.chapter.domain.Chapter;
@@ -17,6 +20,12 @@ import org.threefour.homelearn.course.domain.Course;
 import org.threefour.homelearn.course.domain.CourseVO;
 import org.threefour.homelearn.course.domain.Pager;
 import org.threefour.homelearn.course.service.CourseService;
+import org.threefour.homelearn.enrollment.domain.EnrolledCourse;
+import org.threefour.homelearn.member.dto.CustomUserDetails;
+import org.threefour.homelearn.member.jwt.JWTUtil;
+import org.threefour.homelearn.member.service.MemberService;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class CourseController {
@@ -25,10 +34,12 @@ public class CourseController {
   private CourseService courseService;
   @Autowired
   private ChapterService chapterService;
+  @Autowired
+  private MemberService memberService;
 
   @GetMapping("/courseForm.do")
   public String courseForm() {
-    return "signup";
+    return "courseRegister";
   }
 
   @GetMapping("/courseDetail.do")
@@ -45,20 +56,20 @@ public class CourseController {
     List<String> chapterNames1 = chapterService.getChapterName(courseid);
 
     List<Chapter> getChapter = new ArrayList<Chapter>();
-   // List<String> chapterNames2 = new ArrayList<String>();
+    // List<String> chapterNames2 = new ArrayList<String>();
     int chapterSize = chapter.size() / 4;
     //int chapterNamesSize = chapterNames1.size() / 4;
 
     for (int i = 0; i < chapterSize; i++) {
       chapter.get(i).setChapter_name(chapterNames1.get(i));
       getChapter.add(chapter.get(i));
-    //  getChapter.add(chapterService.getChapter(chapter.get(i)));
+      //  getChapter.add(chapterService.getChapter(chapter.get(i)));
       // 추후 예정 chapterName = chapterService.getChapterName(chapter.get(i));
     }
     //for (int i = 0; i < chapterNamesSize; i++) {
-     // chapterNames2.add(chapterNames1.get(i));
-     // getChapter.add(chapterService.getChapter(chapter.get(i)));
-   //   // 추후 예정 chapterName = chapterService.getChapterName(chapter.get(i));
+    // chapterNames2.add(chapterNames1.get(i));
+    // getChapter.add(chapterService.getChapter(chapter.get(i)));
+    //   // 추후 예정 chapterName = chapterService.getChapterName(chapter.get(i));
     //}
     //	chapterService.getChapterName(chapter);
     Course course = null;
@@ -69,18 +80,17 @@ public class CourseController {
     //System.out.println("getChapter: "+ getChapter.get(0).getName());
     view.setViewName("course-details");
     view.addObject("course", course);
-   // view.addObject("chapterName", chapterNames2);
+    // view.addObject("chapterName", chapterNames2);
     view.addObject("chapter", getChapter);
 
     return view;
   }
 
   @GetMapping("/coursesList.do")
-  public ModelAndView coursesList(Pager pager) {
+  public ModelAndView coursesList(Pager pager, HttpServletRequest request) {
     ModelAndView view = new ModelAndView();
 
     if (pager.getPageNum() == 0) {
-
 
       int total = courseService.total();
       int totalPage = courseService.totalPage(3);
@@ -132,11 +142,11 @@ public class CourseController {
     long fsize = file.getSize();
     String fname = courseService.saveAtStore(file);
     if (cate.equals("korean")) {
-      courseVO.setSubjectId(1);
+      courseVO.setSubject_id(1);
     } else if (cate.equals("english")) {
-      courseVO.setSubjectId(2);
+      courseVO.setSubject_id(2);
     } else {
-      courseVO.setSubjectId(3);
+      courseVO.setSubject_id(3);
     }
     int of = fname.lastIndexOf("/") + 1;
     String sub = fname.substring(of, fname.length());
@@ -187,5 +197,18 @@ public class CourseController {
     view.setViewName("courses");
     view.addObject("pager", pager);
     return view;
+  }
+
+  @ResponseBody
+  @GetMapping("/courses/{courseid}")
+  public ResponseEntity<Void> checkEnrolledByCourseId(@PathVariable("courseid") Long courseId) {
+    System.out.println("호출!!");
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    CustomUserDetails customUser = (CustomUserDetails) authentication.getPrincipal();
+    Long memberId = customUser.getId();
+
+    EnrolledCourse enrolledCourse = memberService.getEnrolledCourseByMemberIdAndCourseId(memberId, courseId);
+    if (enrolledCourse != null) return ResponseEntity.ok().build();
+    else return ResponseEntity.badRequest().build();
   }
 }

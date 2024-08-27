@@ -1,16 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <jsp:include page="header.jsp"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!DOCTYPE html>
 <!-- Content wrapper -->
 <div class="content-wrapper">
   <!-- Content -->
   <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"> Member /</span> Member Tables</h4>
 
-    <div class="btn-group">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"> Member /</span> Member Tables</h4>
+<%--    <div class="btn-group">
       <button
               type="button"
               class="btn btn-secondary dropdown-toggle"
@@ -20,11 +23,85 @@
         전체
       </button>
       <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="javascript:void(0);">전체</a></li>
         <li><a class="dropdown-item" href="javascript:void(0);">학생</a></li>
         <li><a class="dropdown-item" href="javascript:void(0);">교사</a></li>
         <li><a class="dropdown-item" href="javascript:void(0);">관리자</a></li>
       </ul>
+    </div>--%>
+
+    <!-- 이번 주 가입자 수 -->
+    <div class="col-12 mb-4">
+      <div class="card" style="height: 300px; width: 470px; justify-content: center; align-items: center;">
+        <div class="card-body">
+          <div class="card-header">
+            <h5 class="m-0 me-2">이번 주 가입자 수</h5>
+          </div>
+          <div class="card-body px-0">
+            <div class="tab-content p-0">
+              <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
+
+                <!--CJS Start-->
+                <div style="width: 370px">
+                  <canvas id="myChart2"></canvas>
+                </div>
+                <script>
+                  const jData = JSON.parse('${json}');
+                  const labelList = new Array();
+                  const valueList = new Array();
+
+                  for(let i=0; i<jData.length; i++){
+                    let d = jData[i];
+                    labelList.push(d.day);
+                    valueList.push(d.cnt);
+                  }
+
+                  const ctx2 = document.querySelector('#myChart2');
+
+                  new Chart(ctx2, {
+                    type: 'line',
+                    data: {
+                      labels: labelList,
+                      datasets: [
+                        {
+                          data: valueList,
+                          backgroundColor: [
+                            'rgba(75, 192, 192, 0.3)',
+                          ],
+                          fill: true
+                        }
+                      ],
+                      options: {
+                        scales: {
+                          yAxes: {
+                            beginAtZero: true,
+                            ticks:{
+                              stepSize: 1
+                            }
+                          }
+                        },
+                        plugins: {
+                          title: {
+                            display: true,
+                            text: '이번 주 가입자',
+                            font: {
+                              size: 20
+                            }
+                          }
+                        }
+                      }
+                    }
+                  });
+                </script>
+                <!--CJS END-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- /이번주 가입자 수-->
+    
     <br><br>
 
     <!-- Striped Rows -->
@@ -62,24 +139,107 @@
                     <i class="bx bx-dots-vertical-rounded"></i>
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
-                       data-bs-target="#backDropModal"
-                    ><i class="bx bx-edit-alt me-1"></i> Edit </a
-                    >
-                    <a class="dropdown-item" href="javascript:void(0);" onclick="delOk()"
-                    ><i class="bx bx-trash me-1"></i> Delete </a
-                    >
+                    <c:choose>
+                      <c:when test="${member.deleteYn == '회원'}">
+                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                           data-bs-target="#backDropModal"
+                           data-id="${member.id}"
+                           data-email="${member.email}"
+                           data-nickname="${member.nickname}"
+                           data-role="${member.role}">
+                          <i class="bx bx-edit-alt me-1"></i> 수정 </a>
+                        <a class="dropdown-item" href="javascript:void(0);" onclick="delOk(${member.id})">
+                          <i class="bx bx-trash me-1"></i> 탈퇴
+                        </a>
+                      </c:when>
+                      <c:otherwise>
+                        <a class="dropdown-item" href="javascript:void(0);" onclick="delNoOk(${member.id})">
+                          <i class="bx bx-redo me-1"></i> 복구
+                        </a>
+                      </c:otherwise>
+                    </c:choose>
                   </div>
                 </div>
+
                 <script>
-                  function delOk(){
-                    if(!confirm('삭제하시겠습니까?')) return false;
+                  function saveMemberChanges() {
+                    const id = $('#backDropModal').data('memberId');
+                    const nickname = $('#nicknameBackdrop').val();
+
+                    $.ajax({
+                      url: '/mgmt/member/update',
+                      type: 'POST',
+                      data: {id: id, nickname: nickname},
+                      success: function(response) {
+                        if(response.success) {
+                          alert('회원 정보가 수정되었습니다.');
+                          location.reload();
+                        }
+                      },
+                      error: function() {
+                        alert('err');
+                      }
+                    });
                   }
 
-                  /*$('#backDropModal').on('hidden.bs.modal', function (e){
-                    console.log('모달닫기이');
-                    document.forms['modal-content'].reset();
-                  });*/
+                  function delOk(memberId){
+                    if(confirm('이 회원을 탈퇴 시키겠습니까?')) {
+                      $.ajax({
+                        url: '/mgmt/member/update',
+                        type: 'POST',
+                        data: {id: memberId, deleteYn: '탈퇴'},
+                        success: function(response){
+                          if(response.success) {
+                            alert('회원이 성공적으로 탈퇴처리 되었습니다.');
+                            location.reload();
+                          }
+                        },
+                        error: function(){
+                          alert('err');
+                        }
+                      });
+                    }
+                  }
+
+                  function delNoOk(memberId) {
+                    if(confirm('이 회원을 복구 하시겠습니까?')) {
+                      $.ajax({
+                        url: '/mgmt/member/update',
+                        type: 'POST',
+                        data: {id: memberId, deleteYn: '회원'},
+                        success: function(response){
+                          if(response.success) {
+                            alert('회원을 성공적으로 복구하였습니다.');
+                            location.reload();
+                          }
+                        },
+                        error: function(){
+                          alert('err');
+                        }
+                      });
+                    }
+                  }
+
+                  $(document).ready(function() {
+                    $('#backDropModal').on('show.bs.modal', function (e) {
+                      const button = $(e.relatedTarget);
+                      const id = button.data('id');
+                      const email = button.data('email');
+                      const nickname = button.data('nickname');
+                      const role = button.data('role');
+
+                      const modal = $(this);
+                      modal.data('memberId', id);
+                      modal.find('.modal-title').text('Edit Member #' + id);
+                      modal.find('#emailBackdrop').val(email);
+                      modal.find('#nicknameBackdrop').val(nickname);
+                      modal.find('#roleBackdrop').val(role);
+                    });
+
+                    $('#backDropModal').on('hidden.bs.modal', function (e) {
+                      $(this).find('form')[0].reset();
+                    });
+                  });
                 </script>
 
                 <!-- Modal -->
@@ -103,7 +263,8 @@
                                     type="text"
                                     id="emailBackdrop"
                                     class="form-control"
-                                    placeholder="${member.email}"
+                                    value=""
+                                    readonly
                             />
                           </div>
                         </div>
@@ -114,7 +275,7 @@
                                     type="text"
                                     id="nicknameBackdrop"
                                     class="form-control"
-                                    placeholder="${member.nickname}"
+                                    value=""
                             />
                           </div>
                         </div>
@@ -126,17 +287,17 @@
                                     type="text"
                                     id="roleBackdrop"
                                     class="form-control"
-                                    placeholder="${member.role}"
-                                    readonly=""
+                                    value=""
+                                    readonly
                             />
                           </div>
                         </div>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                          Close
+                          닫기
                         </button>
-                        <button type="button" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-primary" onclick="saveMemberChanges()">저장</button>
                       </div>
                     </form>
                   </div>
@@ -150,38 +311,6 @@
     </div>
     <!--/ Striped Rows -->
 
-    <br>
-    <div>
-      <nav aria-label="Page navigation">
-        <ul class="pagination">
-          <li class="page-item prev">
-            <a class="page-link" href="javascript:void(0);"
-            ><i class="tf-icon bx bx-chevrons-left"></i
-            ></a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="javascript:void(0);">1</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="javascript:void(0);">2</a>
-          </li>
-          <li class="page-item active">
-            <a class="page-link" href="javascript:void(0);">3</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="javascript:void(0);">4</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="javascript:void(0);">5</a>
-          </li>
-          <li class="page-item next">
-            <a class="page-link" href="javascript:void(0);"
-            ><i class="tf-icon bx bx-chevrons-right"></i
-            ></a>
-          </li>
-        </ul>
-      </nav>
-    </div>
     <hr class="my-5" />
   </div>
   <!-- / Content -->
