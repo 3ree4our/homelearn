@@ -30,15 +30,11 @@ public class MemberController {
 
   private final MemberService memberService;
 
-  /*@GetMapping("/signup")
+  @GetMapping("/signup")
   public String moveToSignup(String code, @ModelAttribute("email") String email) {
     if (code.isEmpty() || email.isEmpty()) {
       return "redirect:/members/signup";
     }
-    return "jsp/signup";
-  }*/
-  @GetMapping("/signup")
-  public String moveToSignup() {
     return "jsp/signup";
   }
 

@@ -13,6 +13,7 @@
         <property name="filterProcessesUrl" value="/members/login-proc"/>
         <property name="authenticationManager" ref="authenticationManager"/>
     </bean>
+
     <bean id="logoutFilter" class="org.threefour.homelearn.member.jwt.CustomLogoutFilter"/>
     <bean id="jwtUtil" class="org.threefour.homelearn.member.jwt.JWTUtil"/>
     <bean id="jwtFilter" class="org.threefour.homelearn.member.jwt.JWTFilter"/>
@@ -32,9 +33,9 @@
 
     <security:http auto-config="true" use-expressions="true">
         <security:csrf disabled="true"/>
-        <security:intercept-url pattern="/resources/**" access="permitAll()"/>
+        <!--<security:intercept-url pattern="/resources/**" access="permitAll()"/>
         <security:intercept-url pattern="/members/login" access="permitAll()"/>
-        <security:intercept-url pattern="/members/login-proc" access="permitAll()"/>
+        <security:intercept-url pattern="/members/login-proc" access="permitAll()"/>-->
         <security:intercept-url pattern="/courseForm.do" access="hasRole('TEACHER')"/>
         <security:intercept-url pattern="/members/mypage" access="hasAnyRole('MEMBER','TEACHER')"/>
         <security:intercept-url pattern="/files/**" access="hasAnyRole('MEMBER','TEACHER')"/>
