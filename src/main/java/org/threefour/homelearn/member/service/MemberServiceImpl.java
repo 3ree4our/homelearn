@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.threefour.homelearn.enrollment.domain.EnrolledCourse;
 import org.threefour.homelearn.file.FileUtil;
 import org.threefour.homelearn.file.dto.AttachFile;
 import org.threefour.homelearn.file.mapper.FileMapper;
@@ -137,6 +138,12 @@ public class MemberServiceImpl implements MemberService {
   public int paymentsCountByMemberId(Long memberId) {
     int count = memberMapper.paymentsCountByMemberId(memberId);
     return count;
+  }
+
+  @Override
+  public EnrolledCourse getEnrolledCourseByMemberIdAndCourseId(Long memberId, Long courseId) {
+    EnrolledCourse enrolledCourse = memberMapper.selectEnrolledCourseByMemberIdAndCourseId(memberId, courseId);
+    return enrolledCourse;
   }
 
 }

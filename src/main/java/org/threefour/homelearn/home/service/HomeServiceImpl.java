@@ -2,6 +2,7 @@ package org.threefour.homelearn.home.service;
 
 import java.util.Collections;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.threefour.homelearn.course.domain.Course;
@@ -17,7 +18,6 @@ public class HomeServiceImpl implements HomeService {
   @Override
   public List<Course> getCourseBySearch(HomeSearchVO homeSearchVO) {
     return homeMapper.getCourseBySearch(homeSearchVO);
-
   }
 
   @Override

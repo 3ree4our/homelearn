@@ -20,7 +20,7 @@
 <c:import url="${pageContext.request.contextPath}/resources/common/jsp/header.jsp"/>
 
 <%
-    GetCartResponse getCartResponse = (GetCartResponse) request.getAttribute(CART_PARAMETER_NAME);
+  GetCartResponse getCartResponse = (GetCartResponse) request.getAttribute(CART_PARAMETER_NAME);
 %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
@@ -157,13 +157,13 @@
 </script>
 <!-- Page feature start -->
 <section class="page-feature">
-    <div class="container text-center">
-        <h2>Cart</h2>
-        <div class="breadcrumb">
-            <a href="home.html">Home</a>
-            <span>/ Cart</span>
-        </div>
+  <div class="container text-center">
+    <h2>Cart</h2>
+    <div class="breadcrumb">
+      <a href="home.html">Home</a>
+      <span>/ Cart</span>
     </div>
+  </div>
 </section>
 <!-- Page feature end -->
 
@@ -218,15 +218,15 @@
             </ul>
         </div>
     </div>
-    </div>
+  </div>
 </section>
 
 <!-- Total Price and Order Button Section Start -->
 <section class="total-price" style="margin-top: 50px;">
-    <div class="container text-center">
-        <h3>선택된 상품 가격: <span id="totalPrice">0 원</span></h3>
-        <button id="orderButton" class="btn btn-primary" style="margin-top: 20px;">결제하기</button>
-    </div>
+  <div class="container text-center">
+    <h3>선택된 상품 가격: <span id="totalPrice">0 원</span></h3>
+    <button id="orderButton" class="btn btn-primary" style="margin-top: 20px;">결제하기</button>
+  </div>
 </section>
 <!-- Total Price and Order Button Section End -->
 

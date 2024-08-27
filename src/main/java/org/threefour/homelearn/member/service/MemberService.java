@@ -1,6 +1,7 @@
 package org.threefour.homelearn.member.service;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.threefour.homelearn.enrollment.domain.EnrolledCourse;
 import org.threefour.homelearn.member.dto.EnrolledCourceListDTO;
 import org.threefour.homelearn.member.dto.MemberRequestDTO;
 import org.threefour.homelearn.member.dto.PaymentsResponseListDTO;
@@ -23,4 +24,6 @@ public interface MemberService {
   int coursesCountByMemberId(Long memberId);
 
   int paymentsCountByMemberId(Long memberId);
+
+  EnrolledCourse getEnrolledCourseByMemberIdAndCourseId(Long memberId, Long courseId);
 }
