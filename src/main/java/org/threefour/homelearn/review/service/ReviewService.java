@@ -1,10 +1,12 @@
 package org.threefour.homelearn.review.service;
 
-import java.util.List;
 import org.threefour.homelearn.review.domain.Review;
 
+import java.util.List;
+
 public interface ReviewService {
-   void writeReview(Review review);
+  void writeReview(Review review);
+
   List<Review> getList(long course_id);
 
 }

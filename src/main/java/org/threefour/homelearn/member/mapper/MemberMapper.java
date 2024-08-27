@@ -30,4 +30,6 @@ public interface MemberMapper {
   int paymentsCountByMemberId(Long memberId);
 
   EnrolledCourse selectEnrolledCourseByMemberIdAndCourseId(@Param("memberId") Long memberId, @Param("courseId") Long courseId);
+
+  List<MemberResponseDTO> selectReview(long course_id);
 }

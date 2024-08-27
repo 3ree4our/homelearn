@@ -1,12 +1,12 @@
 package org.threefour.homelearn.review.service;
 
 
-import java.util.Collections;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.threefour.homelearn.review.domain.Review;
 import org.threefour.homelearn.review.mapper.ReviewMapper;
+
+import java.util.List;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -16,7 +16,7 @@ public class ReviewServiceImpl implements ReviewService {
 
   @Override
   public void writeReview(Review review) {
-     reviewMapper.writeReview(review);
+    reviewMapper.writeReview(review);
   }
 
   @Override
