@@ -14,9 +14,14 @@ const isMatch = (password1, password2) => password1 === password2;
 let provePasswordState1 = false;
 let provePasswordState2 = false;
 
+const emailParam = new URLSearchParams(location.search);
+let email = '';
+if (emailParam !== null)
+  email = emailParam.get('email');
 
+emailEle.value = email;
 emailEle.addEventListener('keydown', (e) => {
-  //e.preventDefault();
+  e.preventDefault();
 });
 
 passwordEle.addEventListener('keyup', () => {

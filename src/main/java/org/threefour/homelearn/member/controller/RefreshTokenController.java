@@ -44,11 +44,10 @@ public class RefreshTokenController {
 
     Function<Claims, String> getCategory = claims -> claims.get("category", String.class);
     String category = jwtUtil.getClaim(refreshToken, getCategory);
-    System.out.println("category: " + category);
+
     if (!category.startsWith("refresh")) return new ResponseEntity<>("refresh token invalid", HttpStatus.BAD_REQUEST);
 
     boolean exist = refreshService.isExist(refreshToken);
-    System.out.println("exist: " + exist);
     if (!exist) return new ResponseEntity<>("refresh token not exist", HttpStatus.BAD_REQUEST);
 
     // 새로운 토큰 발급
@@ -76,8 +75,10 @@ public class RefreshTokenController {
     String newAccessToken = jwtUtil.createToken(accessTokenMap, username, 1000 * 60 * 10L);
     String newRefreshToken = jwtUtil.createToken(refreshTokenMap, username, 1000 * 60 * 60 * 24L);
 
-    refreshService.deleteRefreshToken(refreshToken);
-    refreshService.addRefreshToken(username, newRefreshToken, 1000 * 60 * 60 * 24L);
+    int result = refreshService.deleteRefreshToken(refreshToken);
+    if (result > 0) refreshService.addRefreshToken(username, newRefreshToken, 1000 * 60 * 60 * 24L);
+    System.out.println("뉴 리프레시 생명주기: " + System.currentTimeMillis() + 1000 * 60 * 60 * 24L);
+    System.out.println("뉴 리프레시 쿠키: " + 24 * 60 * 60);
 
     response.addCookie(createCookie("accessToken", newAccessToken));
     response.addCookie(createCookie("refreshToken", newRefreshToken));

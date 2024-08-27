@@ -37,9 +37,13 @@ public class MemberApiController {
     return ResponseEntity.ok(paging);
   }
 
-  @PostMapping("/members/password")
-  public String findPasswordByEmail(String email) {
-    //memberService
-    return null;
+  @GetMapping("/members/{memberid}/teacher")
+  public ResponseEntity<Void> registerTeacher(@PathVariable("memberid") Long memberId) {
+    int result = memberService.registerTeacherByMemberId(memberId);
+
+    if (result > 0) return ResponseEntity.ok().build();
+    else return ResponseEntity.badRequest().build();
   }
+
+
 }
