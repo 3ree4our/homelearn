@@ -85,4 +85,8 @@
     <context:component-scan base-package="org.threefour.homelearn.enrollment.mapper"/>
     <context:component-scan base-package="org.threefour.homelearn.enrollment.service"/>
     <context:component-scan base-package="org.threefour.homelearn.enrollment.domain"/>
+    <mybatis-spring:scan base-package="org.threefour.homelearn.review.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.review.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.review.service"/>
+    <context:component-scan base-package="org.threefour.homelearn.review.domain"/>
 </beans>

@@ -5,26 +5,26 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Favicon icons -->
-  <link href="resources/images/favicon.png" rel="shortcut icon">
+    <!-- Favicon icons -->
+    <link href="resources/images/favicon.png" rel="shortcut icon">
 
-  <!-- All CSS -->
-  <link rel="stylesheet" href="resources/css/bootstrap.min.css">
-  <link rel="stylesheet" href="resources/css/themify-icons.css">
-  <link rel="stylesheet" href="resources/css/owl.carousel.min.css">
-  <link rel="stylesheet" href="resources/css/style.css">
+    <!-- All CSS -->
+    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/css/themify-icons.css">
+    <link rel="stylesheet" href="resources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="resources/css/style.css">
 
-  <title>Elearning - Tutor, Education HTML Template</title>
+    <title>Elearning - Tutor, Education HTML Template</title>
 </head>
 <body>
 
 <!-- Preloader -->
 <div id="preloader">
-  <div id="status"></div>
+    <div id="status"></div>
 </div>
 
 <!-- Header strat -->
@@ -34,48 +34,49 @@
 
 <!-- Login / Registration start -->
 <section class="banner login-registration">
-  <div class="vector-img">
-  </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="content-box">
-          <h2>강좌개설</h2>
-        </div>
-        <form class="sl-form" name="input" method="post" action="courseWrite.do"
-              enctype="multipart/form-data">
-          <input type='radio' name='cate' value='korean' checked/>국어&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type='radio' name='cate' value='english'/>영어&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type='radio' name='cate' value='math'/>수학</br>&nbsp;&nbsp;&nbsp;&nbsp;
-          </br>
-          <div class="form-group">
-            <label>강좌명</label>
-            <input type="text" id="name" name="name" placeholder="강좌명을 입력해주세요.">
-          </div>
-          <div class="form-group">
-            <label>설명</label>
-            <input type="text" id="description" name="description"
-                   placeholder="강좌 설명을 입력해주세요.">
-          </div>
-          <div class="form-group">
-            <label>수강기간 &nbsp;&nbsp;<span style="color:orange; font-weight: bold;">(단위: "일")</span></label>
-            <input type="text" id="period" name="period"
-                   placeholder="수강기간을 숫자로 입력해주세요.">
-          </div>
-          <div class="form-group">
-            <label>가격 &nbsp;&nbsp;<span style="color:orange; font-weight: bold;">(단위: "$")<span></span></label>
-            <input type="text" id="price" name="price" placeholder="가격을  숫자로 입력해주세요.">
-          </div>
-          <div class="form-group">
-            <label>대표 이미지 &nbsp;&nbsp;<span style="color:orange; font-weight: bold;">"이미지만  가능"</span></label>
-            <input type="file" name="file">
-          </div>
-          <button type="button" class="btn btn-filled btn-round" onclick="check()">개설하기
-          </button>
-        </form>
-      </div>
+    <div class="vector-img">
     </div>
-  </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="content-box">
+                    <h2>강좌개설</h2>
+                </div>
+                <form class="sl-form" name="input" method="post" action="courseWrite.do"
+                      enctype="multipart/form-data">
+                    <input type='radio' name='cate' value='korean' checked/>국어&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type='radio' name='cate' value='english'/>영어&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type='radio' name='cate' value='math'/>수학</br>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </br>
+                    <div class="form-group">
+                        <label>강좌명</label>
+                        <input type="text" id="name" name="name" placeholder="강좌명을 입력해주세요.">
+                    </div>
+                    <div class="form-group">
+                        <label>설명</label>
+                        <input type="text" id="description" name="description"
+                               placeholder="강좌 설명을 입력해주세요.">
+                    </div>
+                    <div class="form-group">
+                        <label>수강기간 &nbsp;&nbsp;<span style="color:orange; font-weight: bold;">(단위: "일")</span></label>
+                        <input type="text" id="period" name="period"
+                               placeholder="수강기간을 숫자로 입력해주세요.">
+                    </div>
+                    <div class="form-group">
+                        <label>가격 &nbsp;&nbsp;<span style="color:orange; font-weight: bold;">(단위: "$")<span></span></label>
+                        <input type="text" id="price" name="price" placeholder="가격을  숫자로 입력해주세요.">
+                    </div>
+                    <div class="form-group">
+                        <label>대표 이미지 &nbsp;&nbsp;<span style="color:orange; font-weight: bold;">"이미지만  가능"</span></label>
+                        <input type="file" name="file">
+                    </div>
+                    <button type="button" class="btn btn-filled btn-round" onclick="check()">개설하기
+                    </button>
+                    <p class="notice">이미 로그인한 아이디가 있습니까? <a href="login.html">로그인 하러가기</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
 </section>
 <!-- Login / Registration end -->
 

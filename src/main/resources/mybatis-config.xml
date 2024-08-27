@@ -36,6 +36,8 @@
         <typeAlias alias="CntWeekAdmin" type="org.threefour.homelearn.admin.domain.CntWeekAdmin"/>
         <typeAlias alias="Payment" type="org.threefour.homelearn.payment.domain.Payment"/>
         <typeAlias alias="EnrolledCourse" type="org.threefour.homelearn.enrollment.domain.EnrolledCourse"/>
+        <typeAlias alias="Review" type="org.threefour.homelearn.review.domain.Review"/>
+
     </typeAliases>
 
     <mappers>
@@ -51,5 +53,6 @@
         <mapper resource="PaymentMapper.xml"/>
         <mapper resource="OrderMapper.xml"/>
         <mapper resource="EnrollmentMapper.xml"/>
+        <mapper resource="ReviewMapper.xml"/>
     </mappers>
 </configuration>
