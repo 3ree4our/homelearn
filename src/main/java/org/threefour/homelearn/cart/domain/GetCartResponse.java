@@ -20,9 +20,12 @@ public class GetCartResponse {
         }
 
         List<GetCartCourseResponse> getCartResponse = new ArrayList<>();
+
         for (CartCourse cartCourse : cart.getCartCourses()) {
-            String subjectName = courseService.getSubjectName(cartCourse.getCourse().getSubject_id());
-            getCartResponse.add(GetCartCourseResponse.from(cartCourse, subjectName));
+            if (cartCourse.getCourse() != null) {
+                String subjectName = courseService.getSubjectName(cartCourse.getCourse().getSubjectId());
+                getCartResponse.add(GetCartCourseResponse.from(cartCourse, subjectName));
+            }
         }
 
         return new GetCartResponse(studentId, getCartResponse);

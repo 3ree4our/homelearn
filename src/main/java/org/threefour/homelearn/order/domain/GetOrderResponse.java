@@ -16,6 +16,7 @@ public class GetOrderResponse {
     private String merchantUid;
     private int paidAmount;
     private int refundedAmount;
+    private int remainedAmount;
     private List<Course> courses;
     private List<EnrolledCourse> enrolledCourses;
     private Timestamp createdAt;
@@ -23,7 +24,7 @@ public class GetOrderResponse {
 
     @Builder
     private GetOrderResponse(
-            String impUid, Long ordererId, String merchantUid, int paidAmount, int refundedAmount,
+            String impUid, Long ordererId, String merchantUid, int paidAmount, int refundedAmount, int remainedAmount,
             List<Course> courses, List<EnrolledCourse> enrolledCourses, Timestamp createdAt, Timestamp modifiedAt
     ) {
         this.impUid = impUid;
@@ -31,6 +32,7 @@ public class GetOrderResponse {
         this.merchantUid = merchantUid;
         this.paidAmount = paidAmount;
         this.refundedAmount = refundedAmount;
+        this.remainedAmount = remainedAmount;
         this.courses = courses;
         this.enrolledCourses = enrolledCourses;
         this.createdAt = createdAt;
@@ -42,13 +44,16 @@ public class GetOrderResponse {
     ) {
         int paidAmount = 0;
         int refundedAmount = 0;
+        int remainedAmount = 0;
+
         for (Payment payment : payments) {
-            if (payment.getPaid_amount() > 0) {
+            if (payment.getRefunded_amount() == 0) {
                 paidAmount = payment.getPaid_amount();
                 continue;
             }
             if (payment.getRefunded_amount() > 0) {
-                refundedAmount = payment.getRefunded_amount();
+                refundedAmount += payment.getRefunded_amount();
+                remainedAmount = payment.getRemained_amount();
             }
         }
 
@@ -58,6 +63,7 @@ public class GetOrderResponse {
                 .merchantUid(order.getMerchantUid())
                 .paidAmount(paidAmount)
                 .refundedAmount(refundedAmount)
+                .remainedAmount(remainedAmount)
                 .courses(courses)
                 .enrolledCourses(enrolledCourses)
                 .createdAt(order.getCreatedAt())

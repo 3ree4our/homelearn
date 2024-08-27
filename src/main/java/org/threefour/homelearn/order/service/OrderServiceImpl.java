@@ -23,7 +23,7 @@ import java.util.Map;
 
 import static org.springframework.transaction.annotation.Isolation.READ_COMMITTED;
 import static org.springframework.transaction.annotation.Isolation.READ_UNCOMMITTED;
-import static org.threefour.homelearn.order.exception.ExceptionMessage.ORDER_ID_NOT_FOUND_EXCEPTION_MESSAGE;
+import static org.threefour.homelearn.order.exception.ExceptionMessage.ORDER_NOT_FOUND_EXCEPTION_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +36,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
 
     @Override
+    @Transactional(isolation = READ_COMMITTED, readOnly = true, timeout = 10)
     public GetOrdersResponse get(Long ordererId, Integer size, Integer pageNumber) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("ordererId", ordererId);
@@ -46,12 +47,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional(isolation = READ_COMMITTED, readOnly = true, timeout = 10)
+    @Transactional(isolation = READ_COMMITTED, readOnly = true, timeout = 20)
     public GetOrderResponse get(String impUid) {
         Order order = orderMapper.findByImpUid(impUid);
         if (order == null) {
             GlobalExceptionHandler.throwRuntimeException(
-                    new OrderNotFoundException(String.format(ORDER_ID_NOT_FOUND_EXCEPTION_MESSAGE, impUid))
+                    new OrderNotFoundException(String.format(ORDER_NOT_FOUND_EXCEPTION_MESSAGE, impUid))
             );
         }
         List<Payment> payments = paymentService.getPaymentByImpUid(impUid);

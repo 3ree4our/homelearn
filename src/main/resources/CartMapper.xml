@@ -37,8 +37,8 @@
                course.PERIOD, course.FFNAME, course.FNAME, course.OFNAME, course.FSIZE,
                course.CREATED_AT as COURSE_CREATED_AT, course.MODIFIED_AT as COURSE_MODIFIED_AT
         from CART c
-                 join CART_COURSE cc on c.STUDENT_ID = cc.STUDENT_ID
-                 join COURSE course on cc.COURSE_ID = course.ID
+                 left join CART_COURSE cc on c.STUDENT_ID = cc.STUDENT_ID
+                 left join COURSE course on cc.COURSE_ID = course.ID
         where c.STUDENT_ID = #{studentId}
     </select>
     <insert id="createCart">

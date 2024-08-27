@@ -112,48 +112,48 @@
                 alert('주문 요청에 실패했습니다. 다시 시도해 주세요.');
             }
         });
-      });
+    });
 
-      if (selectedCourses.length > 0) {
+    if (selectedCourses.length > 0) {
         const orderData = {
-          studentId            : studentId,
-          orderedCourseRequests: selectedCourses,
-          orderPrice           : totalPrice,
+            studentId            : studentId,
+            orderedCourseRequests: selectedCourses,
+            orderPrice           : totalPrice,
         };
 
         result = await requestPay(orderData);
 
         const paidOrderData = {
-          impUid             : result.imp_uid,
-          merchantUid        : 'abcdafdsflkjasdf',
-          ordererId          : studentId,
-          paidAmount         : result.paid_amount,
-          courseOrderRequests: selectedCourses
+            impUid             : result.imp_uid,
+            merchantUid        : 'abcdafdsflkjasdf',
+            ordererId          : studentId,
+            paidAmount         : result.paid_amount,
+            courseOrderRequests: selectedCourses
         }
 
         var paidOrderRequest = JSON.stringify(paidOrderData);
 
         requestOrder(paidOrderRequest);
-      } else {
+    } else {
         alert("주문할 상품을 선택하세요.");
-      }
+    }
     })
-  });
-
-  async function requestOrder(paidOrderRequest) {
-    await $.ajax({
-      type       : "POST",
-      url        : "/submit-order.do",
-      contentType: "application/json",
-      data       : paidOrderRequest,
-      success    : function () {
-        location.href = "order.do?impUid=" + JSON.parse(paidOrderRequest).impUid
-      },
-      error      : function () {
-        alert('요청에 실패했습니다. 다시 시도해 주세요.');
-      }
     });
-  }
+
+    async function requestOrder(paidOrderRequest) {
+        await $.ajax({
+            type       : "POST",
+            url        : "/submit-order.do",
+            contentType: "application/json",
+            data       : paidOrderRequest,
+            success    : function () {
+                location.href = "order.do?impUid=" + JSON.parse(paidOrderRequest).impUid
+            },
+            error      : function () {
+                alert('요청에 실패했습니다. 다시 시도해 주세요.');
+            }
+        });
+    }
 </script>
 <!-- Page feature start -->
 <section class="page-feature">
@@ -193,7 +193,7 @@
                 <li style="display: flex; align-items: center; justify-content: space-between; width: 80%; margin-bottom: 30px; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
                     <input type="checkbox" name="selectedCourses" value="<%= getCartResponse.get(i).getId() %>" style="margin-right: 20px;">
 
-                    <a href="courseDetail.do?courseId=<%= course.getId() %>" data-course-id="<%= course.getId() %>" style="flex-grow: 1; display: block; text-decoration: none; color: inherit; text-align: left;">
+                    <a href="courseDetail.do?course_id=<%= course.getId() %>" data-course-id="<%= course.getId() %>" style="flex-grow: 1; display: block; text-decoration: none; color: inherit; text-align: left;">
                         <img src="resources/images/${course.ffname}" alt="<%= course.getName() %>" style="width: 100px; height: auto; border-radius: 8px; float: left; margin-right: 20px;">
                         <div style="overflow: hidden;">
                             <h5 class="course-name" style="margin-top: 10px;"><%= course.getName() %></h5>
@@ -205,8 +205,7 @@
                         </div>
                     </a>
 
-                    <!-- 삭제 버튼 -->
-                    <form action="delete-cart-course.do" method="GET" style="margin-left: 20px;">
+                    <form action="delete-cart-course.do" method="POST" style="margin-left: 20px;">
                         <input type="hidden" name="studentId" value="<%= getCartResponse.getStudentId() %>">
                         <input type="hidden" name="cartCourseId" value="<%= getCartResponse.get(i).getId() %>">
                         <button type="submit" class="btn btn-danger">삭제</button>

@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" pageEncoding="UTF-8" %>
 <%@ page import="org.threefour.homelearn.order.domain.GetOrdersResponse" %>
 <%@ page import="org.threefour.homelearn.order.domain.GetOrderResponse" %>
 <%@ page import="org.threefour.homelearn.cart.domain.PagingCount" %>
@@ -8,7 +7,31 @@
 <%@ page import="static org.threefour.homelearn.order.RequestConstant.PAGING_COUNTS_PARAMETER_NAME" %>
 <%@ page import="static org.threefour.homelearn.order.RequestConstant.SIZE_PARAMETER_NAME" %>
 <%@ page import="static org.threefour.homelearn.order.RequestConstant.PAGE_NUMBER_PARAMETER_NAME" %>
-<%@ include file="header.jsp" %>
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon icons -->
+    <link href="images/favicon.png" rel="shortcut icon">
+
+    <!-- All CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/themify-icons.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
+
+    <title>Elearning - Tutor, Education HTML Template</title>
+</head>
+<body>
+
+<!-- Preloader -->
+<div id="preloader">
+    <div id="status"></div>
+</div>
+<c:import url="${pageContext.request.contextPath}/resources/common/jsp/header.jsp"/>
 <%
     GetOrdersResponse getOrdersResponse = (GetOrdersResponse) request.getAttribute(ORDERS_PARAMETER_NAME);
     PagingCount pagingCount = (PagingCount) request.getAttribute(PAGING_COUNTS_PARAMETER_NAME);
@@ -56,12 +79,17 @@
                 <li style="margin-bottom: 30px; flex: 1 1 100%;">
                     <a href="order.do?impUid=<%= getOrderResponse.getImpUid() %>"
                        style="display: block; text-decoration: none; color: inherit; padding-left: 250px;">
-                        <h5 style="margin-top: 10px;">주문번호: <%= getOrderResponse.getImpUid() %></h5>
+                        <h5 style="margin-top: 10px;">주문번호: <%= getOrderResponse.getImpUid() %>
+                        </h5>
                         <div class="meta-tags" style="font-size: 0.9em; color: gray; padding-left: 77px;">
                             <%
-                                if (getOrderResponse.getRefundedAmount() > 0) {
+                                if (getOrderResponse.getRemainedAmount() == 0) {
                             %>
                             <span class="post-meta category">환불 완료</span> |
+                            <%
+                            } else if (getOrderResponse.getRefundedAmount() > 0) {
+                            %>
+                            <span class="post-meta category">부분 환불</span> |
                             <%
                             } else {
                             %>
@@ -69,7 +97,7 @@
                             <%
                                 }
                             %>
-                            <span class="post-meta date"><%= getOrderResponse.getPaidAmount() %> 원</span>
+                            <span class="post-meta date"><%= getOrderResponse.getRemainedAmount() %> 원</span>
                         </div>
                     </a>
                 </li>
@@ -127,6 +155,12 @@
 </section>
 <!-- Blog Posts section end -->
 
-<%@ include file="footer.jsp" %>
+<c:import url="${pageContext.request.contextPath}/resources/common/jsp/footer.jsp"/>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxYLtelXg0PGjeTiFDtlN7nrH_47buDWo"></script>
+<script src="js/scripts.js"></script>
 </body>
 </html>

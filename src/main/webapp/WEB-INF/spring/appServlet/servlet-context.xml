@@ -36,6 +36,8 @@
 
     <context:component-scan base-package="org.threefour.homelearn.admin.controller"/>
     <context:component-scan base-package="org.threefour.homelearn.order.controller"/>
+  
+    <context:component-scan base-package="org.threefour.homelearn.enrollment.controller"/>
     <context:component-scan base-package="org.threefour.homelearn.review.controller"/>
 
     <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
