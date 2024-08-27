@@ -5,7 +5,7 @@
 <mapper namespace="org.threefour.homelearn.home.mapper.HomeMapper">
   <select id="getCourseBySearch" parameterType="HomeSearchVO" resultType="Course">
     SELECT * FROM COURSE
-    WHERE name LIKE CONCAT('%', #{search}, '%') and SUBJECT_ID =(select id from subject where name= #{keyword}) ORDER BY ID desc;
+    WHERE name LIKE CONCAT('%', #{search}, '%') and SUBJECT_ID =(select id from subject where name= #{keyword}) ORDER BY ID desc
   </select>
   <select id="getCourseNameBySearch" parameterType="HomeSearchVO" resultType="String">
     SELECT name FROM COURSE

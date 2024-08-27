@@ -21,7 +21,7 @@ public class GetCartResponse {
 
         List<GetCartCourseResponse> getCartResponse = new ArrayList<>();
         for (CartCourse cartCourse : cart.getCartCourses()) {
-            String subjectName = courseService.getSubjectName(cartCourse.getCourse().getSubjectId());
+            String subjectName = courseService.getSubjectName(cartCourse.getCourse().getSubject_id());
             getCartResponse.add(GetCartCourseResponse.from(cartCourse, subjectName));
         }
 
