@@ -48,8 +48,12 @@ public class PaymentServiceImpl implements PaymentService {
 
     // 가격 비교 (주문 데이터를 실제로 조회해야 함)
     int order_amount = paymentRequest.getOrder_amount();
-    System.out.println("@@@order_amount: " + order_amount);
+    //System.out.println("@@@order_amount: " + order_amount);
     int paid_amount = payment.getInt("amount");
+    String orderName = payment.getString("name");
+    System.out.println("@@orderName: " + orderName); ///나중에 paymentHistory에 넣을지 말지 결정
+
+    long orderer_id = paymentRequest.getOrderer_id();
 
     if (order_amount == paid_amount) {
 
@@ -68,13 +72,13 @@ public class PaymentServiceImpl implements PaymentService {
           Payment paymentRecord = new Payment();
           paymentRecord.setImp_uid(paymentRequest.getImp_uid());
           paymentRecord.setMerchant_uid(paymentRequest.getMerchant_uid());
-          paymentRecord.setOrderer_id(0);
+          paymentRecord.setOrderer_id(orderer_id);
           paymentRecord.setPaid_amount(paid_amount);
           paymentRecord.setRefunded_amount(0);
-          paymentRecord.setRemained_amount(0);
+          paymentRecord.setRemained_amount(paid_amount);
           //paymentRecord.setStatus(payment.getString("status"));
 
-          System.out.println(paymentRecord + "@");
+          //System.out.println(paymentRecord + "@");
 
           return paymentRecord;
 
@@ -94,17 +98,21 @@ public class PaymentServiceImpl implements PaymentService {
   }
 
   @Override
-  public void cancelPayment(PaymentRequest paymentRequest) throws Exception {
+  public void cancelPayment(long ordererId, long courseId, String impUid, int price) throws Exception {
     //맨처음 결제 금액 결제히스토리에서 가져오기
     String accessToken = getAccessToken();
     //JSONObject payment = getPaymentDetails(paymentRequest.getImp_uid(), accessToken);
     // 포트원 API를 호출하여 결제를 취소합니다
-    cancelPaymentOnPortOne(paymentRequest.getImp_uid(), paymentRequest.getCancel_amount(), accessToken);
+    //cancelPaymentOnPortOne(paymentRequest.getImp_uid(), paymentRequest.getCancel_amount(), accessToken);
+    cancelPaymentOnPortOne(impUid, price, accessToken);
 
     //결제 단건 조회
-    JSONObject payment = getPaymentDetails(paymentRequest.getImp_uid(), accessToken);
+    //JSONObject payment = getPaymentDetails(paymentRequest.getImp_uid(), accessToken);
+    JSONObject payment = getPaymentDetails(impUid, accessToken);
+
     int paid_amount = payment.getInt("amount"); //실결제 금액
-    int totalCancel_amount = payment.getInt("cancel_amount"); //누적 환불 금액
+    int remained_amount = paid_amount - payment.getInt("cancel_amount"); //잔여 금액
+
 
     // 주문 상태를 취소로 업데이트
     //orderMapper.updateOrderStatus(paymentRequest.getMerchant_uid(), "canceled");
@@ -113,25 +121,23 @@ public class PaymentServiceImpl implements PaymentService {
     Payment paymentRecord = new Payment();
     //ID는 자동 생성 될 거고
     //주문자 ID
-    paymentRecord.setOrderer_id(0);
-    paymentRecord.setImp_uid(paymentRequest.getImp_uid());
-    paymentRecord.setMerchant_uid(paymentRequest.getMerchant_uid());
+    paymentRecord.setOrderer_id(ordererId);
+    //paymentRecord.setImp_uid(paymentRequest.getImp_uid());
+    paymentRecord.setImp_uid(impUid);
+    //paymentRecord.setMerchant_uid(paymentRequest.getMerchant_uid());
     paymentRecord.setPaid_amount(paid_amount); //맨처음 결제 금액 //결제 히스토리.getPaid_amount() //특정 결제일 때
-    paymentRecord.setRefunded_amount(paymentRequest.getCancel_amount());
-    paymentRecord.setRemained_amount(totalCancel_amount);
-
-
-    //paymentRecord.setCreated_at(payment.getDate("paid_at"));
-    //paymentRecord.setStatus(payment.getString("status"));
-
+    //paymentRecord.setRefunded_amount(paymentRequest.getCancel_amount()); //환불 금액
+    paymentRecord.setRefunded_amount(price); //환불 금액
+    paymentRecord.setRemained_amount(remained_amount); //잔여 환불 금액
 
     savePayment(paymentRecord);
 
   }
 
+
   @Override
   public void savePayment(Payment payment) {
-    System.out.println(payment.getOrderer_id() + "als;fjsdaklf");
+    //System.out.println(payment.getOrderer_id() + "als;fjsdaklf");
     paymentMapper.insertPayment(payment);
   }
 

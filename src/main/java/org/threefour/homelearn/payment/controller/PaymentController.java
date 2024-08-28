@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.threefour.homelearn.enrollment.service.EnrollmentService;
 import org.threefour.homelearn.payment.domain.Payment;
 import org.threefour.homelearn.payment.domain.PaymentRequest;
 import org.threefour.homelearn.payment.service.PaymentService;
@@ -21,6 +22,7 @@ public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
+    private EnrollmentService enrollmentService;
 
     public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
@@ -59,8 +61,9 @@ public class PaymentController {
     }
 
     //결제 취소
-    @PostMapping("/cancel")
-    public ResponseEntity<?> cancelPayment(@RequestBody PaymentRequest paymentRequest) {
+    //결제 취소
+    @PostMapping("/cancel.do")
+    public String cancelPayment(@RequestParam Long ordererId, @RequestParam Long courseId, @RequestParam String impUid, @RequestParam int price) {
         try {
             // 주문 정보 조회
             //Order order = orderService.findById(paymentRequest.getMerchant_uid());
@@ -69,21 +72,26 @@ public class PaymentController {
             //}
             //System.out.println(paymentRequest);
             // 결제 취소
-            paymentService.cancelPayment(paymentRequest);
+            paymentService.cancelPayment(ordererId, courseId, impUid, price);
+            enrollmentService.cancelEnrolledCourse(courseId, impUid);
 
 
-            return ResponseEntity.ok("Payment cancelled successfully");
+            return "redirect:/order.do?impUid=" + impUid;
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment cancellation failed: " + e.getMessage());
+            return null;
         }
     }
 
+
     //결제 히스토리
-    @PostMapping("/paymentsByOrderer_id")
+    //결제 히스토리
+    @GetMapping("/paymentsByOrderer_id/{orderer_id}")
     public ModelAndView paymentsByOrderer_id(
-            @RequestParam("orderer_id") long orderer_id,
+            @PathVariable("orderer_id") Long orderer_id,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size){
+            @RequestParam(value = "size", defaultValue = "3") int size){
+
+
 
 
         int offset = page*size;

@@ -15,8 +15,10 @@ const paymentListAELe = document.querySelector('#mypageNav a:nth-child(2)');
 const paymentHistoryListAELe = document.querySelector('#mypageNav a:last-child');
 
 const outUlDiv = document.querySelector('div.col-md-4.col-sm-6:first-child > div ul')
-
-if (data === null || accessToken === null) location.href = `${SERVER_API}/members/login`
+if (data === null || accessToken === 'null') {
+  //localStorage.removeItem('member');
+  location.href = `${SERVER_API}/members/login`
+}
 
 if (data) {
   const jsonData = JSON.parse(data);
@@ -99,21 +101,34 @@ courseRegisterListAEle.addEventListener('click', async (e) => {
 })
 courseRegisterListAEle.click();
 
-
 paymentListAELe.addEventListener('click', async (e) => {
   e.preventDefault();
-  const response = await fetch(`${SERVER_API}/resources/common/jsp/nav/payment-list.jsp`)
+  const jsonData = JSON.parse(data);
+  location.href =`${SERVER_API}/payment/paymentsByOrderer_id/${jsonData.id}`
+ /* const accessToken = localStorage.getItem('access_token');
+  const r = await fetch(`${SERVER_API}/payment/paymentsByOrderer_id/${jsonData.id}`, {
+    method     : "GET",
+    credentials: "include",
+    headers    : {
+      Authorization: `Bearer ${accessToken}`
+    }
+  }).then(result =>{
+    console.log("asdasd". result)
+  })*/
+
+
+})
+
+/*paymentListAELe.addEventListener('click', async (e) => {
+  e.preventDefault();
+  const response = await fetch(`${SERVER_API}/resources/common/jsp/nav/paymentHistory2.jsp`)
   const result = await response.text();
-  const pagingData = await getPaymentsByMemberId(1);
   const navbarList = document.querySelector('#navbarList');
 
   if (navbarList.hasChildNodes()) navbarList.replaceChildren();
 
   navbarList.innerHTML = result;
-
-  drawPaymentHistory(pagingData);
-  drawPagination(pagingData)
-})
+})*/
 
 paymentHistoryListAELe.addEventListener('click', async (e) => {
   e.preventDefault();
@@ -143,3 +158,6 @@ inputFileEle.addEventListener('change', (e) => {
     profileImageEle.src = reader.result;
   };
 })
+
+
+

@@ -13,4 +13,5 @@ public class PaymentRequest {
   private int order_amount; //주문한 금액
   private int cancel_amount; //환불할 금액
   private String name; //결제건의 제품명
+  private long orderer_id;
 }
