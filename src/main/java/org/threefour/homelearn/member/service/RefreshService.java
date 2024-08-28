@@ -25,8 +25,8 @@ public class RefreshService {
     return refreshToken;
   }
 
-  public void deleteRefreshToken(String refreshToken) {
-    refreshMapper.deleteByRefreshToken(refreshToken);
+  public int deleteRefreshToken(String refreshToken) {
+    return refreshMapper.deleteByRefreshToken(refreshToken);
   }
 
   public void addRefreshToken(String username, String newRefreshToken, Long expiredMs) {

@@ -112,48 +112,48 @@
                 alert('주문 요청에 실패했습니다. 다시 시도해 주세요.');
             }
         });
-      });
+    });
 
-      if (selectedCourses.length > 0) {
+    if (selectedCourses.length > 0) {
         const orderData = {
-          studentId            : studentId,
-          orderedCourseRequests: selectedCourses,
-          orderPrice           : totalPrice,
+            studentId            : studentId,
+            orderedCourseRequests: selectedCourses,
+            orderPrice           : totalPrice,
         };
 
         result = await requestPay(orderData);
 
         const paidOrderData = {
-          impUid             : result.imp_uid,
-          merchantUid        : 'abcdafdsflkjasdf',
-          ordererId          : studentId,
-          paidAmount         : result.paid_amount,
-          courseOrderRequests: selectedCourses
+            impUid             : result.imp_uid,
+            merchantUid        : 'abcdafdsflkjasdf',
+            ordererId          : studentId,
+            paidAmount         : result.paid_amount,
+            courseOrderRequests: selectedCourses
         }
 
         var paidOrderRequest = JSON.stringify(paidOrderData);
 
         requestOrder(paidOrderRequest);
-      } else {
+    } else {
         alert("주문할 상품을 선택하세요.");
-      }
+    }
     })
-  });
-
-  async function requestOrder(paidOrderRequest) {
-    await $.ajax({
-      type       : "POST",
-      url        : "/submit-order.do",
-      contentType: "application/json",
-      data       : paidOrderRequest,
-      success    : function () {
-        location.href = "order.do?impUid=" + JSON.parse(paidOrderRequest).impUid
-      },
-      error      : function () {
-        alert('요청에 실패했습니다. 다시 시도해 주세요.');
-      }
     });
-  }
+
+    async function requestOrder(paidOrderRequest) {
+        await $.ajax({
+            type       : "POST",
+            url        : "/submit-order.do",
+            contentType: "application/json",
+            data       : paidOrderRequest,
+            success    : function () {
+                location.href = "order.do?impUid=" + JSON.parse(paidOrderRequest).impUid
+            },
+            error      : function () {
+                alert('요청에 실패했습니다. 다시 시도해 주세요.');
+            }
+        });
+    }
 </script>
 <!-- Page feature start -->
 <section class="page-feature">

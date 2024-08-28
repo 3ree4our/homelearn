@@ -9,7 +9,8 @@
   </insert>
 
   <select id="getList" parameterType="long" resultType="Review">
-    select * from review where course_id = #{course_id} order by ID desc;
+    select * from review r join member m on r.STUDENT_ID = m.ID where course_id =#{course_id};
+   /* select * from review where course_id = #{course_id} order by ID asc;*/
   </select>
 
 </mapper>

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import io.jsonwebtoken.Claims;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -202,7 +201,6 @@ public class CourseController {
   @ResponseBody
   @GetMapping("/courses/{courseid}")
   public ResponseEntity<Void> checkEnrolledByCourseId(@PathVariable("courseid") Long courseId) {
-    System.out.println("호출!!");
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     CustomUserDetails customUser = (CustomUserDetails) authentication.getPrincipal();
     Long memberId = customUser.getId();

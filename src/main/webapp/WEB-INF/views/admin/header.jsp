@@ -17,10 +17,6 @@
 
   <title>Member Tables</title>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon"
-        href="${pageContext.request.contextPath}/resources/admin/assets/img/favicon/favicon.ico"/>
-
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -54,8 +50,8 @@
 
   <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-      <a href="home-01" class="logo">
-        <img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="">
+      <a href="/" class="logo">
+        Home Learn
       </a>
 
       <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">

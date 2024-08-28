@@ -11,6 +11,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.threefour.homelearn.course.domain.Course;
+import org.threefour.homelearn.member.dto.EnrolledCourceListDTO;
 import org.threefour.homelearn.member.dto.MemberRequestDTO;
 import org.threefour.homelearn.member.service.MemberService;
 import org.threefour.homelearn.paging.Paging;
@@ -21,6 +23,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/members")
@@ -30,15 +33,11 @@ public class MemberController {
 
   private final MemberService memberService;
 
-  /*@GetMapping("/signup")
+  @GetMapping("/signup")
   public String moveToSignup(String code, @ModelAttribute("email") String email) {
     if (code.isEmpty() || email.isEmpty()) {
       return "redirect:/members/signup";
     }
-    return "jsp/signup";
-  }*/
-  @GetMapping("/signup")
-  public String moveToSignup() {
     return "jsp/signup";
   }
 
@@ -70,7 +69,7 @@ public class MemberController {
     return "jsp/mypage";
   }
 
-  @RequestMapping(value = "/{memberid}", method = {RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.POST})
+  @RequestMapping(value = "/mypage/{memberid}", method = {RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.POST})
   public String updateMember(@PathVariable("memberid") Long memberId, MemberRequestDTO dto, @RequestPart("profileImage") MultipartFile multipartFile) throws ServletException, IOException {
     String password = dto.getPassword().equals("undefined") ? null : dto.getPassword();
     dto.setId(memberId);
@@ -107,6 +106,13 @@ public class MemberController {
         response.addCookie(cookie);
       }
     }
+  }
+
+  @GetMapping("/{memberid}/courses")
+  public String getAllCourseByMemberId(@PathVariable("memberid") Long memberId, Model model) {
+    List<Course> list = memberService.findCoursesByTeacherId(memberId);
+    model.addAttribute("courses", list);
+    return "jsp/mycourse-list";
   }
 
 }
