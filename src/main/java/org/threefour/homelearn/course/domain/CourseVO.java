@@ -9,8 +9,8 @@ import lombok.*;
 @ToString
 public class CourseVO {
   private long id;
-  private long subjectId;
-  private long teacherId;
+  private long subject_id;
+  private long teacher_id;
   private String name;
   private String description;
   private int period;

@@ -35,7 +35,7 @@
 <!-- Login / Registration start -->
 <section class="banner login-registration">
     <div class="vector-img">
-        <img src="resources/images/${course.ffname}" alt="">
+        <img src="resources/images/${course.ffname}" style="width:60%;height:55%;" alt="">
     </div>
     <div class="container">
         <div class="row">

@@ -68,4 +68,19 @@
     <select id="selectEnrolledCourseByMemberIdAndCourseId" resultType="EnrolledCourse">
         select * from enrolled_course where student_id = #{memberId} and course_id = #{courseId}
     </select>
+
+    <select id="selectReview" resultType="MemberResponseDTO">
+        select * from review r join member m on r.STUDENT_ID = m.ID where course_id =#{course_id} order by r.id desc;
+    </select>
+
+    <insert id="updateMemberRoleByMemberId" useGeneratedKeys="true" keyProperty="role_id">
+        insert into role (role, modified_at) values ('ROLE_MEMBER', current_timestamp);
+        <selectKey order="AFTER">
+            insert into member_role values (#{memberId}, #{role_id})
+        </selectKey>
+    </insert>
+
+    <select id="selectCoursesByTeacherId" resultType="Course">
+        select * from course where teacher_id = #{memberId}
+    </select>
 </mapper>

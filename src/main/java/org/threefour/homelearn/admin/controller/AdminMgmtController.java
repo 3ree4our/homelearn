@@ -77,8 +77,8 @@ public class AdminMgmtController {
 
   @GetMapping("order/list")
   public String orderList(Model model) {
-    /*List<Review> list = orderService.reviewList();
-    model.addAttribute("list", list);*/
+    List<CoursesAdmin> courseList = adminService.courseList();
+    model.addAttribute("courseList", courseList);
     return "admin/order";
   }
 

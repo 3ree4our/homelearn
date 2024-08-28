@@ -37,6 +37,8 @@
         <typeAlias alias="NumberOfCoursesBySubject" type="org.threefour.homelearn.admin.domain.NumberOfCoursesBySubject"/>
         <typeAlias alias="Payment" type="org.threefour.homelearn.payment.domain.Payment"/>
         <typeAlias alias="EnrolledCourse" type="org.threefour.homelearn.enrollment.domain.EnrolledCourse"/>
+        <typeAlias alias="HomeSearchVO" type="org.threefour.homelearn.home.domain.HomeSearchVO"/>
+        <typeAlias alias="Review" type="org.threefour.homelearn.review.domain.Review"/>
     </typeAliases>
 
     <mappers>
@@ -52,5 +54,7 @@
         <mapper resource="PaymentMapper.xml"/>
         <mapper resource="OrderMapper.xml"/>
         <mapper resource="EnrollmentMapper.xml"/>
+        <mapper resource="ReviewMapper.xml"/>
+        <mapper resource="HomeMapper.xml"/>
     </mappers>
 </configuration>

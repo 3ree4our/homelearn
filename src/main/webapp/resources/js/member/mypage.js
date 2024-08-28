@@ -1,10 +1,10 @@
-import {SERVER_API, getBasicData} from "../common/request.js";
+import {SERVER_API} from "../common/request.js";
 import {getCoursesByMemberId, getPaymentsByMemberId} from "../member/member-api-request.js"
 import {drawchapterList, drawPagination, drawPaymentHistory} from "./draw.js";
 
-await getBasicData();
 
 const data = localStorage.getItem('member');
+let jsonData = '';
 const accessToken = localStorage.getItem('access_token');
 
 const h2Ele = document.querySelector('.page-feature h2');
@@ -12,14 +12,19 @@ const logoutBtnEle = document.querySelector('#logoutBtn');
 const inputFileEle = document.querySelector('input[type="file"]');
 const courseRegisterListAEle = document.querySelector('#mypageNav a:first-child');
 const paymentListAELe = document.querySelector('#mypageNav a:nth-child(2)');
-const paymentHistoryListAELe = document.querySelector('#mypageNav a:last-child');
+const cartAELe = document.querySelector('#mypageNav a:last-child');
 
 const outUlDiv = document.querySelector('div.col-md-4.col-sm-6:first-child > div ul')
+const courseDiv = document.querySelector('div.col-md-4.col-sm-6:nth-child(2) > div ul')
 
-if (data === null || accessToken === null) location.href = `${SERVER_API}/members/login`
+if (data) jsonData = JSON.parse(data);
 
-if (data) {
-  const jsonData = JSON.parse(data);
+if (data === null || data === 'null' || accessToken === null || accessToken === 'null') {
+  alert('로그인을 진행해주세요.')
+  location.href = '/members/login'
+}
+
+if (jsonData) {
   const emailInputEle = document.querySelector('#email');
   const createdAtInputEle = document.querySelector('#createdAt');
   const nicknameInputEle = document.querySelector('#nickname');
@@ -29,6 +34,16 @@ if (data) {
   const saveName = jsonData?.attachFile?.saveName;
   const logoutAEle = outUlDiv.firstElementChild.firstElementChild;
   const outAEle = outUlDiv.lastElementChild.lastElementChild;
+  const teacherRegisterAEle = courseDiv.firstElementChild.firstElementChild;
+  const showRegisterCoursesAEle = courseDiv.firstElementChild.firstElementChild;
+  if (saveName && filePath) {
+    fetch(`${SERVER_API}/files/${jsonData.id}`)
+        .then(async result => {
+          const blob = await result.blob();
+          const url = URL.createObjectURL(blob);
+          imgEle.setAttribute('src', url);
+        })
+  }
 
   logoutBtnEle.style.display = 'none';
 
@@ -57,7 +72,7 @@ if (data) {
             if (result.status === 200) {
               localStorage.removeItem('member')
               localStorage.removeItem('access_token')
-              alert('이용해 주셔서 감사합니다.')
+              alert('그동안 이용해 주셔서 감사합니다.')
               location.href = '/';
             }
           })
@@ -67,20 +82,26 @@ if (data) {
 
   })
 
-  if (filePath && saveName) {
-    fetch(`${SERVER_API}/files/${jsonData.id}`, {
-      method: 'POST',
-      body  : JSON.stringify({
-        filePath,
-        saveName
-      })
+  if (jsonData.roles.length < 2) {
+    teacherRegisterAEle.innerText = '강사신청'
+  } else {
+    showRegisterCoursesAEle.innerText = '등록강좌'
+    showRegisterCoursesAEle.addEventListener('click', () => {
+      location.href = `${SERVER_API}/members/${jsonData.id}/courses`;
     })
-        .then(async result => {
-          const blob = await result.blob();
-          const url = URL.createObjectURL(blob);
-          imgEle.setAttribute('src', url);
-        })
   }
+
+  teacherRegisterAEle.addEventListener('click', (e) => {
+    e.preventDefault();
+    fetch(`${SERVER_API}/members/${jsonData.id}/teacher`)
+        .then(result => {
+          if (result.status === 200) {
+            teacherRegisterAEle.innerText = '등록강좌';
+            teacherRegisterAEle.href = '';
+          }
+        })
+  })
+
 }
 
 courseRegisterListAEle.addEventListener('click', async (e) => {
@@ -99,7 +120,6 @@ courseRegisterListAEle.addEventListener('click', async (e) => {
 })
 courseRegisterListAEle.click();
 
-
 paymentListAELe.addEventListener('click', async (e) => {
   e.preventDefault();
   const response = await fetch(`${SERVER_API}/resources/common/jsp/nav/payment-list.jsp`)
@@ -115,9 +135,9 @@ paymentListAELe.addEventListener('click', async (e) => {
   drawPagination(pagingData)
 })
 
-paymentHistoryListAELe.addEventListener('click', async (e) => {
+cartAELe.addEventListener('click', async (e) => {
   e.preventDefault();
-  location.href = `${SERVER_API}/cart.do?studentId=${data.id}`
+  location.href = `${SERVER_API}/cart.do?studentId=${jsonData.id}`
 })
 
 logoutBtnEle.addEventListener('click', () => {
@@ -132,6 +152,7 @@ logoutBtnEle.addEventListener('click', () => {
       })
       .catch(err => alert("err" + err))
 })
+
 
 inputFileEle.addEventListener('change', (e) => {
   const file = e.target.files[0];

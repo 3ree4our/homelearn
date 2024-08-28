@@ -42,11 +42,11 @@
 <section class="slider-banner p-0">
   <div class="slider-carousel owl-carousel">
     <div class="slide slide-3"
-         style="background-image: url(${pageContext.request.contextPath}/resources/images/member/금발카리나.jpg);"></div>
+         style="background-image: url(${pageContext.request.contextPath}/resources/images/슬라이드배경1.jpg);"></div>
     <div class="slide slide-1"
-         style="background-image: url(${pageContext.request.contextPath}/resources/images/member/오타니.jpeg);"></div>
+         style="background-image: url(${pageContext.request.contextPath}/resources/images/슬라이드배경2.jpg);"></div>
     <div class="slide slide-2"
-         style="background-image: url(${pageContext.request.contextPath}/resources/images/member/zk.jpeg);"></div>
+         style="background-image: url(${pageContext.request.contextPath}/resources/images/슬라이드배경3.jpg);"></div>
   </div>
   <div class="container">
     <div class="col-md-11 slider-content m-auto text-center">
@@ -74,19 +74,19 @@
     <ul>
       <li>
         <span>${totalSubscriber}</span>
-        <p>총 회원 수!</p>
+        <p>총 회원 수</p>
       </li>
       <li>
         <span>38</span>
-        <p>talented instructors</p>
+        <p>강좌 수</p>
       </li>
       <li>
-        <span>3940</span>
-        <p>Skilled Students</p>
+        <span>30</span>
+        <p>강사 수</p>
       </li>
       <li>
-        <span>14</span>
-        <p>categories</p>
+        <span>99</span>
+        <p>만족도</p>
       </li>
     </ul>
   </div>

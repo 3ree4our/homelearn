@@ -23,8 +23,7 @@ public class FileUtil {
     filePath = "C:" + File.separator + "files" + File.separator + sdf.format(System.currentTimeMillis());
   }
 
-  public List<AttachFile> fileSave(MultipartFile multipartFile, Long referenceKey) {
-    List<AttachFile> attachFileList = new ArrayList<>();
+  public AttachFile fileSave(MultipartFile multipartFile, Long referenceKey) {
     File f = new File(filePath);
     if (!f.exists()) f.mkdirs();
 
@@ -33,19 +32,20 @@ public class FileUtil {
     String originalName = multipartFile.getOriginalFilename();
     String saveFileName = UUID.randomUUID().toString().substring(0, 8) + "_" + originalName;
 
+    AttachFile build = null;
     try {
       multipartFile.transferTo(new File(f.getAbsolutePath() + File.separator + saveFileName));
-      attachFileList.add(AttachFile.builder()
+      build = AttachFile.builder()
               .referenceKey(referenceKey)
               .originalName(originalName)
               .saveName(saveFileName)
               .filePath(f.getAbsolutePath())
-              .build());
+              .build();
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    return attachFileList;
+    return build;
   }
 
 }

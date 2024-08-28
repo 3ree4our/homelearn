@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.threefour.homelearn.course.domain.Course;
 import org.threefour.homelearn.enrollment.domain.EnrolledCourse;
 import org.threefour.homelearn.file.FileUtil;
 import org.threefour.homelearn.file.dto.AttachFile;
@@ -63,7 +64,7 @@ public class MemberServiceImpl implements MemberService {
     int result = memberRoleMapper.insertMemberRole(memberRole);
 
     if (result > 0) {
-      List<AttachFile> attachFiles = fileUtil.fileSave(multipartFile, dto.getId());
+      AttachFile attachFiles = fileUtil.fileSave(multipartFile, dto.getId());
       if (attachFiles != null)
         fileMapper.insertFile(attachFiles);
     }
@@ -80,26 +81,24 @@ public class MemberServiceImpl implements MemberService {
 
     int result = memberMapper.updateMemberByMemberId(dto);
 
-    List<AttachFile> attachFiles = fileMapper.getProfileImageByMemberId(dto.getId());
+    AttachFile attachFile = fileMapper.getProfileImageByMemberId(dto.getId());
 
     // 업데이트시 기본 -> 이미지변경
-    if (attachFiles.isEmpty()) {
-      List<AttachFile> updateAttachFile = fileUtil.fileSave(multipartFile, dto.getId());
+    if (attachFile == null) {
+      AttachFile updateAttachFile = fileUtil.fileSave(multipartFile, dto.getId());
       if (updateAttachFile != null)
         fileMapper.insertFile(updateAttachFile);
       return 0;
     }
 
     // 수정
-    for (AttachFile attachFile : attachFiles) {
-      File f = new File(attachFile.getFilePath() + File.separator + attachFile.getSaveName());
-      if (f.exists()) {
-        List<AttachFile> updateAttachFile = fileUtil.fileSave(multipartFile, dto.getId());
-        if (updateAttachFile != null) {
-          fileMapper.insertFile(updateAttachFile);
-          fileMapper.deleteFile(attachFile.getSaveName());
-          f.delete();
-        }
+    File f = new File(attachFile.getFilePath() + File.separator + attachFile.getSaveName());
+    if (f.exists()) {
+      AttachFile updateAttachFile = fileUtil.fileSave(multipartFile, dto.getId());
+      if (updateAttachFile != null) {
+        fileMapper.insertFile(updateAttachFile);
+        fileMapper.deleteFile(attachFile.getSaveName());
+        f.delete();
       }
     }
     return result;
@@ -146,4 +145,13 @@ public class MemberServiceImpl implements MemberService {
     return enrolledCourse;
   }
 
+  @Override
+  public int registerTeacherByMemberId(Long memberId) {
+    return memberMapper.updateMemberRoleByMemberId(memberId);
+  }
+
+  @Override
+  public List<Course> findCoursesByTeacherId(Long memberId) {
+    return memberMapper.selectCoursesByTeacherId(memberId);
+  }
 }

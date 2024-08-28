@@ -1,10 +1,12 @@
-import {getBasicData, SERVER_API} from "./request.js";
+import {getBasicData, getNewAccessToken, SERVER_API} from "./request.js";
 
 await getBasicData();
-
 const data = localStorage.getItem('member');
+const accessToken = localStorage.getItem('access_token');
 const cartAEle = document.querySelector('.navbar--cart')
 const loginAEle = document.querySelector(".navbar--login")
+
+if (accessToken === 'null') await getNewAccessToken();
 
 if (data) {
   const jsonData = JSON.parse(data);
@@ -26,8 +28,7 @@ if (data) {
 
   cartAEle.addEventListener('click', (e) => {
     e.preventDefault();
-    http://localhost:8080/cart.do?studentId=3
-        location.href = `${SERVER_API}/cart.do?studentId=${jsonData.id}`
+    location.href = `${SERVER_API}/cart.do?studentId=${jsonData.id}`
   })
 } else {
   cartAEle.style.display = 'none';

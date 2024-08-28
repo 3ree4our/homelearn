@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import io.jsonwebtoken.Claims;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -142,11 +141,11 @@ public class CourseController {
     long fsize = file.getSize();
     String fname = courseService.saveAtStore(file);
     if (cate.equals("korean")) {
-      courseVO.setSubjectId(1);
+      courseVO.setSubject_id(1);
     } else if (cate.equals("english")) {
-      courseVO.setSubjectId(2);
+      courseVO.setSubject_id(2);
     } else {
-      courseVO.setSubjectId(3);
+      courseVO.setSubject_id(3);
     }
     int of = fname.lastIndexOf("/") + 1;
     String sub = fname.substring(of, fname.length());
@@ -202,7 +201,6 @@ public class CourseController {
   @ResponseBody
   @GetMapping("/courses/{courseid}")
   public ResponseEntity<Void> checkEnrolledByCourseId(@PathVariable("courseid") Long courseId) {
-    System.out.println("호출!!");
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     CustomUserDetails customUser = (CustomUserDetails) authentication.getPrincipal();
     Long memberId = customUser.getId();

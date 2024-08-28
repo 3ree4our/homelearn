@@ -88,7 +88,6 @@
 
     <script type="text/javascript">
       $(function() {
-        // member-search 클릭 시 동작하는 이벤트 핸들러
         $("#courseTable").on("click", ".member-search", function (e) {
           e.preventDefault();
           const courseId = $(this).data("course-id");
@@ -126,13 +125,11 @@
           });
         });
 
-        // delete-course 클릭 시 동작하는 이벤트 핸들러
         $("#courseTable").on("click", ".delete-course", function () {
           const courseId = $(this).data("course-id");
           checkCourseMembers(courseId);
         });
 
-        // 환불 버튼 클릭 시 동작하는 이벤트 핸들러
         $("#memberTableBody").on("click", ".refund-btn", function () {
           const memberId = $(this).data("member-id");
           const courseId = $(this).data("course-id");

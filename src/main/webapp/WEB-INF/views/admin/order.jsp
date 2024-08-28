@@ -88,7 +88,7 @@
       </div>
       <!-- /매출-->
     <!-- Striped Rows -->
-    <div class="card">
+    <div class="card" id="orderListContainer">
       <h5 class="card-header">주문 목록</h5>
       <div class="table-responsive text-nowrap">
         <table class="table table-striped" id="orderTable">
@@ -105,13 +105,13 @@
 
           <c:forEach items="${courseList}" var="course">
             <c:set var="courseId" value="${course.id}"/>
+            <c:set var="memberId" value="${member.id}"/>
             <tbody class="table-border-bottom-0">
             <td><strong>#${course.id}</strong></td>
-            <td><a class="member-search" href="javascript:(0)" data-course-id="${course.id}">${course.courseName}</a></td>
+            <td>${course.courseName}</td>
             <td>${course.teacherName}</td>
             <td>${course.price}</td>
             <td>${course.period}</td>
-
             <fmt:formatDate value="${course.createdAt}" var="date" pattern="yyyy-MM-dd"/>
             <td>${date}</td>
             <td>
@@ -119,7 +119,7 @@
               <div class="col">
                 <button
                         type="button"
-                        class="btn btn-primary delete-course"
+                        class="btn btn-primary refund-button"
                         data-bs-toggle="tooltip"
                         data-bs-offset="0,4"
                         data-bs-placement="bottom"
@@ -136,5 +136,16 @@
     </div>
     <!--/ Striped Rows -->
 </div>
+
+<script>
+  $(function (){
+    $("#orderTable").on("click", ".refund-button", function (e) {
+      var button = $(this);
+      if(confirm("환불은 취소가 불가능합니다. 환불 하시겠습니까?")){
+        button.text('환불 완료').prop('disabled', true);
+      }
+    });
+  })
+</script>
 
 <jsp:include page="footer.jsp"/>

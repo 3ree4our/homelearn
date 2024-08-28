@@ -82,8 +82,6 @@
     </update>
 
     <!-- Dash-Board -->
-    <!--<select id="salesForThisYear">
-    </select>-->
     <select id="todaySubscriber" resultType="int">
         -- 일일 가입자 수
         SELECT COUNT(id) todayCnt

@@ -13,8 +13,8 @@
             <result property="modifiedAt" column="MODIFIED_AT"/>
             <association property="course" javaType="org.threefour.homelearn.course.domain.Course">
                 <id property="id" column="COURSE_ID"/>
-                <result property="subjectId" column="SUBJECT_ID"/>
-                <result property="teacherId" column="TEACHER_ID"/>
+                <result property="subject_id" column="SUBJECT_ID"/>
+                <result property="teacher_id" column="TEACHER_ID"/>
                 <result property="name" column="NAME"/>
                 <result property="description" column="DESCRIPTION"/>
                 <result property="price" column="PRICE"/>
@@ -30,15 +30,28 @@
     </resultMap>
 
     <select id="findByStudentId" resultMap="CartResultMap">
-        select c.STUDENT_ID, c.CREATED_AT, c.MODIFIED_AT,
-               cc.ID as CC_ID, cc.CREATED_AT as CC_CREATED_AT, cc.MODIFIED_AT as CC_MODIFIED_AT,
-               course.ID as COURSE_ID, course.SUBJECT_ID, course.TEACHER_ID,
-               course.NAME, course.DESCRIPTION, course.PRICE,
-               course.PERIOD, course.FFNAME, course.FNAME, course.OFNAME, course.FSIZE,
-               course.CREATED_AT as COURSE_CREATED_AT, course.MODIFIED_AT as COURSE_MODIFIED_AT
+        select c.STUDENT_ID,
+               c.CREATED_AT,
+               c.MODIFIED_AT,
+               cc.ID              as CC_ID,
+               cc.CREATED_AT      as CC_CREATED_AT,
+               cc.MODIFIED_AT     as CC_MODIFIED_AT,
+               course.ID          as COURSE_ID,
+               course.SUBJECT_ID,
+               course.TEACHER_ID,
+               course.NAME,
+               course.DESCRIPTION,
+               course.PRICE,
+               course.PERIOD,
+               course.FFNAME,
+               course.FNAME,
+               course.OFNAME,
+               course.FSIZE,
+               course.CREATED_AT  as COURSE_CREATED_AT,
+               course.MODIFIED_AT as COURSE_MODIFIED_AT
         from CART c
-                 join CART_COURSE cc on c.STUDENT_ID = cc.STUDENT_ID
-                 join COURSE course on cc.COURSE_ID = course.ID
+                 left join CART_COURSE cc on c.STUDENT_ID = cc.STUDENT_ID
+                 left join COURSE course on cc.COURSE_ID = course.ID
         where c.STUDENT_ID = #{studentId}
     </select>
     <insert id="createCart">
@@ -53,6 +66,6 @@
         delete
         from CART_COURSE
         where STUDENT_ID = #{studentId}
-        and ID = #{cartCourseId}
+          and ID = #{cartCourseId}
     </delete>
 </mapper>
