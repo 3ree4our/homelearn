@@ -122,17 +122,8 @@ courseRegisterListAEle.click();
 
 paymentListAELe.addEventListener('click', async (e) => {
   e.preventDefault();
-  const response = await fetch(`${SERVER_API}/resources/common/jsp/nav/payment-list.jsp`)
-  const result = await response.text();
-  const pagingData = await getPaymentsByMemberId(1);
-  const navbarList = document.querySelector('#navbarList');
-
-  if (navbarList.hasChildNodes()) navbarList.replaceChildren();
-
-  navbarList.innerHTML = result;
-
-  drawPaymentHistory(pagingData);
-  drawPagination(pagingData)
+  const jsonData = JSON.parse(data);
+  location.href =`${SERVER_API}/payment/paymentsByOrderer_id/${jsonData.id}`
 })
 
 cartAELe.addEventListener('click', async (e) => {
@@ -164,3 +155,6 @@ inputFileEle.addEventListener('change', (e) => {
     profileImageEle.src = reader.result;
   };
 })
+
+
+

@@ -26,7 +26,7 @@ async function requestPay(orderData){
           merchant_uid: "HomeLearnTest" + new Date().getTime(),
           name        : courseName,
           amount      : orderData.orderPrice,
-          buyer_id    : "", //사용자 ID넣어주면 될듯
+          buyer_id    : orderData.studentId,
           //buyer_name : $('#name').val(),
           //buyer_tel : "",
           //buyer_addr : "",
@@ -50,6 +50,7 @@ async function requestPay(orderData){
                   paid_amount      : response.paid_amount,
                   order_amount : orderData.orderPrice,
                   name : response.name,
+                  orderer_id : response.buyer_id,
                   // 주문 정보...
                 }),
               });
