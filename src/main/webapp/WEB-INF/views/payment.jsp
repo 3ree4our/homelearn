@@ -125,6 +125,8 @@
   <h2>포트원 결제 test</h2>
   <button onclick="requestPay()">결제 테스트</button>
   <button onclick="cancelPay()">결제 취소</button>
+  <input type="button" href="../payment/paymentsByImpUid" value="결제 내역"/>
+  <a href="../payment/paymentsByImpUid">결제내역/uid</a>
 
 </body>
 </html>
