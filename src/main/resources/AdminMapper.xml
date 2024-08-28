@@ -13,16 +13,27 @@
                       ON mr.role_id = r.id
         ORDER BY id DESC
     </select>
+    <select id="memberListByRole" resultType="MemberAdmin" parameterType="string">
+        SELECT m.id, m.email, m.password, m.nickname, m.created_at createdAt, m.modified_at modifiedAt, r.role,
+               CASE when m.delete_yn = 0 then '회원' when m.delete_yn = 1 then '탈퇴' END deleteYn
+        FROM member m
+                 JOIN member_role mr
+                      ON m.id = mr.member_id
+                 JOIN role r
+                      ON mr.role_id = r.id
+        WHERE r.role = #{role}
+        ORDER BY id DESC
+    </select>
     <select id="courseList" resultType="CoursesAdmin">
         SELECT c.id, m.id, c.name courseName, c.price, c.period, c.created_at createdAt, c.modified_at modifiedAt, m.nickname teacherName
         FROM course c
                  JOIN member m
                       ON c.teacher_id = m.id
+        WHERE c.delete_yn = 0
         ORDER BY c.id DESC
     </select>
     <select id="courseMemberList" resultType="CourseMemberAdmin" parameterType="long">
-        SELECT m.id, m.email, m.password, m.nickname, m.created_at createdAt, m.modified_at modifiedAt,
-               CASE when r.role = 'ROLE_TEACHER' then '교사' when r.role = 'ROLE_MEMBER' then '학생' END role, e.is_refunded refunded
+        SELECT m.id, m.email, m.password, m.nickname, m.created_at createdAt, m.modified_at modifiedAt, r.role, e.is_refunded refunded
                 ,CASE when e.is_started = 0  then '수강전' when e.is_started = 1 then '수강시작' END started
         FROM member m
                  JOIN member_role mr
@@ -32,7 +43,8 @@
                  JOIN enrolled_course e
                       ON m.id = e.student_id
         WHERE 1=1
-          AND e.course_id = #{courseId}
+            AND r.role = 'ROLE_MEMBER'
+            AND e.course_id = #{courseId}
         ORDER BY e.id DESC
     </select>
     <update id="updateMember" parameterType="MemberAdmin">
@@ -61,7 +73,7 @@
         WHERE m.id = #{param1} AND e.course_id = #{param2}
     </select>
     <delete id="deleteCourse" parameterType="long">
-        DELETE FROM course WHERE id = #{courseId}
+        UPDATE course SET delete_yn = 1 WHERE id = #{courseId}
     </delete>
     <update id="refundMember">
         UPDATE enrolled_course
@@ -112,7 +124,7 @@
         GROUP BY subject_id
     </select>
     <select id="rankingSubjectList" resultType="RankingSubjectAdmin">
-        -- 과목별 강좌 순위
+        -- 과목별 강좌 인기 순위
         SELECT COUNT(c.name) cnt, c.name courseName, m.nickname teacherName
         FROM enrolled_course e
                  JOIN course c
@@ -126,5 +138,13 @@
         GROUP BY c.name
         ORDER BY cnt desc
             LIMIT 6
+    </select>
+    <select id="numberOfCoursesBySubject" resultType="NumberOfCoursesBySubject">
+        -- 과목별 강좌 등록 수
+        SELECT s.name, COUNT(c.id) cnt
+          FROM subject s
+          LEFT JOIN course c
+            ON s.id = c.subject_id
+         GROUP BY subject_id
     </select>
 </mapper>

@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="header.jsp"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!DOCTYPE html>
 <!-- Content wrapper -->
@@ -85,8 +86,6 @@
     </div>
     <!-- /Striped Rows -->
 
-    <script type="text/javascript" language="javascript"
-            src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script type="text/javascript">
       $(function() {
         $("#courseTable").on("click", ".member-search", function (e) {
@@ -102,8 +101,8 @@
               var html = '';
               if (data.length == 0) {
                 html = `<tr>
-                          <td align="center" colspan="7">수강 중인 회원이 없습니다</td>
-                        </tr>`
+                              <td align="center" colspan="7">강좌를 수강 중인 회원이 없습니다</td>
+                            </tr>`;
               } else {
                 $.each(data, function (index, member) {
                   html += '<tr>' +
@@ -113,7 +112,7 @@
                       '<td>' + member.role + '</td>' +
                       '<td>' + formatDate(member.createdAt) + '</td>' +
                       '<td>' + member.started + '</td>' +
-                      '<td>' + getRefundButton(member) + '</td>' +
+                      '<td>' + getRefundButton(member, courseId) + '</td>' +
                       '</tr>';
                 });
               }
@@ -124,103 +123,99 @@
               console.error('Error fetching course details:', error);
             }
           });
+        });
 
-          $(".delete-course").on("click", function () {
-            const courseId = $(this).data("course-id");
-            checkCourseMembers(courseId);
-          });
+        $("#courseTable").on("click", ".delete-course", function () {
+          const courseId = $(this).data("course-id");
+          checkCourseMembers(courseId);
+        });
 
-          $("#memberTableBody").on("click", ".refund-btn", function () {
-            const memberId = $(this).data("member-id");
-            const courseId = $(this).data("course-id");
-            refundMember(memberId, courseId);
-          });
+        $("#memberTableBody").on("click", ".refund-btn", function () {
+          const memberId = $(this).data("member-id");
+          const courseId = $(this).data("course-id");
+          refundMember(memberId, courseId);
+        });
 
-          function checkCourseMembers(courseId) {
-            $.ajax({
-              url: '/mgmt/course/memberList',
-              type: 'GET',
-              data: {'courseId': courseId},
-              dataType: 'JSON',
-              success: function (data) {
-                let canDelete = true;
-                for (let member of data) {
-                  if (member.started === '수강전' && member.refunded === 0) {
-                    canDelete = false;
-                    break;
-                  }
+        function checkCourseMembers(courseId) {
+          $.ajax({
+            url: '/mgmt/course/memberList',
+            type: 'GET',
+            data: {'courseId': courseId},
+            dataType: 'JSON',
+            success: function (data) {
+              let canDelete = true;
+              for (let member of data) {
+                if (member.started === '수강전' && member.refunded === 0) {
+                  canDelete = false;
+                  break;
                 }
-                if (canDelete) {
-                  deleteCourse(courseId);
-                } else {
-                  alert("수강 전인 회원이 있습니다");
+              }
+              if (canDelete) {
+                deleteCourse(courseId);
+              } else {
+                alert("수강 전인 회원이 있습니다");
+              }
+            },
+            error: function (error) {
+              console.error('Error checking course members:', error);
+            }
+          });
+        }
+
+        function deleteCourse(courseId) {
+          if (confirm("이 강의를 삭제하시겠습니까?")) {
+            $.ajax({
+              url: '/mgmt/course/delete',
+              type: 'POST',
+              data: {'courseId': courseId},
+              success: function (response) {
+                if (response.success) {
+                  alert("강의가 성공적으로 삭제되었습니다.");
+                  location.reload();
                 }
               },
               error: function (error) {
-                console.error('Error checking course members:', error);
+                console.error('Error deleting course:', error);
               }
             });
           }
+        }
 
-          function deleteCourse(courseId) {
-            if (confirm("이 강의를 삭제하시겠습니까?")) {
-              $.ajax({
-                url: '/mgmt/course/delete',
-                type: 'POST',
-                data: {'courseId': courseId},
-                success: function (response) {
-                  if (response.success) {
-                    alert("강의가 성공적으로 삭제되었습니다.");
-                    location.reload();
-                  } else {
-                    alert("강의 삭제 실패");
-                  }
-                },
-                error: function (error) {
-                  console.error('Error deleting course:', error);
+        function refundMember(memberId, courseId) {
+          if (confirm("환불은 취소가 불가능합니다. 환불 하시겠습니까?")) {
+            $.ajax({
+              url: '/mgmt/course/refund',
+              type: 'POST',
+              data: {'memberId': memberId, 'courseId': courseId},
+              success: function (response) {
+                if (response.success) {
+                  alert("환불이 성공적으로 처리되었습니다.");
                 }
-              });
-            }
+              },
+              error: function (error) {
+                console.error('Error processing refund:', error);
+              }
+            });
           }
+        }
 
-          function refundMember(memberId, courseId) {
-            if (confirm("이 회원의 수강을 환불하시겠습니까?")) {
-              $.ajax({
-                url: '/mgmt/course/refund',
-                type: 'POST',
-                data: {'memberId': memberId, 'courseId': courseId},
-                success: function (response) {
-                  if (response.success) {
-                    alert("환불이 성공적으로 처리되었습니다.");
-                  } else {
-                    alert("환불 처리 실패");
-                  }
-                },
-                error: function (error) {
-                  console.error('Error processing refund:', error);
-                }
-              });
-            }
+        function getRefundButton(member, courseId) {
+          if (member.refunded == 1) {
+            return '환불 완료';
+          } else if (member.started == '수강시작') {
+            return '환불 불가';
+          } else if (member.started == '수강전') {
+            return '<button class="btn btn-info refund-btn" data-member-id="' + member.id + '" data-course-id="' + courseId + '">환불</button>';
           }
+          return '';
+        }
 
-          function getRefundButton(member) {
-            if (member.refunded == 1) {
-              return '환불 완료';
-            } else if (member.started == '수강시작') {
-              return '환불 불가';
-            } else if (member.started == '수강전') {
-              return '<button class="btn btn-info refund-btn" data-member-id="' + member.id + '" data-course-id="' + member.courseId + '">환불</button>';
-            }
-            return '';
-          }
-
-          function formatDate(dateString) {
-            var date = new Date(dateString);
-            return date.getFullYear() + '-' +
-                ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
-                ('0' + date.getDate()).slice(-2);
-          }
-        });
+        function formatDate(dateString) {
+          var date = new Date(dateString);
+          return date.getFullYear() + '-' +
+              ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+              ('0' + date.getDate()).slice(-2);
+        }
       });
     </script>
 

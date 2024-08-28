@@ -22,6 +22,7 @@ public class PaymentController {
 
   @Autowired
   private PaymentService paymentService;
+  private EnrollmentService enrollmentService;
 
   public PaymentController(PaymentService paymentService) {
     this.paymentService = paymentService;
@@ -58,27 +59,32 @@ public class PaymentController {
   }
 
   //결제 취소
-  @PostMapping("/cancel")
-  public ResponseEntity<?> cancelPayment(@RequestBody PaymentRequest paymentRequest) {
+  //결제 취소
+  @PostMapping("/cancel.do")
+  public String cancelPayment(@RequestParam Long ordererId, @RequestParam Long courseId, @RequestParam String impUid, @RequestParam int price) {
     try {
       return ResponseEntity.ok("Payment cancelled successfully");
     } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment cancellation failed: " + e.getMessage());
+      return null;
     }
   }
 
+
   //결제 히스토리
-  @PostMapping("/paymentsByOrderer_id")
+  //결제 히스토리
+  @GetMapping("/paymentsByOrderer_id/{orderer_id}")
   public ModelAndView paymentsByOrderer_id(
-          @RequestParam("orderer_id") long orderer_id,
+          @PathVariable("orderer_id") Long orderer_id,
           @RequestParam(value = "page", defaultValue = "0") int page,
-          @RequestParam(value = "size", defaultValue = "10") int size) {
+          @RequestParam(value = "size", defaultValue = "3") int size){
 
 
-    int offset = page * size;
+
+
+    int offset = page*size;
     List<Payment> payments = paymentService.getPaymentsByOrderer_id(orderer_id, offset, size);
     int totalPayments = paymentService.getTotalPaymentsByOrderer_id(orderer_id);
-    int totalPages = (int) Math.ceil((double) totalPayments / size);
+    int totalPages = (int)Math.ceil((double)totalPayments/size);
 
 
     //ModelAndView 생성
@@ -92,7 +98,7 @@ public class PaymentController {
 
   //주문당 결제 히스토리
   @PostMapping("/paymentsByImpUid")
-  public ModelAndView paymentsByImpUid(@RequestParam("imp_uid") String imp_uid) {
+  public ModelAndView paymentsByImpUid(@RequestParam("imp_uid") String imp_uid){
     List<Payment> payments = paymentService.getPaymentByImpUid(imp_uid);
 
     //ModelAndView 생성

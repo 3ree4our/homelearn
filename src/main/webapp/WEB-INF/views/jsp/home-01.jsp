@@ -73,20 +73,20 @@
   <div class="container">
     <ul>
       <li>
-        <span>291</span>
-        <p>Amazing Courses</p>
+        <span>${totalSubscriber}</span>
+        <p>총 회원 수</p>
       </li>
       <li>
         <span>38</span>
-        <p>talented instructors</p>
+        <p>강좌 수</p>
       </li>
       <li>
-        <span>3940</span>
-        <p>Skilled Students</p>
+        <span>30</span>
+        <p>강사 수</p>
       </li>
       <li>
-        <span>14</span>
-        <p>categories</p>
+        <span>99</span>
+        <p>만족도</p>
       </li>
     </ul>
   </div>

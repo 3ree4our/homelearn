@@ -30,17 +30,22 @@
                   type: 'bar',
                   data: {
                     labels: [
-                      'January',
-                      'February',
-                      'March',
-                      'April',
-                      'May',
-                      'June',
-                      'July',
+                      '1월',
+                      '2월',
+                      '3월',
+                      '4월',
+                      '5월',
+                      '6월',
+                      '7월',
+                      '8월',
+                      '9월',
+                      '10월',
+                      '11월',
+                      '12월',
                     ],
                     datasets: [
                       {
-                        data: [65, 59, 80, 81, 56, 55, 40],
+                        data: [65, 59, 80, 81, 56, 55, 40, 50, 55, 30, 80, 90],
                         backgroundColor: [
                           'rgba(255, 99, 132, 0.2)',
                         ],
@@ -104,7 +109,7 @@
               <div class="card-body">
                 <div class="card-title d-flex align-items-start justify-content-between">
                   <div class="avatar flex-shrink-0">
-                    <img src="../assets/img/icons/unicons/paypal.png" alt="Credit Card" class="rounded" />
+                    <img src="${pageContext.request.contextPath}/resources/images/icon1.png" alt="Credit Card" class="rounded" />
                   </div>
                   <div class="dropdown">
                     <button
@@ -115,7 +120,6 @@
                             aria-haspopup="true"
                             aria-expanded="false"
                     >
-                      <i class="bx bx-dots-vertical-rounded"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
                       <a class="dropdown-item" href="javascript:void(0);">View More</a>
@@ -125,7 +129,7 @@
                 </div>
                 <span class="d-block mb-1">일일 가입자 수</span>
                 <h3 class="card-title text-nowrap mb-2">${todayCnt}</h3>
-                <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> -14.82%</small>
+                <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> - 1 명</small>
               </div>
             </div>
           </div>
@@ -137,7 +141,7 @@
               <div class="card-body">
                 <div class="card-title d-flex align-items-start justify-content-between">
                   <div class="avatar flex-shrink-0">
-                    <img src="../assets/img/icons/unicons/cc-primary.png" alt="Credit Card" class="rounded" />
+                    <img src="${pageContext.request.contextPath}/resources/images/icon2.png" alt="Credit Card" class="rounded" />
                   </div>
                   <div class="dropdown">
                     <button
@@ -148,7 +152,6 @@
                             aria-haspopup="true"
                             aria-expanded="false"
                     >
-                      <i class="bx bx-dots-vertical-rounded"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="cardOpt1">
                       <a class="dropdown-item" href="javascript:void(0);">View More</a>
@@ -158,7 +161,7 @@
                 </div>
                 <span class="fw-semibold d-block mb-1">총 회원 수</span>
                 <h3 class="card-title mb-2">${totalCnt}</h3>
-                <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.14%</small>
+                <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> + ${todayCnt} 명</small>
               </div>
             </div>
           </div>
@@ -166,7 +169,7 @@
 
           <!-- 이번 주 가입자 수-->
           <div class="col-12 mb-4">
-            <div class="card" style="height: 290px;">
+            <div class="card" style="height: 290px; justify-content: center; align-items: center;">
               <div class="card-body">
                 <div class="card-header">
                   <h5 class="m-0 me-2">이번 주 가입자 수</h5>
@@ -317,7 +320,7 @@
               <c:forEach items="${rankingList}" var="ranking">
                 <li class="d-flex mb-4 pb-1">
                   <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/paypal.png" alt="User" class="rounded" />
+                    <img src="${pageContext.request.contextPath}/resources/images/hb.png" alt="User" class="rounded" />
                   </div>
                   <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                     <div class="me-2">
@@ -347,21 +350,30 @@
           <div class="card-body px-0">
             <div class="tab-content p-0">
               <div class="tab-pane fade show active" id="과목별 강좌 수" role="tabpanel">
-
                 <!--CJS Start-->
                 <div style="width: 400px">
                   <canvas id="myChart4"></canvas>
                 </div>
                 <script>
-                  const ctx3 = document.querySelector('#myChart4');
+                  const jData3 = JSON.parse('${json3}');
+                  const labelList3 = new Array();
+                  const valueList3 = new Array();
 
-                  new Chart(ctx3, {
+                  for(let i=0; i<jData3.length; i++){
+                    let d = jData3[i];
+                    labelList3.push(d.name);
+                    valueList3.push(d.cnt);
+                  }
+
+                  const ctx4 = document.querySelector('#myChart4');
+
+                  new Chart(ctx4, {
                     type: 'polarArea',
                     data: {
-                      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                      labels: labelList3,
                       datasets: [
                         {
-                          label: '2024 Sales',
+                          data: valueList3,
                           backgroundColor: [
                             'rgba(255,215,222,0.2)',
                             'rgba(255, 159, 64, 0.2)',
@@ -379,7 +391,6 @@
                             'rgb(153, 102, 255)',
                             'rgb(201, 203, 207)'
                           ],
-                          data: [300, 700, 450, 750, 450]
                         }
                       ]
                     }

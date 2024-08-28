@@ -1,4 +1,4 @@
-export const SERVER_API = 'http://10.41.2.91:8080'
+export const SERVER_API = 'http://localhost:8080'
 const accessToken = localStorage.getItem('access_token');
 
 export const getBasicData = async () => {

@@ -34,6 +34,7 @@
         <typeAlias alias="RankingSubjectAdmin" type="org.threefour.homelearn.admin.domain.RankingSubjectAdmin"/>
         <typeAlias alias="CourseMemberAdmin" type="org.threefour.homelearn.admin.domain.CourseMemberAdmin"/>
         <typeAlias alias="CntWeekAdmin" type="org.threefour.homelearn.admin.domain.CntWeekAdmin"/>
+        <typeAlias alias="NumberOfCoursesBySubject" type="org.threefour.homelearn.admin.domain.NumberOfCoursesBySubject"/>
         <typeAlias alias="Payment" type="org.threefour.homelearn.payment.domain.Payment"/>
         <typeAlias alias="EnrolledCourse" type="org.threefour.homelearn.enrollment.domain.EnrolledCourse"/>
         <typeAlias alias="HomeSearchVO" type="org.threefour.homelearn.home.domain.HomeSearchVO"/>
