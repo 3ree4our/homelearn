@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.threefour.homelearn.admin.domain.NumberOfCoursesBySubject;
 import org.threefour.homelearn.admin.domain.RankingSubjectAdmin;
 import org.threefour.homelearn.admin.domain.RateSubjectAdmin;
 import org.threefour.homelearn.admin.domain.CntWeekAdmin;
@@ -33,11 +34,14 @@ public class AdminController {
     List<CntWeekAdmin> weekCnt = adminService.subscripbersPerWeek();
     List<RateSubjectAdmin> rateSubjectList = adminService.rateSubjectList();
     List<RankingSubjectAdmin> rankingList = adminService.rankingSubjectList();
+    List<NumberOfCoursesBySubject> numberOfCoursesBySubject = adminService.numberOfCoursesBySubject();
 
     Gson gson = new Gson();
     Gson gson2 = new Gson();
+    Gson gson3 = new Gson();
     JsonArray jsonArray = new JsonArray();
     JsonArray jsonArray2 = new JsonArray();
+    JsonArray jsonArray3 = new JsonArray();
 
     Iterator<CntWeekAdmin> it = weekCnt.iterator();
     while (it.hasNext()) {
@@ -63,12 +67,26 @@ public class AdminController {
       jsonArray2.add(object);
     }
 
+    Iterator<NumberOfCoursesBySubject> it3 = numberOfCoursesBySubject.iterator();
+    while (it3.hasNext()) {
+      NumberOfCoursesBySubject nocbs = it3.next();
+      JsonObject object = new JsonObject();
+      String name = nocbs.getName();
+      int cnt = nocbs.getCnt();
+
+      object.addProperty("name", name);
+      object.addProperty("cnt", cnt);
+      jsonArray3.add(object);
+    }
+
     String json = gson.toJson(jsonArray);
     String json2 = gson2.toJson(jsonArray2);
+    String json3 = gson2.toJson(jsonArray3);
     model.addAttribute("todayCnt", todayCnt);
     model.addAttribute("totalCnt", totalCnt);
     model.addAttribute("json", json);
     model.addAttribute("json2", json2);
+    model.addAttribute("json3", json3);
     model.addAttribute("rankingList", rankingList);
 
     return "admin/dash-board";

@@ -25,10 +25,10 @@
         <property name="hideUserNotFoundExceptions" value="false"/>
     </bean>
 
-    <security:http pattern="/admin/dash-board">
+    <!--<security:http pattern="/admin/dash-board">
         <security:intercept-url pattern="/admin/dash-board" access="hasRole('ADMIN')"/>
         <security:http-basic/>
-    </security:http>
+    </security:http>-->
 
     <security:http auto-config="true" use-expressions="true">
         <security:csrf disabled="true"/>

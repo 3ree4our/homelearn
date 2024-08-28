@@ -6,11 +6,12 @@ import java.util.List;
 
 public interface AdminMapper {
   List<MemberAdmin> memberList();
+  List<MemberAdmin> memberListByRole(String role);
   List<CoursesAdmin> courseList();
   List<CourseMemberAdmin> courseMemberList(long courseId);
   void updateMember(MemberAdmin member);
   int deleteCourse(long courseId);
-  int refundMember(long memberId, long courseId);
+  void refundMember(long memberId, long courseId);
   CourseMemberAdmin getCourseMember(long courseId, long memberId);
 
   /* Dash-Board */
@@ -19,4 +20,5 @@ public interface AdminMapper {
   List<CntWeekAdmin> subscripbersPerWeek();
   List<RateSubjectAdmin> rateSubjectList();
   List<RankingSubjectAdmin> rankingSubjectList();
+  List<NumberOfCoursesBySubject> numberOfCoursesBySubject();
 }

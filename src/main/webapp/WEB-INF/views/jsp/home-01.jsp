@@ -73,8 +73,8 @@
   <div class="container">
     <ul>
       <li>
-        <span>291</span>
-        <p>Amazing Courses</p>
+        <span>${totalSubscriber}</span>
+        <p>총 회원 수!</p>
       </li>
       <li>
         <span>38</span>
