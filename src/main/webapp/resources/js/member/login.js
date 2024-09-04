@@ -5,6 +5,11 @@ const emailCheckBtn = document.querySelector('.content-input button');
 const findPasswordBtn = document.querySelector('#findPasswordModal button');
 const data = localStorage.getItem('member');
 
+if (data) {
+  alert("로그인 되셨습니다.")
+  return;
+}
+
 loginBtnEle.addEventListener('click', async (e) => {
   e.preventDefault();
   const username = document.querySelector('input[name="username"]').value;
@@ -41,7 +46,6 @@ findPasswordBtn.addEventListener('click', (e) => {
   e.preventDefault()
   const email = document.querySelector('#findPasswordModal input').value;
   const formData = new FormData();
-
   const divEle = document.createElement('div');
   divEle.innerText = '잠시만 기다려주세요.';
   divEle.style.color = 'blue';

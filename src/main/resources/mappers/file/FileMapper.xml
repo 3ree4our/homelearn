@@ -7,12 +7,9 @@
         select * from file where reference_key = #{referenceKey}
     </select>
 
-    <insert id="insertFile" parameterType="java.util.List">
+    <insert id="insertFile" parameterType="AttachFile">
         insert into file (reference_key, original_name, save_name, file_path)
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.referenceKey}, #{item.originalName}, #{item.saveName}, #{item.filePath})
-        </foreach>
+        values (#{referenceKey}, #{originalName}, #{saveName}, #{filePath})
     </insert>
 
     <delete id="deleteFile">

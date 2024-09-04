@@ -2,7 +2,6 @@ import {getBasicData, SERVER_API} from "../common/request.js";
 import {getCoursesByMemberId} from "../member/member-api-request.js"
 import {drawchapterList, drawPagination} from "./draw.js";
 
-await getBasicData();
 
 const data = localStorage.getItem('member');
 let jsonData = '';

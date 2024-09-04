@@ -6,7 +6,7 @@ import org.threefour.homelearn.member.dto.RefreshToken;
 public interface RefreshMapper {
   RefreshToken existsByRefreshToken(String refreshToken);
 
-  void deleteByRefreshToken(String refreshToken);
+  int deleteByRefreshToken(String refreshToken);
 
   void insertRefresh(RefreshToken refreshToken);
 }

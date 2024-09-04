@@ -84,7 +84,6 @@ public class PaymentController {
 
 
     //결제 히스토리
-    //결제 히스토리
     @GetMapping("/paymentsByOrderer_id/{orderer_id}")
     public ModelAndView paymentsByOrderer_id(
             @PathVariable("orderer_id") Long orderer_id,

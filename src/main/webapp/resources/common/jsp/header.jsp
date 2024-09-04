@@ -5,8 +5,7 @@
     <nav class="navbar">
       <!-- Site logo -->
       <a href="/" class="logo">
-        <img src="${pageContext.request.contextPath}/resources/images/logo.png"
-             alt="logo image">
+        <h4>Home Learn</h4>
       </a>
       <a href="javascript:void(0);" id="mobile-menu-toggler">
         <i class="ti-align-justify"></i>

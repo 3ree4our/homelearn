@@ -6,9 +6,9 @@ import org.threefour.homelearn.file.dto.FileRequestDTO;
 import java.util.List;
 
 public interface FileMapper {
-  List<AttachFile> getProfileImageByMemberId(Long memberId);
+  AttachFile getProfileImageByMemberId(Long memberId);
 
-  int insertFile(List<AttachFile> files);
+  int insertFile(AttachFile file);
 
   int deleteFile(String saveName);
 }

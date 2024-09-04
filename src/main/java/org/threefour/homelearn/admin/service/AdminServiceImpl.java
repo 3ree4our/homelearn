@@ -2,7 +2,6 @@ package org.threefour.homelearn.admin.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.threefour.homelearn.admin.domain.*;
 import org.threefour.homelearn.admin.mapper.AdminMapper;
 
@@ -23,6 +22,11 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
+  public List<MemberAdmin> memberListByRole(String role){
+    return adminMapper.memberListByRole(role);
+  }
+
+  @Override
   public List<CoursesAdmin> courseList(){ return adminMapper.courseList(); }
 
   @Override
@@ -38,25 +42,13 @@ public class AdminServiceImpl implements AdminService {
   } }
 
   @Override
-  @Transactional
   public boolean deleteCourse(long courseId) {
-    List<CourseMemberAdmin> members = adminMapper.courseMemberList(courseId);
-    for (CourseMemberAdmin member : members) {
-      if ("수강전".equals(member.getStarted()) && member.getRefunded() == 0) {
-        return false;
-      }
-    }
     return adminMapper.deleteCourse(courseId) > 0;
   }
 
   @Override
-  @Transactional
-  public boolean refundMember(long memberId, long courseId) {
-    CourseMemberAdmin member = adminMapper.getCourseMember(memberId, courseId);
-    if (member != null && "수강전".equals(member.getStarted())) {
-      return adminMapper.refundMember(memberId, courseId) > 0;
-    }
-    return false;
+  public void refundMember(long memberId, long courseId) {
+      adminMapper.refundMember(memberId, courseId);
   }
 
   /*Dash-Board*/
@@ -74,4 +66,9 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   public List<RankingSubjectAdmin> rankingSubjectList(){ return adminMapper.rankingSubjectList(); }
+
+  @Override
+  public List<NumberOfCoursesBySubject> numberOfCoursesBySubject() {
+    return adminMapper.numberOfCoursesBySubject();
+  }
 }

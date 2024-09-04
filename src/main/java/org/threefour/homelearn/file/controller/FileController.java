@@ -33,22 +33,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FileController {
 
-  private final FileUtil fileUtil;
   private final FileService fileService;
 
-  @PostMapping(value = "/{id}")
+  @GetMapping(value = "/{id}")
   public ResponseEntity<byte[]> getProfileImage(@PathVariable Long id) {
-    List<AttachFile> fileByMemberId = fileService.getProfileImageByMemberId(id);
+    AttachFile fileByMemberId = fileService.getProfileImageByMemberId(id);
     ResponseEntity<byte[]> result = null;
-    for (AttachFile file : fileByMemberId) {
-      try {
-        HttpHeaders header = new HttpHeaders();
-        File f = new File(file.getFilePath() + File.separator + file.getSaveName());
-        header.add("Content-Type", Files.probeContentType(f.toPath()));
-        result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(f), header, HttpStatus.OK);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+    try {
+      HttpHeaders header = new HttpHeaders();
+      File f = new File(fileByMemberId.getFilePath() + File.separator + fileByMemberId.getSaveName());
+      header.add("Content-Type", Files.probeContentType(f.toPath()));
+      result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(f), header, HttpStatus.OK);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
     return result;

@@ -31,9 +31,8 @@ public class PaymentServiceImpl implements PaymentService {
   private final PaymentMapper paymentMapper;
 
 
-
   @Autowired
-  public PaymentServiceImpl(PaymentMapper paymentMapper){ //OrderMapper orderMapper,
+  public PaymentServiceImpl(PaymentMapper paymentMapper) { //OrderMapper orderMapper,
     this.paymentMapper = paymentMapper;
   }
 
@@ -252,4 +251,3 @@ public class PaymentServiceImpl implements PaymentService {
     return paymentMapper.countPaymentsByOrderer_id(orderer_id);
   }
 }
-

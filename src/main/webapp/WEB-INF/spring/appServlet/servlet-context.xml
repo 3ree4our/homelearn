@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:security="http://www.springframework.org/schema/security"
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:context="http://www.springframework.org/schema/context"
-             xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+             xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+             http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -36,7 +38,7 @@
 
     <context:component-scan base-package="org.threefour.homelearn.admin.controller"/>
     <context:component-scan base-package="org.threefour.homelearn.order.controller"/>
-  
+
     <context:component-scan base-package="org.threefour.homelearn.enrollment.controller"/>
     <context:component-scan base-package="org.threefour.homelearn.review.controller"/>
 
@@ -44,5 +46,7 @@
         <beans:property name="maxUploadSizePerFile" value="3145728"/>
     </beans:bean>
 
+    <security:global-method-security
+            pre-post-annotations="enabled" secured-annotations="enabled"/>
 
 </beans:beans>

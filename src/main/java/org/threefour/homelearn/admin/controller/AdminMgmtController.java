@@ -29,9 +29,14 @@ public class AdminMgmtController {
   }
 
   @GetMapping("member/list")
-  public String memberList(Model model) {
+  public String memberList(@RequestParam(required = false) String role, Model model) {
     List<CntWeekAdmin> weekCnt = adminService.subscripbersPerWeek();
-    List<MemberAdmin> memberList = adminService.memberList();
+    List<MemberAdmin> memberList;
+    if (role != null && !role.equals("전체")) {
+      memberList = adminService.memberListByRole(role);
+    } else {
+      memberList = adminService.memberList();
+    }
 
     Gson gson = new Gson();
     JsonArray jsonArray = new JsonArray();
@@ -49,6 +54,8 @@ public class AdminMgmtController {
     }
 
     String json = gson.toJson(jsonArray);
+    model.addAttribute("memberList", memberList);
+    model.addAttribute("selectedRole", role != null ? role : "전체");
     model.addAttribute("json", json);
     model.addAttribute("memberList", memberList);
     return "admin/member";
@@ -70,8 +77,8 @@ public class AdminMgmtController {
 
   @GetMapping("order/list")
   public String orderList(Model model) {
-    /*List<Review> list = orderService.reviewList();
-    model.addAttribute("list", list);*/
+    List<CoursesAdmin> courseList = adminService.courseList();
+    model.addAttribute("courseList", courseList);
     return "admin/order";
   }
 
@@ -113,15 +120,8 @@ public class AdminMgmtController {
 
   @PostMapping("course/refund")
   @ResponseBody
-  public Map<String, Boolean> refundMember(@RequestParam("memberId") long memberId,
-                                           @RequestParam("courseId") long courseId) {
-    Map<String, Boolean> response = new HashMap<>();
-    try {
-      boolean result = adminService.refundMember(memberId, courseId);
-      response.put("success", result);
-    } catch (Exception e) {
-      response.put("success", false);
-    }
-    return response;
+  public void refundMember(@RequestParam(required = false) long memberId,
+                           @RequestParam(required = false) long courseId) {
+      adminService.refundMember(memberId, courseId);
   }
 }

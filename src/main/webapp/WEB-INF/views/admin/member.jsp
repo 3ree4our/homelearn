@@ -11,27 +11,10 @@
 <div class="content-wrapper">
   <!-- Content -->
   <div class="container-xxl flex-grow-1 container-p-y">
-
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"> Member /</span> Member Tables</h4>
-<%--    <div class="btn-group">
-      <button
-              type="button"
-              class="btn btn-secondary dropdown-toggle"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-      >
-        전체
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="javascript:void(0);">전체</a></li>
-        <li><a class="dropdown-item" href="javascript:void(0);">학생</a></li>
-        <li><a class="dropdown-item" href="javascript:void(0);">교사</a></li>
-        <li><a class="dropdown-item" href="javascript:void(0);">관리자</a></li>
-      </ul>
-    </div>--%>
 
     <!-- 이번 주 가입자 수 -->
-    <div class="col-12 mb-4">
+    <div class="col-12 mb-4" style="display: flex; justify-content: center">
       <div class="card" style="height: 300px; width: 470px; justify-content: center; align-items: center;">
         <div class="card-body">
           <div class="card-header">
@@ -101,7 +84,23 @@
       </div>
     </div>
     <!-- /이번주 가입자 수-->
-    
+
+    <div class="btn-group">
+      <button
+              type="button"
+              class="btn btn-secondary dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+      >
+        ${selectedRole}
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="javascript:void(0);" onclick="filterMembers('전체')">전체</a></li>
+        <li><a class="dropdown-item" href="javascript:void(0);" onclick="filterMembers('ROLE_MEMBER')">학생</a></li>
+        <li><a class="dropdown-item" href="javascript:void(0);" onclick="filterMembers('ROLE_TEACHER')">교사</a></li>
+        <li><a class="dropdown-item" href="javascript:void(0);" onclick="filterMembers('ROLE_ADMIN')">관리자</a></li>
+      </ul>
+    </div>
     <br><br>
 
     <!-- Striped Rows -->
@@ -314,5 +313,10 @@
     <hr class="my-5" />
   </div>
   <!-- / Content -->
+  <script>
+    function filterMembers(role) {
+      window.location.href = '/mgmt/member/list?role=' + encodeURIComponent(role);
+    }
+  </script>
 </div>
 <jsp:include page="footer.jsp"/>

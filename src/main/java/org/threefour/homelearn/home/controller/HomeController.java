@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.threefour.homelearn.admin.domain.MemberAdmin;
+import org.threefour.homelearn.admin.domain.NumberOfCoursesBySubject;
+import org.threefour.homelearn.admin.service.AdminService;
 import org.threefour.homelearn.course.domain.Course;
 import org.threefour.homelearn.course.domain.Pager;
 import org.threefour.homelearn.course.service.CourseService;
@@ -22,12 +25,16 @@ public class HomeController {
   private HomeService homeService;
   @Autowired
   private CourseService courseService;
+  @Autowired
+  private AdminService adminService;
 
   @GetMapping
   public ModelAndView home01() {
     ModelAndView view = new ModelAndView();
     List<Course> course = courseService.getList();
+    int totalSubscriber = adminService.totalSubscriber();
     view.addObject("course", course);
+    view.addObject("totalSubscriber", totalSubscriber);
     view.setViewName("/jsp/home-01");
 
     return view;

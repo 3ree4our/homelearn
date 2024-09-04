@@ -1,6 +1,5 @@
 package org.threefour.homelearn.payment.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 

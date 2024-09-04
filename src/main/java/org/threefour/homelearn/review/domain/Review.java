@@ -18,7 +18,7 @@ public class Review {
   private long student_id;
   private String content;
   private int score;
-  private String member_nickName;
+  private String nickName;
   private LocalDateTime created_at;
   private LocalDateTime modified_at;
 }
