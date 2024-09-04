@@ -46,7 +46,6 @@ findPasswordBtn.addEventListener('click', (e) => {
   e.preventDefault()
   const email = document.querySelector('#findPasswordModal input').value;
   const formData = new FormData();
-
   const divEle = document.createElement('div');
   divEle.innerText = '잠시만 기다려주세요.';
   divEle.style.color = 'blue';

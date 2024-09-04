@@ -1,30 +1,39 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" pageEncoding="UTF-8" %>
 <%@ page import="org.threefour.homelearn.cart.domain.GetCartResponse" %>
 <%@ page import="org.threefour.homelearn.course.domain.Course" %>
 <%@ page import="static org.threefour.homelearn.cart.RequestConstant.*" %>
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/resources/css/themify-icons.css">
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/resources/css/fontawesome.min.css">
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/nice-select.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
+    <!-- Favicon icons -->
+    <link href="images/favicon.png" rel="shortcut icon">
 
+    <!-- All CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/themify-icons.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
 
+    <title>Elearning - Tutor, Education HTML Template</title>
+</head>
+<body>
+
+<!-- Preloader -->
+<div id="preloader">
+    <div id="status"></div>
+</div>
 <c:import url="${pageContext.request.contextPath}/resources/common/jsp/header.jsp"/>
-
 <%
-  GetCartResponse getCartResponse = (GetCartResponse) request.getAttribute(CART_PARAMETER_NAME);
+    GetCartResponse getCartResponse = (GetCartResponse) request.getAttribute(CART_PARAMETER_NAME);
 %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/payment.js"></script>
+<script src="resources/js/payment.js"></script>
 <script>
     let totalPrice = 0;
 
@@ -112,58 +121,17 @@
                 alert('주문 요청에 실패했습니다. 다시 시도해 주세요.');
             }
         });
-    });
-
-    if (selectedCourses.length > 0) {
-        const orderData = {
-            studentId            : studentId,
-            orderedCourseRequests: selectedCourses,
-            orderPrice           : totalPrice,
-        };
-
-        result = await requestPay(orderData);
-
-        const paidOrderData = {
-            impUid             : result.imp_uid,
-            merchantUid        : 'abcdafdsflkjasdf',
-            ordererId          : studentId,
-            paidAmount         : result.paid_amount,
-            courseOrderRequests: selectedCourses
-        }
-
-        var paidOrderRequest = JSON.stringify(paidOrderData);
-
-        requestOrder(paidOrderRequest);
-    } else {
-        alert("주문할 상품을 선택하세요.");
-    }
-    })
-    });
-
-    async function requestOrder(paidOrderRequest) {
-        await $.ajax({
-            type       : "POST",
-            url        : "/submit-order.do",
-            contentType: "application/json",
-            data       : paidOrderRequest,
-            success    : function () {
-                location.href = "order.do?impUid=" + JSON.parse(paidOrderRequest).impUid
-            },
-            error      : function () {
-                alert('요청에 실패했습니다. 다시 시도해 주세요.');
-            }
-        });
     }
 </script>
 <!-- Page feature start -->
 <section class="page-feature">
-  <div class="container text-center">
-    <h2>Cart</h2>
-    <div class="breadcrumb">
-      <a href="home.html">Home</a>
-      <span>/ Cart</span>
+    <div class="container text-center">
+        <h2>Cart</h2>
+        <div class="breadcrumb">
+            <a href="home.html">Home</a>
+            <span>/ Cart</span>
+        </div>
     </div>
-  </div>
 </section>
 <!-- Page feature end -->
 
@@ -193,7 +161,7 @@
                 <li style="display: flex; align-items: center; justify-content: space-between; width: 80%; margin-bottom: 30px; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
                     <input type="checkbox" name="selectedCourses" value="<%= getCartResponse.get(i).getId() %>" style="margin-right: 20px;">
 
-                    <a href="courseDetail.do?course_id=<%= course.getId() %>" data-course-id="<%= course.getId() %>" style="flex-grow: 1; display: block; text-decoration: none; color: inherit; text-align: left;">
+                    <a href="courseDetail.do?courseId=<%= course.getId() %>" data-course-id="<%= course.getId() %>" style="flex-grow: 1; display: block; text-decoration: none; color: inherit; text-align: left;">
                         <img src="resources/images/${course.ffname}" alt="<%= course.getName() %>" style="width: 100px; height: auto; border-radius: 8px; float: left; margin-right: 20px;">
                         <div style="overflow: hidden;">
                             <h5 class="course-name" style="margin-top: 10px;"><%= course.getName() %></h5>
@@ -205,7 +173,8 @@
                         </div>
                     </a>
 
-                    <form action="delete-cart-course.do" method="POST" style="margin-left: 20px;">
+                    <!-- 삭제 버튼 -->
+                    <form action="delete-cart-course.do" method="GET" style="margin-left: 20px;">
                         <input type="hidden" name="studentId" value="<%= getCartResponse.getStudentId() %>">
                         <input type="hidden" name="cartCourseId" value="<%= getCartResponse.get(i).getId() %>">
                         <button type="submit" class="btn btn-danger">삭제</button>
@@ -218,18 +187,23 @@
             </ul>
         </div>
     </div>
-  </div>
 </section>
 
 <!-- Total Price and Order Button Section Start -->
 <section class="total-price" style="margin-top: 50px;">
-  <div class="container text-center">
-    <h3>선택된 상품 가격: <span id="totalPrice">0 원</span></h3>
-    <button id="orderButton" class="btn btn-primary" style="margin-top: 20px;">결제하기</button>
-  </div>
+    <div class="container text-center">
+        <h3>선택된 상품 가격: <span id="totalPrice">0 원</span></h3>
+        <button id="orderButton" class="btn btn-primary" style="margin-top: 20px;">결제하기</button>
+    </div>
 </section>
 <!-- Total Price and Order Button Section End -->
 
 <c:import url="${pageContext.request.contextPath}/resources/common/jsp/footer.jsp"/>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxYLtelXg0PGjeTiFDtlN7nrH_47buDWo"></script>
+<script src="js/scripts.js"></script>
 </body>
 </html>

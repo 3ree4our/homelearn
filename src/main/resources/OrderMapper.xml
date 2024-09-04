@@ -6,7 +6,9 @@
     <select id="findByOrdererId" resultType="Order">
         select *
         from ORDERS
-        where ORDERER_ID = #{ordererId} limit #{size}
+        where ORDERER_ID = #{ordererId}
+        order by CREATED_AT desc
+            limit #{size}
         offset #{pageSequence}
     </select>
     <select id="findByImpUid" resultType="Order">

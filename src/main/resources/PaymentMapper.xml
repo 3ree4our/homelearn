@@ -29,6 +29,7 @@
     <select id="selectPaymentsByOrderer_id" parameterType="map" resultMap="paymentResultMap">
         SELECT * FROM PAYMENT_HISTORY
         WHERE orderer_id = #{orderer_id}
+        order by CREATED_AT desc
             LIMIT #{limit} OFFSET #{offset}
     </select>
 

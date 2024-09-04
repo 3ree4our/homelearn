@@ -1,6 +1,6 @@
-import {SERVER_API} from "../common/request.js";
-import {getCoursesByMemberId, getPaymentsByMemberId} from "../member/member-api-request.js"
-import {drawchapterList, drawPagination, drawPaymentHistory} from "./draw.js";
+import {getBasicData, SERVER_API} from "../common/request.js";
+import {getCoursesByMemberId} from "../member/member-api-request.js"
+import {drawchapterList, drawPagination} from "./draw.js";
 
 
 const data = localStorage.getItem('member');
@@ -123,7 +123,7 @@ courseRegisterListAEle.click();
 paymentListAELe.addEventListener('click', async (e) => {
   e.preventDefault();
   const jsonData = JSON.parse(data);
-  location.href =`${SERVER_API}/payment/paymentsByOrderer_id/${jsonData.id}`
+  location.href = `${SERVER_API}/payment/paymentsByOrderer_id/${jsonData.id}`
 })
 
 cartAELe.addEventListener('click', async (e) => {
@@ -155,6 +155,3 @@ inputFileEle.addEventListener('change', (e) => {
     profileImageEle.src = reader.result;
   };
 })
-
-
-
