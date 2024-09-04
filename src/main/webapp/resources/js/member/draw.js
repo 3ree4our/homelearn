@@ -7,7 +7,7 @@ export const drawchapterList = (pagingData) => {
     for (let element of pagingData.elements) {
       html += ` <div class="col-xs-12 col-lg-6 col-xl-4">`;
       html += ` <div class="card" style="width: 100%;"">`;
-      html += `  <img src="/resources/images/member/금발카리나.jpg" class="card-img-top" alt="...">`
+      html += `  <img src="/resources/images/과학책.jpg" class="card-img-top" alt="...">`
       html += `<div class="card-body">`;
       html += `<h5 class="card-title">${element.courseName}</h5>`;
       html += `<p>평점 </p>`;

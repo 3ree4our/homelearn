@@ -20,7 +20,7 @@ import static org.threefour.homelearn.order.RequestConstant.*;
 @Controller
 @RequiredArgsConstructor
 public class OrderController {
-  private final OrderService orderService;
+    private final OrderService orderService;
 
     @GetMapping("/orders.do")
     public ModelAndView getOrders(Long ordererId, Integer size, Integer pageNumber) {
@@ -49,10 +49,10 @@ public class OrderController {
         GetOrderResponse getOrderResponse = orderService.get(impUid);
 
         return new ModelAndView(ORDER_VIEW_NAME, ORDER_PARAMETER_NAME, getOrderResponse);
-  }
+    }
 
-  @PostMapping("/submit-order.do")
-  public ResponseEntity<Void> createOrder(@RequestBody PaidOrderRequest paidOrderRequest) {
+    @PostMapping("/submit-order.do")
+    public ResponseEntity<Void> createOrder(@RequestBody PaidOrderRequest paidOrderRequest) {
         orderService.createOrder(paidOrderRequest);
         return ResponseEntity.status(NO_CONTENT).build();
     }

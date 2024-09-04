@@ -15,8 +15,8 @@ import lombok.Setter;
 public class Course {
 
 	private long id;
-	private long subject_id;
-	private long teacher_id;
+	private long subjectId;
+	private long teacherId;
 	private long image_id;
 	private String name;
 	private String description;
