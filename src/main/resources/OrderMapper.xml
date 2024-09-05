@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.threefour.homelearn.order.mapper.OrderMapper">
+    <select id="findByOrdererId" resultType="Order">
+        select *
+        from ORDERS
+        where ORDERER_ID = #{ordererId}
+        order by CREATED_AT desc
+            limit #{size}
+        offset #{pageSequence}
+    </select>
+    <select id="findByImpUid" resultType="Order">
+        select *
+        from ORDERS
+        where IMP_UID = #{impUid}
+    </select>
+    <insert id="save">
+        insert into ORDERS
+        values (#{impUid}, #{ordererId}, #{merchantUid}, now(), now())
+    </insert>
+        <select id="getSize" resultType="Integer">
+            select count(ORDERER_ID) from ORDERS
+            where ORDERER_ID = #{ordererId}
+        </select>
+</mapper>

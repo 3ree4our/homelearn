@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.threefour.homelearn.admin.mapper.AdminMapper">
+    <select id="memberList" resultType="MemberAdmin">
+        SELECT m.id, m.email, m.password, m.nickname, m.created_at createdAt, m.modified_at modifiedAt, r.role,
+               CASE when m.delete_yn = 0 then '회원' when m.delete_yn = 1 then '탈퇴' END deleteYn
+        FROM member m
+                 JOIN member_role mr
+                      ON m.id = mr.member_id
+                 JOIN role r
+                      ON mr.role_id = r.id
+        ORDER BY id DESC
+    </select>
+    <select id="memberListByRole" resultType="MemberAdmin" parameterType="string">
+        SELECT m.id, m.email, m.password, m.nickname, m.created_at createdAt, m.modified_at modifiedAt, r.role,
+               CASE when m.delete_yn = 0 then '회원' when m.delete_yn = 1 then '탈퇴' END deleteYn
+        FROM member m
+                 JOIN member_role mr
+                      ON m.id = mr.member_id
+                 JOIN role r
+                      ON mr.role_id = r.id
+        WHERE r.role = #{role}
+        ORDER BY id DESC
+    </select>
+    <select id="courseList" resultType="CoursesAdmin">
+        SELECT c.id, m.id, c.name courseName, c.price, c.period, c.created_at createdAt, c.modified_at modifiedAt, m.nickname teacherName
+        FROM course c
+                 JOIN member m
+                      ON c.teacher_id = m.id
+        WHERE c.delete_yn = 0
+        ORDER BY c.id DESC
+    </select>
+    <select id="courseMemberList" resultType="CourseMemberAdmin" parameterType="long">
+        SELECT m.id, m.email, m.password, m.nickname, m.created_at createdAt, m.modified_at modifiedAt, r.role, e.is_refunded refunded
+                ,CASE when e.is_started = 0  then '수강전' when e.is_started = 1 then '수강시작' END started
+        FROM member m
+                 JOIN member_role mr
+                      ON m.id = mr.member_id
+                 JOIN role r
+                      ON mr.role_id = r.id
+                 JOIN enrolled_course e
+                      ON m.id = e.student_id
+        WHERE 1=1
+            AND r.role = 'ROLE_MEMBER'
+            AND e.course_id = #{courseId}
+        ORDER BY e.id DESC
+    </select>
+    <update id="updateMember" parameterType="MemberAdmin">
+        UPDATE member
+        <set>
+            <if test="nickname != null">
+                nickname = #{nickname},
+            </if>
+            <if test="deleteYn != null">
+                delete_yn = CASE WHEN #{deleteYn} = '회원' THEN 0 ELSE 1 END,
+            </if>
+            modified_at = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+    <select id="getCourseMember" resultType="CourseMemberAdmin">
+        SELECT m.id, m.email, m.nickname, m.created_at createdAt, m.modified_at modifiedAt,
+               CASE WHEN r.role = 'ROLE_TEACHER' THEN '교사' WHEN r.role = 'ROLE_MEMBER' THEN '학생' END role,
+               e.is_refunded refunded,
+               CASE WHEN e.is_started = 0 THEN '수강전' WHEN e.is_started = 1 THEN '수강시작' END started,
+               e.course_id courseId
+        FROM member m
+                 JOIN member_role mr ON m.id = mr.member_id
+                 JOIN role r ON mr.role_id = r.id
+                 JOIN enrolled_course e ON m.id = e.student_id
+        WHERE m.id = #{param1} AND e.course_id = #{param2}
+    </select>
+    <delete id="deleteCourse" parameterType="long">
+        UPDATE course SET delete_yn = 1 WHERE id = #{courseId}
+    </delete>
+    <update id="refundMember">
+        UPDATE enrolled_course
+        SET is_refunded = 1
+        WHERE student_id = #{param1} AND course_id = #{param2}
+    </update>
+
+    <!-- Dash-Board -->
+    <select id="todaySubscriber" resultType="int">
+        -- 일일 가입자 수
+        SELECT COUNT(id) todayCnt
+        FROM member
+        WHERE 1=1
+          AND DATE(created_at) = DATE(NOW())
+          AND delete_yn = 0
+    </select>
+    <select id="totalSubscriber" resultType="int">
+        -- 총 가입자 수
+        SELECT COUNT(id) totalCnt
+         FROM member
+        WHERE delete_yn = 0
+    </select>
+    <select id="subscripbersPerWeek" resultType="CntWeekAdmin">
+        -- 일주일 가입자 수
+        SELECT day(NOW) day, COUNT(id) cnt
+        FROM
+            (with recursive rc as (
+            SELECT date_add(NOW(), INTERVAL -6 day) as now
+            UNION ALL
+            SELECT DATE_ADD(now, INTERVAL 1 DAY)
+            FROM rc
+            WHERE NOW <![CDATA[<]]> NOW()
+            )
+            SELECT * from rc) X
+            LEFT JOIN member m
+        ON date(x.now) = date(m.created_at)
+        GROUP BY NOW
+        ORDER BY now
+    </select>
+    <select id="rateSubjectList" resultType="RateSubjectAdmin">
+        -- 과목별 강좌 구매율
+        SELECT COUNT(subject_id) cnt, s.name subjectName
+        FROM enrolled_course e
+                 JOIN course c
+                      ON e.course_id = c.id
+                 JOIN subject s
+                      ON c.subject_id = s.id
+        GROUP BY subject_id
+    </select>
+    <select id="rankingSubjectList" resultType="RankingSubjectAdmin">
+        -- 과목별 강좌 인기 순위
+        SELECT COUNT(c.name) cnt, c.name courseName, m.nickname teacherName
+        FROM enrolled_course e
+                 JOIN course c
+                      ON e.course_id = c.id
+                 JOIN subject s
+                      ON c.subject_id = s.id
+                 JOIN member m
+                      ON c.teacher_id = m.id
+        WHERE 1=1
+          AND e.is_refunded = 0
+        GROUP BY c.name
+        ORDER BY cnt desc
+            LIMIT 6
+    </select>
+    <select id="numberOfCoursesBySubject" resultType="NumberOfCoursesBySubject">
+        -- 과목별 강좌 등록 수
+        SELECT s.name, COUNT(c.id) cnt
+          FROM subject s
+          LEFT JOIN course c
+            ON s.id = c.subject_id
+         GROUP BY subject_id
+    </select>
+</mapper>

@@ -1,0 +1,67 @@
+.sec-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#profileImageWrapper {
+    width: 250px;
+    height: 300px;
+}
+
+#profileImage {
+    border-radius: 25px;
+    height: 100%;
+}
+
+label[for='profileImageInput'] {
+    max-width: 50px;
+}
+
+label[for='profileImageInput'] > div {
+
+}
+
+label[for='profileImageInput'] > img {
+    width: 100%;
+}
+
+button[type='submit'] {
+    margin: 10px auto 0 !important;
+}
+
+/*chapter-register-list start*/
+.card {
+    padding: 15px;
+}
+
+#course-list div {
+    padding: 10px !important;
+}
+
+.card-body {
+    padding: 10px !important;
+}
+
+.card-body div {
+    display: flex;
+    justify-content: center;
+}
+
+.card-body div a {
+    width: 100%;
+}
+
+.card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-footer {
+    margin-top: auto;
+}
+
+/*chapter-register-list end*/

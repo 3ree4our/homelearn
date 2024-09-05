@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.threefour.homelearn.course.mapper.CourseMapper">
+	<insert id="courseWrite" parameterType="CourseVO" >
+		insert into course(subject_ID,TEACHER_ID,NAME,DESCRIPTION,PRICE,PERIOD,ffname,fname,ofname,CREATED_AT,MODIFIED_AT) values(#{subject_id},1,#{name},#{description},#{price},#{period},#{ffname},#{fname},#{ofname},now(),now())
+	</insert>
+	<select id="courseLastId"  resultType="long">
+		select LAST_INSERT_ID()
+	</select>
+
+	<select id="list" parameterType="Pager" resultType="Course">
+		select * from COURSE order by ID desc LIMIT #{startPage},#{pageSize}
+	</select>
+	<select id="total" resultType="int">
+		select count(ID) from course
+	</select>
+	<select id="searchList" parameterType="String" resultType="Course">
+		SELECT * FROM COURSE
+		WHERE name LIKE CONCAT('%', #{name}, '%')
+		ORDER BY ID DESC
+	</select>
+	<select id="subjectList" parameterType="int" resultType="Course">
+		select * from course c join subject s on c.SUBJECT_ID = s.ID where c.SUBJECT_ID = #{subject} order by c.id desc;
+	</select>
+	<select id="courseDetail" parameterType="long" resultType="Course">
+		select * from course where id = #{id};
+	</select>
+	<select id="getSubjectName" parameterType="long" resultType="String">
+		select name from subject where id = #{subject_id};
+	</select>
+	<select id="getList"  resultType="Course">
+		select * from course order by id desc limit 3;
+	</select>
+	<!--
+	<insert id="insert" parameterType="Board">
+		 insert into BOARD(WRITER, EMAIL, SUBJECT,CONTENT,FNAME,OFNAME,FSIZE,RDATE) values(#{writer}, #{email},#{subject},#{content},#{fname},#{ofname}, #{fsize},CURRENT_TIMESTAMP())
+	</insert>
+	<delete id="delete" parameterType="long">
+		 delete from BOARD where SEQ=#{seq}
+	</delete>
+	<select id="content" resultType="Board">
+		select * from BOARD where SEQ=#{seq}
+	</select>
+	<select id="download" parameterType="String" resultType="Board">
+		select * from BOARD where FNAME=#{fname}
+	</select>
+	<update id="update" parameterType="Board">
+		update board set email=#{email},subject=#{subject},content=#{content},rdate= CURRENT_TIMESTAMP() where seq=#{seq}
+	</update>
+	
+	<select id="keyword" parameterType="BoardVO" resultType="Board">
+        SELECT * FROM BOARD
+        WHERE ${keyword} LIKE CONCAT('%', #{search}, '%')
+        ORDER BY ${keyword}, SEQ DESC
+	</select> -->
+
+</mapper>

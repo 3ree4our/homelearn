@@ -1,0 +1,18 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.threefour.homelearn.file.mapper.FileMapper">
+    <select id="getProfileImageByMemberId" resultType="AttachFile">
+        select * from file where reference_key = #{referenceKey}
+    </select>
+
+    <insert id="insertFile" parameterType="AttachFile">
+        insert into file (reference_key, original_name, save_name, file_path)
+        values (#{referenceKey}, #{originalName}, #{saveName}, #{filePath})
+    </insert>
+
+    <delete id="deleteFile">
+        delete from file where save_name = #{saveName}
+    </delete>
+</mapper>

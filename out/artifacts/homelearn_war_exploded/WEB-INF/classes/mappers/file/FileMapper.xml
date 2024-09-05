@@ -1,0 +1,21 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.threefour.homelearn.file.mapper.FileMapper">
+    <select id="getProfileImageByMemberId" resultType="AttachFile">
+        select * from file where reference_key = #{referenceKey}
+    </select>
+
+    <insert id="insertFile" parameterType="java.util.List">
+        insert into file (reference_key, original_name, save_name, file_path)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.referenceKey}, #{item.originalName}, #{item.saveName}, #{item.filePath})
+        </foreach>
+    </insert>
+
+    <delete id="deleteFile">
+        delete from file where save_name = #{saveName}
+    </delete>
+</mapper>

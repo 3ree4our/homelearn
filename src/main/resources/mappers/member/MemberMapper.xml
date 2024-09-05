@@ -1,0 +1,86 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.threefour.homelearn.member.mapper.MemberMapper">
+
+    <sql id="memberColumns">
+        id, email, password, nickname
+    </sql>
+
+    <insert id="insertMember" parameterType="MemberRequestDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into member (<include refid="memberColumns"/>)
+        values (#{id}, #{email}, #{password}, #{nickname})
+    </insert>
+
+    <select id="findByUsername" resultType="MemberResponseDTO">
+        select<include refid="memberColumns"/>, created_at, modified_at
+        from member
+        where email = #{username}
+        and delete_yn =0;
+    </select>
+
+    <update id="updateMemberByMemberId" parameterType="MemberRequestDTO">
+        <choose>
+            <when test="password != null">
+                update member set password = #{password}, nickname = #{nickname}, modified_at = current_timestamp where
+                id = #{id}
+            </when>
+            <otherwise>
+                update member set nickname = #{nickname}, modified_at = current_timestamp where id = #{id}
+            </otherwise>
+        </choose>
+    </update>
+
+
+    <select id="selectCoursesWithPaging" resultType="org.threefour.homelearn.member.dto.EnrolledCourceListDTO">
+        select c.id course_id, c.name course_name, c.ffname course_ffname, c.fname course_fname, c.ofname course_ofname,
+        ec.is_started enroll_is_started, m.id member_id
+        from course c join enrolled_course ec on c.id = ec.course_id
+        join member m on m.id = ec.student_id
+        where ec.is_refunded = 0 and m.id = #{memberId}
+        order by ec.created_at desc
+        limit #{startNum}, 1;
+    </select>
+
+    <select id="selectPaymentsWithPaging" resultType="org.threefour.homelearn.member.dto.PaymentsResponseListDTO">
+        select s.name course_name, ph.payed_amount, ph.REFUNDED_AMOUNT, ph.CREATED_AT from `order` o left join
+        payment_history ph on o.id = ph.order_id
+        join member m on m.id = o.student_id
+        join enrolled_course ec on ec.ORDER_ID = o.id
+        join course s on s.id = ec.course_id
+        where m.id = #{memberId}
+        limit #{startNum}, 1
+    </select>
+
+    <select id="coursesCountByMemberId" resultType="int">
+        select count(*) from enrolled_course where student_id = #{memberId} and is_refunded = 0
+    </select>
+
+    <select id="paymentsCountByMemberId" resultType="int">
+        select count(*) from payment_history where member_id = #{memberId}
+    </select>
+
+    <update id="deleteMemberByMemberId">
+        update member set delete_yn = 1 where id = #{memberId}
+    </update>
+
+    <select id="selectEnrolledCourseByMemberIdAndCourseId" resultType="EnrolledCourse">
+        select * from enrolled_course where student_id = #{memberId} and course_id = #{courseId}
+    </select>
+
+    <select id="selectReview" resultType="MemberResponseDTO">
+        select * from review r join member m on r.STUDENT_ID = m.ID where course_id =#{course_id} order by r.id desc;
+    </select>
+
+    <insert id="updateMemberRoleByMemberId" useGeneratedKeys="true" keyProperty="role_id">
+        insert into role (role, modified_at) values ('ROLE_MEMBER', current_timestamp);
+        <selectKey order="AFTER">
+            insert into member_role values (#{memberId}, #{role_id})
+        </selectKey>
+    </insert>
+
+    <select id="selectCoursesByTeacherId" resultType="Course">
+        select * from course where teacher_id = #{memberId}
+    </select>
+</mapper>

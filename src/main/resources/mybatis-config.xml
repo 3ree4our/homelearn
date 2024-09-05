@@ -1,12 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration
-  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
 
-	<typeAliases>
-	</typeAliases>
-	 
-	<mappers>
-	</mappers>
+    <typeAliases>
+        <typeAlias alias="CourseVO" type="org.threefour.homelearn.course.domain.CourseVO"/>
+        <typeAlias alias="Course" type="org.threefour.homelearn.course.domain.Course"/>
+        <typeAlias alias="Pager" type="org.threefour.homelearn.course.domain.Pager"/>
+        <typeAlias alias="Chapter" type="org.threefour.homelearn.chapter.domain.Chapter"/>
+        <typeAlias alias="CourseVO" type="org.threefour.homelearn.course.domain.CourseVO"/>
+        <typeAlias alias="Course" type="org.threefour.homelearn.course.domain.Course"/>
+        <typeAlias alias="Pager" type="org.threefour.homelearn.course.domain.Pager"/>
+        <typeAlias alias="Chapter" type="org.threefour.homelearn.chapter.domain.Chapter"/>
+        <typeAlias alias="Cart" type="org.threefour.homelearn.cart.domain.Cart"/>
+        <typeAlias alias="CartCourse" type="org.threefour.homelearn.cart.domain.CartCourse"/>
+        <typeAlias alias="Order" type="org.threefour.homelearn.order.domain.Order"/>
+
+        <typeAlias type="org.threefour.homelearn.member.dto.MemberRequestDTO" alias="MemberRequestDTO"/>
+        <typeAlias type="org.threefour.homelearn.member.dto.MemberResponseDTO" alias="MemberResponseDTO"/>
+        <typeAlias type="org.threefour.homelearn.member.dto.Role" alias="Role"/>
+        <typeAlias type="org.threefour.homelearn.member.dto.MemberRole" alias="MemberRole"/>
+        <typeAlias type="org.threefour.homelearn.member.dto.RefreshToken" alias="RefreshToken"/>
+        <typeAlias type="org.threefour.homelearn.file.dto.AttachFile" alias="AttachFile"/>
+        <typeAlias type="org.threefour.homelearn.file.dto.FileRequestDTO" alias="FileRequestDTO"/>
+
+        <typeAlias alias="MemberAdmin" type="org.threefour.homelearn.admin.domain.MemberAdmin"/>
+        <typeAlias alias="CoursesAdmin" type="org.threefour.homelearn.admin.domain.CoursesAdmin"/>
+        <typeAlias alias="RateSubjectAdmin" type="org.threefour.homelearn.admin.domain.RateSubjectAdmin"/>
+        <typeAlias alias="RankingSubjectAdmin" type="org.threefour.homelearn.admin.domain.RankingSubjectAdmin"/>
+        <typeAlias alias="CourseMemberAdmin" type="org.threefour.homelearn.admin.domain.CourseMemberAdmin"/>
+        <typeAlias alias="CntWeekAdmin" type="org.threefour.homelearn.admin.domain.CntWeekAdmin"/>
+        <typeAlias alias="NumberOfCoursesBySubject" type="org.threefour.homelearn.admin.domain.NumberOfCoursesBySubject"/>
+        <typeAlias alias="Payment" type="org.threefour.homelearn.payment.domain.Payment"/>
+        <typeAlias alias="EnrolledCourse" type="org.threefour.homelearn.enrollment.domain.EnrolledCourse"/>
+        <typeAlias alias="HomeSearchVO" type="org.threefour.homelearn.home.domain.HomeSearchVO"/>
+        <typeAlias alias="Review" type="org.threefour.homelearn.review.domain.Review"/>
+    </typeAliases>
+
+    <mappers>
+        <mapper resource="CourseMapper.xml"/>
+        <mapper resource="ChapterMapper.xml"/>
+        <mapper resource="mappers/member/MemberMapper.xml"/>
+        <mapper resource="mappers/member/MemberRoleMapper.xml"/>
+        <mapper resource="mappers/member/RoleMapper.xml"/>
+        <mapper resource="mappers/member/RefreshToken.xml"/>
+        <mapper resource="mappers/file/FileMapper.xml"/>
+        <mapper resource="AdminMapper.xml"/>
+        <mapper resource="CartMapper.xml"/>
+        <mapper resource="PaymentMapper.xml"/>
+        <mapper resource="OrderMapper.xml"/>
+        <mapper resource="EnrollmentMapper.xml"/>
+        <mapper resource="ReviewMapper.xml"/>
+        <mapper resource="HomeMapper.xml"/>
+    </mappers>
 </configuration>

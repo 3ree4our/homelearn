@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- src/main/resources/mapper/PaymentMapper.xml -->
+<mapper namespace="org.threefour.homelearn.payment.mapper.PaymentMapper">
+
+    <insert id="insertPayment" parameterType="Payment">
+        INSERT INTO PAYMENT_HISTORY (orderer_id, imp_uid, paid_amount, refunded_amount, remained_amount, created_at)
+        VALUES (#{orderer_id}, #{imp_uid}, #{paid_amount}, #{refunded_amount}, #{remained_amount}, now())
+    </insert>
+
+    <resultMap id="paymentResultMap" type="org.threefour.homelearn.payment.domain.Payment">
+        <id property="id" column="id"/>
+        <result property="orderer_id" column="orderer_id"/>
+        <result property="imp_uid" column="imp_uid"/>
+        <result property="merchant_uid" column="merchant_uid"/>
+        <result property="paid_amount" column="paid_amount"/>
+        <result property="refunded_amount" column="refunded_amount"/>
+        <result property="remained_amount" column="remained_amount"/>
+        <result property="created_at" column="created_at"/>
+    </resultMap>
+
+    <select id="selectPaymentByImpUid" parameterType="String" resultMap="paymentResultMap">
+        SELECT * FROM PAYMENT_HISTORY WHERE imp_uid = #{imp_uid}
+    </select>
+
+    <!--    확인-->
+    <select id="selectPaymentsByOrderer_id" parameterType="map" resultMap="paymentResultMap">
+        SELECT * FROM PAYMENT_HISTORY
+        WHERE orderer_id = #{orderer_id}
+        order by CREATED_AT desc
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="countPaymentsByOrderer_id" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM PAYMENT_HISTORY WHERE orderer_id = #{orderer_id}
+    </select>
+
+</mapper>

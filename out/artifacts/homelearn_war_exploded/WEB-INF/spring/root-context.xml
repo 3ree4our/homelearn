@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+  		http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+		">
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+        <property name="jdbcUrl"
+                  value="jdbc:log4jdbc:mariadb://10.41.2.123:3306/homelearn?characterEncoding=UTF-8"></property>
+        <property name="username" value="three"></property>
+        <property name="password" value="four"></property>
+    </bean>
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+          destroy-method="close">
+        <constructor-arg ref="hikariConfig"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="configLocation"
+                  value="classpath:/mybatis-config.xml"/>
+    </bean>
+
+    <!--트랜잭션 추가-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:application.properties"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <mybatis-spring:scan base-package="org.threefour.homelearn.course.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.course.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.course.service"/>
+    <context:component-scan base-package="org.threefour.homelearn.course.domain"/>
+    <context:component-scan base-package="org.threefour.homelearn.course.fileset"/>
+    <context:component-scan base-package="org.threefour.homelearn.chapter.controller"/>
+
+    <context:component-scan base-package="org.threefour.homelearn.member.service"/>
+    <mybatis-spring:scan base-package="org.threefour.homelearn.member.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.file.service"/>
+    <mybatis-spring:scan base-package="org.threefour.homelearn.file.mapper"/>
+
+    <mybatis-spring:scan base-package="org.threefour.homelearn.chapter.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.chapter.service"/>
+    <context:component-scan base-package="org.threefour.homelearn.chapter.domain"/>
+
+    <mybatis-spring:scan base-package="org.threefour.homelearn.cart.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.cart.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.cart.service"/>
+    <context:component-scan base-package="org.threefour.homelearn.cart.domain"/>
+
+    <mybatis-spring:scan base-package="org.threefour.homelearn.payment.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.payment.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.payment.service"/>
+    <context:component-scan base-package="org.threefour.homelearn.payment.domain"/>
+
+    <mybatis-spring:scan base-package="org.threefour.homelearn.order.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.order.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.order.service"/>
+    <context:component-scan base-package="org.threefour.homelearn.order.domain"/>
+
+    <mybatis-spring:scan base-package="org.threefour.homelearn.admin.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.admin.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.admin.service"/>
+    <context:component-scan base-package="org.threefour.homelearn.admin.domain"/>
+
+    <mybatis-spring:scan base-package="org.threefour.homelearn.enrollment.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.enrollment.mapper"/>
+    <context:component-scan base-package="org.threefour.homelearn.enrollment.service"/>
+    <context:component-scan base-package="org.threefour.homelearn.enrollment.domain"/>
+</beans>

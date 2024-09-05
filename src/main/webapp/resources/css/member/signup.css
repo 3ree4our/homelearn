@@ -1,0 +1,28 @@
+strong {
+    color: #e376a3;
+}
+
+label[for="profileImageInput"] {
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+}
+
+label[for="profileImageInput"] img {
+    width: 50px;
+}
+
+.vector-img > img {
+    height: 100%;
+}
+
+.hide {
+    display: none;
+}
+
+.password-failure-message,
+.password-mismatch-message {
+    color: #e376a3;
+}
