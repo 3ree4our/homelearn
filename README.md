@@ -44,13 +44,10 @@
 - Spring MVC
 <br>
 
-## Build/Test
+## DevOps
 
 ### Build
 - Maven
-<br>
-
-## DevOps
 
 ### Database
 - MariaDB
