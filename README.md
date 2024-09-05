@@ -16,13 +16,16 @@
 - [3ree4our팀 노션](https://gravel-clematis-b77.notion.site/3ree-4our-123e9acc4e8b4c9f9e34614efa250024?pvs=4)
 - [HOMELEARN 노션](https://gravel-clematis-b77.notion.site/Home-Learn-c8468224059a4c66a50300eb2c0cff1f?pvs=4)
 - [기획 발표 자료](https://www.canva.com/design/DAGNWC50B7k/ynqHqVl120dnWRWc92gX0A/edit)
+- [최종 발표 자료](https://www.canva.com/design/DAGNWC50B7k/ynqHqVl120dnWRWc92gX0A/edit)
+- [시연 영상](https://www.canva.com/design/DAGNWC50B7k/ynqHqVl120dnWRWc92gX0A/edit)
   <br><br>
 
 ## 🗼 Architecture
 ![HOMELEARN Architecture](https://github.com/user-attachments/assets/346d4d87-80de-46ee-882b-b68859b7beac)
 <br><br>
 
-## 🗄️ ERD ![ERD](https://github.com/user-attachments/assets/53460a6c-a61d-4598-bbe6-cde91d6062c2)
+## 🗄️ ERD 
+![ERD](https://github.com/user-attachments/assets/85adbb7e-e9d2-4596-8d6f-00aa1de059b6)
 <br><br>
 
 ## 🛠️ Skills
@@ -33,12 +36,11 @@
 - CSS3
 - JavaScript
 - JQuery
-- BootsTrap
+- Bootstrap
 - JSP
 <br>
 
 ## Back-End
-
 - Java
 - Spring MVC
 <br>
@@ -47,11 +49,6 @@
 
 ### Build
 - Maven
-
-### Test
-- JUnit5
-- AssertJ
-- Mockito
 <br>
 
 ## DevOps
