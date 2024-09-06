@@ -15,9 +15,8 @@
 
 - [3ree4our팀 노션](https://gravel-clematis-b77.notion.site/3ree-4our-123e9acc4e8b4c9f9e34614efa250024?pvs=4)
 - [HOMELEARN 노션](https://gravel-clematis-b77.notion.site/Home-Learn-c8468224059a4c66a50300eb2c0cff1f?pvs=4)
-- [기획 발표 자료](https://www.canva.com/design/DAGNWC50B7k/ynqHqVl120dnWRWc92gX0A/edit)
-- [최종 발표 자료](https://www.canva.com/design/DAGNWC50B7k/ynqHqVl120dnWRWc92gX0A/edit)
-- [시연 영상](https://www.canva.com/design/DAGNWC50B7k/ynqHqVl120dnWRWc92gX0A/edit)
+- [발표 자료](https://www.canva.com/design/DAGP9anjJ7w/EbIUkhorhea7VOMkM105Jg/edit)
+- [시연 영상](https://youtu.be/kVXXtswqvd4)
   <br><br>
 
 ## 🗼 Architecture
@@ -45,13 +44,10 @@
 - Spring MVC
 <br>
 
-## Build/Test
+## DevOps
 
 ### Build
 - Maven
-<br>
-
-## DevOps
 
 ### Database
 - MariaDB
