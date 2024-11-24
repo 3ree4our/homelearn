@@ -39,7 +39,7 @@
   <br><br>
 
 ## 🗼 Architecture
-![HOMELEARN Architecture](https://github.com/user-attachments/assets/346d4d87-80de-46ee-882b-b68859b7beac)
+![homelearn-architecture](https://github.com/user-attachments/assets/c37e3a5b-edc5-41b0-80d6-b3a633bd6cfd)
 <br><br>
 
 ## 🗄️ ERD 
